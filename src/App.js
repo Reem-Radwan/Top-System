@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import ManageUsers from "./pages/ManageUsers";
+// // import UsersPage from "./pages/UsersPage";
 
-function App() {
+
+// function App() {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         {/* <Route path="/" element={<UsersPage />} /> */}
+//         <Route path="/manage" element={<ManageUsers />} />
+        
+//       </Routes>
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;
+import TopHeader from "./components/TopHeader";
+import ManageUsers from "./pages/ManageUsers";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <TopHeader
+        userName="Reem Slama"
+        onLogout={() => alert("Logout (mock)")}
+      />
+      <ManageUsers />
+    </>
   );
 }
 
-export default App;
+
