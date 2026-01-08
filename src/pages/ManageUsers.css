@@ -708,3 +708,75 @@ html, body {
   background: #198754;
   color: #fff;
 }
+
+
+.mu-mobile-name-text{
+  flex: 1;
+  min-width: 0;
+
+  /* look like an input (read-only) */
+  background: var(--bg-primary);
+  border: 2px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+
+  font-weight: 700;
+  color: var(--text-primary);
+
+  /* clean truncation */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px){
+  .mu-save:hover,
+  .mu-save:focus{
+    background: var(--orange-dark);
+    border-color: var(--orange-dark);
+  }
+
+  .mu-save:active{
+    background: var(--orange-dark);
+    border-color: var(--orange-dark);
+  }
+}
+
+@media (max-width: 768px){
+  .mu-modal input[type="checkbox"],
+  .mu-mobile-list input[type="checkbox"]{
+    accent-color: var(--orange-primary);
+  }
+}
+
+/* Force the modal Save button to be orange (no Bootstrap blue) */
+.btn.btn-primary.mu-save{
+  background: var(--orange-primary) !important;
+  border-color: var(--orange-primary) !important;
+  color: #fff !important;
+
+  /* Bootstrap v5 CSS variables override */
+  --bs-btn-bg: var(--orange-primary);
+  --bs-btn-border-color: var(--orange-primary);
+  --bs-btn-hover-bg: var(--orange-dark);
+  --bs-btn-hover-border-color: var(--orange-dark);
+  --bs-btn-active-bg: var(--orange-dark);
+  --bs-btn-active-border-color: var(--orange-dark);
+  --bs-btn-focus-shadow-rgb: 230, 81, 0; /* matches orange-dark */
+}
+
+/* Hover / focus / active states (covers mobile tap too) */
+.btn.btn-primary.mu-save:hover,
+.btn.btn-primary.mu-save:focus,
+.btn.btn-primary.mu-save:active,
+.btn.btn-primary.mu-save.active,
+.btn.btn-primary.mu-save:active:focus{
+  background: var(--orange-dark) !important;
+  border-color: var(--orange-dark) !important;
+  color: #fff !important;
+  box-shadow: none !important; /* remove the blue glow */
+  outline: none !important;
+}
