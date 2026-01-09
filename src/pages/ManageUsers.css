@@ -1216,3 +1216,31 @@ html, body {
 }
 
 
+.cu-perms{
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cu-check{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  background: var(--bg-primary);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cu-check input{
+  width: 16px;
+  height: 16px;
+}
+
+/* Orange checkboxes (Company User permissions) */
+.cu-check input[type="checkbox"]{
+  accent-color: var(--orange-primary);
+  color: white;
+}
