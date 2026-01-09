@@ -534,7 +534,7 @@ export default function CreateUser() {
     });
 
     // go back to manage users (adjust if your route differs)
-    navigate("/manage-users");
+    navigate("/");
   }
 
   return (
