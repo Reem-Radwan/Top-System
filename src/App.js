@@ -1,34 +1,20 @@
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import ManageUsers from "./pages/ManageUsers";
-// // import UsersPage from "./pages/UsersPage";
-
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         {/* <Route path="/" element={<UsersPage />} /> */}
-//         <Route path="/manage" element={<ManageUsers />} />
-        
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
-import TopHeader from "./components/TopHeader";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ManageUsers from "./pages/ManageUsers";
+import CreateUser from "./pages/CreateUser";
+import TopHeader from "./components/TopHeader";
 
 export default function App() {
   return (
-    <>
-      <TopHeader
+    <BrowserRouter>
+      <TopHeader 
         userName="Reem Slama"
-        onLogout={() => alert("Logout (mock)")}
+        onLogout={() => alert("Logout (mock)")} 
       />
-      <ManageUsers />
-    </>
+
+      <Routes>
+        <Route path="/" element={<ManageUsers />} />
+        <Route path="/users/create" element={<CreateUser />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-
