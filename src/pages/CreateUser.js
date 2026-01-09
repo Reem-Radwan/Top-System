@@ -135,7 +135,7 @@ export default function CreateUser() {
       confirmButtonColor: "#f59e0b",
     });
 
-    navigate("/manage-users");
+    navigate("/");
   }
 
   return (
