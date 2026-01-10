@@ -425,3 +425,11 @@
     grid-template-columns: 1fr; /* stack fields */
   }
 }
+
+.mc-mobile-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
