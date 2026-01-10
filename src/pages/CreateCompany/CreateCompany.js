@@ -130,7 +130,7 @@ export default function CreateCompany() {
             {/* Type */}
             <label className="mu-label">
               Company Type
-              <select className="mu-field" required value={type} onChange={(e) => setType(e.target.value)}>
+              <select className="mu-field"  value={type} onChange={(e) => setType(e.target.value)}>
                 {TYPES.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -158,6 +158,7 @@ export default function CreateCompany() {
                 <input
                   className="mu-field"
                   type="file"
+                  required
                   accept="image/*"
                   onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
                 />
@@ -188,7 +189,7 @@ export default function CreateCompany() {
                   <input
                     className="mu-field"
                     type="url"
-                    required
+                    
                     value={gs.sheetUrl}
                     onChange={(e) => setGs((p) => ({ ...p, sheetUrl: e.target.value }))}
                   />
@@ -226,7 +227,7 @@ export default function CreateCompany() {
                   <input
                     className="mu-field"
                     type="url"
-                    required
+                    
                     value={erp.mainUrl}
                     onChange={(e) => setErp((p) => ({ ...p, mainUrl: e.target.value }))}
                   />
@@ -237,7 +238,7 @@ export default function CreateCompany() {
                   <input
                     className="mu-field"
                     type="text"
-                    required
+                    
                     value={erp.mainKey}
                     onChange={(e) => setErp((p) => ({ ...p, mainKey: e.target.value }))}
                   />
