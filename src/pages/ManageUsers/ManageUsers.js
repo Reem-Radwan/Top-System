@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./ManageUsers.css";
-import { COMPANIES, INITIAL_USERS } from "../data/fakeManageUsersData";
+import { COMPANIES, INITIAL_USERS } from "../../data/ManageUsersData";
 
 const COMPANY_NAMES = ["Mint", "Palmier Developments", "IGI Developments"];
 
@@ -37,7 +37,9 @@ function displayRole(role) {
   if (canon === "CompanyController") return "Company Controller";
   if (canon === "Finance Manager") return "Finance Manager";
 
-  const spaced = String(canon).replace(/([a-z])([A-Z])/g, "$1 $2").trim();
+  const spaced = String(canon)
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .trim();
   return spaced
     .split(/\s+/)
     .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
@@ -47,7 +49,10 @@ function displayRole(role) {
 // --- Fake API (swap later with real requests) ---
 function mockRequest(ok = true, delayMs = 250) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => (ok ? resolve({ ok: true }) : reject(new Error("Mock error"))), delayMs);
+    setTimeout(
+      () => (ok ? resolve({ ok: true }) : reject(new Error("Mock error"))),
+      delayMs
+    );
   });
 }
 
@@ -83,11 +88,21 @@ function UserDetailsModal({
   const adminAlwaysActive = cfg.adminAlwaysActive;
 
   return (
-    <div className="mu-modal-backdrop" role="dialog" aria-modal="true" onMouseDown={onClose}>
+    <div
+      className="mu-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      onMouseDown={onClose}
+    >
       <div className="mu-modal" onMouseDown={(e) => e.stopPropagation()}>
         <div className="mu-modal-header">
           <div className="mu-modal-title">User Details</div>
-          <button className="mu-modal-x" type="button" onClick={onClose} aria-label="Close">
+          <button
+            className="mu-modal-x"
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+          >
             ✕
           </button>
         </div>
@@ -100,7 +115,9 @@ function UserDetailsModal({
                 className="mu-field"
                 value={user.full_name || ""}
                 onChange={(e) => updateDraft({ full_name: e.target.value })}
-                onBlur={(e) => onFieldCommit("full_name", "Name", e.target.value)}
+                onBlur={(e) =>
+                  onFieldCommit("full_name", "Name", e.target.value)
+                }
               />
             </label>
 
@@ -122,12 +139,18 @@ function UserDetailsModal({
                 value={user.passwordDraft || ""}
                 onChange={(e) => updateDraft({ passwordDraft: e.target.value })}
               />
-              <div className="mu-hint">Password is applied only when you press Save.</div>
+              <div className="mu-hint">
+                Password is applied only when you press Save.
+              </div>
             </label>
 
             <label className="mu-label">
               Role
-              <input className="mu-field" value={displayRole(user.role)} disabled />
+              <input
+                className="mu-field"
+                value={displayRole(user.role)}
+                disabled
+              />
             </label>
 
             <label className="mu-label mu-label-inline">
@@ -170,7 +193,11 @@ function UserDetailsModal({
                     checked={!!user.can_change_years}
                     onChange={(e) => {
                       updateDraft({ can_change_years: e.target.checked });
-                      onFieldCommit("can_change_years", "Can Change Years", e.target.checked);
+                      onFieldCommit(
+                        "can_change_years",
+                        "Can Change Years",
+                        e.target.checked
+                      );
                     }}
                   />
                 ) : (
@@ -187,8 +214,9 @@ function UserDetailsModal({
                   value={user.company?.name || ""}
                   onChange={(e) => {
                     const nextName = e.target.value;
-                    const companyObj =
-                      COMPANIES.find((c) => c.name === nextName) || { id: "", name: nextName };
+                    const companyObj = COMPANIES.find(
+                      (c) => c.name === nextName
+                    ) || { id: "", name: nextName };
 
                     updateDraft({ company: companyObj });
                     onFieldCommit("companyName", "Company", nextName);
@@ -211,7 +239,9 @@ function UserDetailsModal({
                   className="mu-field"
                   value={user.job_title || ""}
                   onChange={(e) => updateDraft({ job_title: e.target.value })}
-                  onBlur={(e) => onFieldCommit("job_title", "Job Title", e.target.value)}
+                  onBlur={(e) =>
+                    onFieldCommit("job_title", "Job Title", e.target.value)
+                  }
                 />
               </label>
             ) : null}
@@ -222,7 +252,11 @@ function UserDetailsModal({
           <button className="btn btn-secondary" type="button" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary mu-save" type="button" onClick={onSaveClick}>
+          <button
+            className="btn btn-primary mu-save"
+            type="button"
+            onClick={onSaveClick}
+          >
             <i className="fas fa-save" style={{ marginRight: 6 }}></i> Save
           </button>
         </div>
@@ -243,7 +277,11 @@ export default function ManageUsers() {
   const [collapsed, setCollapsed] = useState({});
 
   const [isMobile, setIsMobile] = useState(false);
-  const [details, setDetails] = useState({ open: false, userId: null, roleGroup: null });
+  const [details, setDetails] = useState({
+    open: false,
+    userId: null,
+    roleGroup: null,
+  });
 
   const lastValuesRef = useRef(
     Object.fromEntries(
@@ -290,13 +328,23 @@ export default function ManageUsers() {
   }
 
   function updateUser(userId, patch) {
-    setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, ...patch } : u)));
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, ...patch } : u))
+    );
   }
 
   function toastEdit(fieldLabel, oldVal, newVal) {
     const isBool = typeof newVal === "boolean";
-    const oldText = isBool ? (oldVal ? "Enabled" : "Disabled") : String(oldVal ?? "");
-    const newText = isBool ? (newVal ? "Enabled" : "Disabled") : String(newVal ?? "");
+    const oldText = isBool
+      ? oldVal
+        ? "Enabled"
+        : "Disabled"
+      : String(oldVal ?? "");
+    const newText = isBool
+      ? newVal
+        ? "Enabled"
+        : "Disabled"
+      : String(newVal ?? "");
 
     return swalFire({
       icon: "success",
@@ -320,7 +368,7 @@ export default function ManageUsers() {
       user_id: u.id,
       full_name: u.full_name,
       email: u.email,
-      password: opts.includePassword ? (u.passwordDraft || "") : "",
+      password: opts.includePassword ? u.passwordDraft || "" : "",
       is_active: isAdmin ? true : !!u.is_active,
       can_edit: !!u.can_edit,
       can_change_years: !!u.can_change_years,
@@ -333,7 +381,11 @@ export default function ManageUsers() {
       await mockRequest(true);
       return payload;
     } catch {
-      await swalFire({ icon: "error", title: "Error", text: "Connection error. Could not save." });
+      await swalFire({
+        icon: "error",
+        title: "Error",
+        text: "Connection error. Could not save.",
+      });
       return null;
     }
   }
@@ -342,22 +394,36 @@ export default function ManageUsers() {
     const prev = lastValuesRef.current[userId]?.[fieldKey];
 
     const changed =
-      typeof newValue === "string" ? (prev ?? "") !== newValue : Boolean(prev) !== Boolean(newValue);
+      typeof newValue === "string"
+        ? (prev ?? "") !== newValue
+        : Boolean(prev) !== Boolean(newValue);
 
     if (!changed) return;
 
     await toastEdit(fieldLabel, prev, newValue);
-    lastValuesRef.current[userId] = { ...lastValuesRef.current[userId], [fieldKey]: newValue };
+    lastValuesRef.current[userId] = {
+      ...lastValuesRef.current[userId],
+      [fieldKey]: newValue,
+    };
 
     await triggerAjaxSave(userId, { includePassword: false });
   }
 
   const COMPANY_ROLES = useMemo(
-    () => new Set(["CompanyUser", "CompanyController", "Finance Manager", "Manager"]),
+    () =>
+      new Set([
+        "CompanyUser",
+        "CompanyController",
+        "Finance Manager",
+        "Manager",
+      ]),
     []
   );
 
-  const PROMETHEUS_ROLES = useMemo(() => new Set(["Admin", "BusinessTeam", "Developer"]), []);
+  const PROMETHEUS_ROLES = useMemo(
+    () => new Set(["Admin", "BusinessTeam", "Developer"]),
+    []
+  );
 
   const companiesUsers = useMemo(
     () => users.filter((u) => COMPANY_ROLES.has(canonicalRole(u.role))),
@@ -383,11 +449,19 @@ export default function ManageUsers() {
 
       const matchName = nm.includes(nameF);
       const matchRole = !roleF || rl === roleF;
-      const matchCompany = view !== VIEW.COMPANIES || !companyF || comp === companyF;
+      const matchCompany =
+        view !== VIEW.COMPANIES || !companyF || comp === companyF;
 
       return matchName && matchRole && matchCompany;
     });
-  }, [view, companiesUsers, adminBtUsers, searchName, searchRole, searchCompany]);
+  }, [
+    view,
+    companiesUsers,
+    adminBtUsers,
+    searchName,
+    searchRole,
+    searchCompany,
+  ]);
 
   const grouped = useMemo(() => {
     const map = new Map();
@@ -398,7 +472,12 @@ export default function ManageUsers() {
     }
 
     const entries = Array.from(map.entries());
-    const orderCompanies = ["CompanyUser", "CompanyController", "Finance Manager", "Manager"];
+    const orderCompanies = [
+      "CompanyUser",
+      "CompanyController",
+      "Finance Manager",
+      "Manager",
+    ];
     const orderPrometheus = ["Admin", "BusinessTeam", "Developer"];
     const order = view === VIEW.COMPANIES ? orderCompanies : orderPrometheus;
 
@@ -492,7 +571,9 @@ export default function ManageUsers() {
     setDetails({ open: false, userId: null, roleGroup: null });
   }
 
-  const detailsUser = details.userId ? users.find((x) => x.id === details.userId) : null;
+  const detailsUser = details.userId
+    ? users.find((x) => x.id === details.userId)
+    : null;
 
   // NEW: bulk activate/deactivate for selected company in Companies view
   async function bulkSetActiveForSelectedCompany(nextActive) {
@@ -517,7 +598,8 @@ export default function ManageUsers() {
       prev.map((u) => {
         const isCompaniesRole = COMPANY_ROLES.has(canonicalRole(u.role));
         const sameCompany =
-          (u.company?.name || "").toLowerCase() === (searchCompany || "").toLowerCase();
+          (u.company?.name || "").toLowerCase() ===
+          (searchCompany || "").toLowerCase();
 
         if (isCompaniesRole && sameCompany && !u.is_superuser) {
           return { ...u, is_active: nextActive };
@@ -529,7 +611,9 @@ export default function ManageUsers() {
     await swalFire({
       icon: "success",
       title: "Updated",
-      text: `All users in "${searchCompany}" set to ${nextActive ? "Active" : "Inactive"}.`,
+      text: `All users in "${searchCompany}" set to ${
+        nextActive ? "Active" : "Inactive"
+      }.`,
       showConfirmButton: true,
       confirmButtonText: "OK",
       confirmButtonColor: "#f59e0b",
@@ -550,12 +634,13 @@ export default function ManageUsers() {
           <button
             type="button"
             className="lux-create-btn"
-            onClick={() => navigate("/users/create", { state: { fromView: view } })}
+            onClick={() =>
+              navigate("/users/create", { state: { fromView: view } })
+            }
           >
             <i className="fas fa-user-plus"></i>
             <span className="lux-create-text">Create User</span>
           </button>
-
 
           <div className="lux-switch">
             <button
@@ -625,7 +710,11 @@ export default function ManageUsers() {
           </>
         ) : null}
 
-        <select className="lux-input" value={searchRole} onChange={(e) => setSearchRole(e.target.value)}>
+        <select
+          className="lux-input"
+          value={searchRole}
+          onChange={(e) => setSearchRole(e.target.value)}
+        >
           <option value="">All Roles</option>
           {rolesInThisView.map((r) => (
             <option key={r} value={r}>
@@ -643,7 +732,11 @@ export default function ManageUsers() {
 
           return (
             <div className="lux-group" key={role}>
-              <button type="button" className="lux-group-header" onClick={() => toggleRole(role)}>
+              <button
+                type="button"
+                className="lux-group-header"
+                onClick={() => toggleRole(role)}
+              >
                 <span className="lux-group-role">{displayRole(role)}</span>
                 <span className="lux-group-meta">
                   {roleUsers.length} user{roleUsers.length === 1 ? "" : "s"}
@@ -658,7 +751,9 @@ export default function ManageUsers() {
                       {roleUsers.map((u) => (
                         <div className="mu-mobile-item" key={u.id}>
                           <div className="mu-mobile-main">
-                            <div className="mu-mobile-name-text">{u.full_name || "—"}</div>
+                            <div className="mu-mobile-name-text">
+                              {u.full_name || "—"}
+                            </div>
 
                             <button
                               className="mu-more-icon"
@@ -717,7 +812,9 @@ export default function ManageUsers() {
                             <th>Active</th>
 
                             {cfg.showCanEditCols ? <th>Can Edit</th> : null}
-                            {cfg.showCanEditCols ? <th>Can Change Years</th> : null}
+                            {cfg.showCanEditCols ? (
+                              <th>Can Change Years</th>
+                            ) : null}
 
                             {cfg.showCompanyCol ? <th>Company</th> : null}
                             {cfg.showJobTitleCol ? <th>Job Title</th> : null}
@@ -733,12 +830,26 @@ export default function ManageUsers() {
 
                             return (
                               <tr key={u.id}>
-                                <td className="sticky-col" data-label="Full Name">
+                                <td
+                                  className="sticky-col"
+                                  data-label="Full Name"
+                                >
                                   <input
                                     className="lux-cell-input"
                                     value={u.full_name || ""}
-                                    onChange={(e) => updateUser(u.id, { full_name: e.target.value })}
-                                    onBlur={(e) => onFieldCommit(u.id, "full_name", "Name", e.target.value)}
+                                    onChange={(e) =>
+                                      updateUser(u.id, {
+                                        full_name: e.target.value,
+                                      })
+                                    }
+                                    onBlur={(e) =>
+                                      onFieldCommit(
+                                        u.id,
+                                        "full_name",
+                                        "Name",
+                                        e.target.value
+                                      )
+                                    }
                                   />
                                 </td>
 
@@ -746,8 +857,19 @@ export default function ManageUsers() {
                                   <input
                                     className="lux-cell-input"
                                     value={u.email || ""}
-                                    onChange={(e) => updateUser(u.id, { email: e.target.value })}
-                                    onBlur={(e) => onFieldCommit(u.id, "email", "Email", e.target.value)}
+                                    onChange={(e) =>
+                                      updateUser(u.id, {
+                                        email: e.target.value,
+                                      })
+                                    }
+                                    onBlur={(e) =>
+                                      onFieldCommit(
+                                        u.id,
+                                        "email",
+                                        "Email",
+                                        e.target.value
+                                      )
+                                    }
                                   />
                                 </td>
 
@@ -756,25 +878,42 @@ export default function ManageUsers() {
                                     className="lux-cell-input password-input"
                                     placeholder="New Password"
                                     value={u.passwordDraft || ""}
-                                    onChange={(e) => updateUser(u.id, { passwordDraft: e.target.value })}
+                                    onChange={(e) =>
+                                      updateUser(u.id, {
+                                        passwordDraft: e.target.value,
+                                      })
+                                    }
                                   />
                                 </td>
 
                                 <td data-label="Role">
-                                  <span className="lux-pill">{displayRole(u.role)}</span>
+                                  <span className="lux-pill">
+                                    {displayRole(u.role)}
+                                  </span>
                                 </td>
 
                                 <td data-label="Active">
                                   {adminAlwaysActive ? (
-                                    <input type="checkbox" checked={true} disabled />
+                                    <input
+                                      type="checkbox"
+                                      checked={true}
+                                      disabled
+                                    />
                                   ) : (
                                     <input
                                       type="checkbox"
                                       checked={!!u.is_active}
                                       disabled={!!u.is_superuser}
                                       onChange={(e) => {
-                                        updateUser(u.id, { is_active: e.target.checked });
-                                        onFieldCommit(u.id, "is_active", "Active", e.target.checked);
+                                        updateUser(u.id, {
+                                          is_active: e.target.checked,
+                                        });
+                                        onFieldCommit(
+                                          u.id,
+                                          "is_active",
+                                          "Active",
+                                          e.target.checked
+                                        );
                                       }}
                                     />
                                   )}
@@ -787,8 +926,15 @@ export default function ManageUsers() {
                                         type="checkbox"
                                         checked={!!u.can_edit}
                                         onChange={(e) => {
-                                          updateUser(u.id, { can_edit: e.target.checked });
-                                          onFieldCommit(u.id, "can_edit", "Can Edit", e.target.checked);
+                                          updateUser(u.id, {
+                                            can_edit: e.target.checked,
+                                          });
+                                          onFieldCommit(
+                                            u.id,
+                                            "can_edit",
+                                            "Can Edit",
+                                            e.target.checked
+                                          );
                                         }}
                                       />
                                     ) : (
@@ -804,7 +950,9 @@ export default function ManageUsers() {
                                         type="checkbox"
                                         checked={!!u.can_change_years}
                                         onChange={(e) => {
-                                          updateUser(u.id, { can_change_years: e.target.checked });
+                                          updateUser(u.id, {
+                                            can_change_years: e.target.checked,
+                                          });
                                           onFieldCommit(
                                             u.id,
                                             "can_change_years",
@@ -826,14 +974,22 @@ export default function ManageUsers() {
                                       value={u.company?.name || ""}
                                       onChange={(e) => {
                                         const nextName = e.target.value;
-                                        const companyObj =
-                                          COMPANIES.find((c) => c.name === nextName) || {
-                                            id: "",
-                                            name: nextName,
-                                          };
+                                        const companyObj = COMPANIES.find(
+                                          (c) => c.name === nextName
+                                        ) || {
+                                          id: "",
+                                          name: nextName,
+                                        };
 
-                                        updateUser(u.id, { company: companyObj });
-                                        onFieldCommit(u.id, "companyName", "Company", nextName);
+                                        updateUser(u.id, {
+                                          company: companyObj,
+                                        });
+                                        onFieldCommit(
+                                          u.id,
+                                          "companyName",
+                                          "Company",
+                                          nextName
+                                        );
                                       }}
                                     >
                                       <option value="">Select company</option>
@@ -851,8 +1007,19 @@ export default function ManageUsers() {
                                     <input
                                       className="lux-cell-input"
                                       value={u.job_title || ""}
-                                      onChange={(e) => updateUser(u.id, { job_title: e.target.value })}
-                                      onBlur={(e) => onFieldCommit(u.id, "job_title", "Job Title", e.target.value)}
+                                      onChange={(e) =>
+                                        updateUser(u.id, {
+                                          job_title: e.target.value,
+                                        })
+                                      }
+                                      onBlur={(e) =>
+                                        onFieldCommit(
+                                          u.id,
+                                          "job_title",
+                                          "Job Title",
+                                          e.target.value
+                                        )
+                                      }
                                     />
                                   </td>
                                 ) : null}
