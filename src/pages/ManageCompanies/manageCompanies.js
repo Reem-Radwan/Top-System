@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import "../ManageUsers/ManageUsers.css";
+import { useNavigate } from "react-router-dom";
 import { INITIAL_COMPANIES } from "../../data/fakeManageCompaniesData";
 
 const TYPES = ["Native", "ERP", "Google Sheets"];
@@ -383,6 +384,7 @@ export default function ManageCompanies() {
   const [rows, setRows] = useState(INITIAL_COMPANIES);
   const [query, setQuery] = useState("");
   const [syncing, setSyncing] = useState({});
+  const navigate = useNavigate();
 
   const [config, setConfig] = useState({ open: false, companyId: null });
   const [mobileEdit, setMobileEdit] = useState({ open: false, companyId: null });
@@ -701,10 +703,15 @@ export default function ManageCompanies() {
       <div className="lux-topbar mc-topbar">
         <div className="lux-title">Manage Companies</div>
 
-        <button type="button" className="lux-create-btn mc-create" onClick={() => swalFire({ icon: "info", title: "Create Company (mock)" })}>
-          <i className="fas fa-plus" aria-hidden="true" style={{ marginRight: 8 }}></i>
-          Create Company
-        </button>
+       <button
+        type="button"
+        className="lux-create-btn mc-create"
+        onClick={() => navigate("/create-company")}
+      >
+        <i className="fas fa-plus" aria-hidden="true" style={{ marginRight: 8 }}></i>
+        Create Company
+      </button>
+
       </div>
 
       <div className="lux-filters mc-filters">
