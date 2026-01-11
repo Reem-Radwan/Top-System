@@ -1,0 +1,278 @@
+// export const mockUnits = [
+//   {
+//     unit_code: "U-101",
+//     project: "Sunset Heights",
+//     project_id: 1,
+//     status: "Available",
+//     sales_phasing: "Phase 1",
+//     num_bedrooms: "3",
+//     building_type: "Apartment",
+//     unit_type: "Type A",
+//     unit_model: "Modern",
+//     development_delivery_date: "2026-12-01",
+//     finishing_specs: "Core & Shell",
+//     sellable_area: 150.50,
+//     garden_area: 0,
+//     land_area: 0,
+//     penthouse_area: 0,
+//     roof_terraces_area: 0,
+//     interest_free_unit_price: 5000000,
+//     layout_images: ["https://placehold.co/600x400?text=Layout+1", "https://placehold.co/600x400?text=Layout+2"],
+//     map_focus_code: "LOC_101"
+//   },
+//   {
+//     unit_code: "V-205",
+//     project: "Green Valley",
+//     project_id: 2,
+//     status: "Reserved",
+//     sales_phasing: "Phase 2",
+//     num_bedrooms: "5",
+//     building_type: "Villa",
+//     unit_type: "Standalone",
+//     unit_model: "Classic",
+//     development_delivery_date: "2027-06-01",
+//     finishing_specs: "Finished",
+//     sellable_area: 320.00,
+//     garden_area: 120.00,
+//     land_area: 400.00,
+//     penthouse_area: 0,
+//     roof_terraces_area: 50.00,
+//     interest_free_unit_price: 12500000,
+//     layout_images: [], // No images
+//     map_focus_code: null // Not mapped
+//   },
+//   {
+//     unit_code: "P-302",
+//     project: "Sunset Heights",
+//     project_id: 1,
+//     status: "Available",
+//     sales_phasing: "Phase 1",
+//     num_bedrooms: "4",
+//     building_type: "Penthouse",
+//     unit_type: "Roof Unit",
+//     unit_model: "Modern",
+//     development_delivery_date: "2026-12-01",
+//     finishing_specs: "Semi-Finished",
+//     sellable_area: 210.00,
+//     garden_area: 0,
+//     land_area: 0,
+//     penthouse_area: 45.00,
+//     roof_terraces_area: 80.00,
+//     interest_free_unit_price: 8500000,
+//     layout_images: ["https://placehold.co/600x400?text=Penthouse+View"],
+//     map_focus_code: "LOC_302"
+//   },
+//   {
+//       unit_code: "T-404",
+//       project: "Ocean Breeze",
+//       project_id: 3,
+//       status: "Sold",
+//       sales_phasing: "Phase 3",
+//       num_bedrooms: "2",
+//       building_type: "Chalet",
+//       unit_type: "Ground",
+//       unit_model: "Beach",
+//       development_delivery_date: "2025-08-01",
+//       finishing_specs: "Fully Finished",
+//       sellable_area: 110.00,
+//       garden_area: 50.00,
+//       land_area: 0,
+//       penthouse_area: 0,
+//       roof_terraces_area: 0,
+//       interest_free_unit_price: 4200000,
+//       layout_images: [],
+//       map_focus_code: "LOC_404"
+//   }
+// ];
+
+// // Replicate ~50 more items for pagination testing
+// for (let i = 0; i < 50; i++) {
+//   mockUnits.push({
+//     ...mockUnits[0],
+//     unit_code: `GEN-${i+500}`,
+//     interest_free_unit_price: 5000000 + (i * 1000)
+//   });
+// }
+
+// Define the companies available in the dropdown
+export const mockCompanies = [
+  { id: 1, name: "Sunset Developers (Villas & Gardens)" },
+  { id: 2, name: "Urban Living (Apartments Only)" },
+  { id: 3, name: "Seaside Resorts (Mixed)" },
+];
+
+// Define the units
+// Note: We intentionally leave some fields null/0 for specific companies
+// to demonstrate the "Auto-Hide Empty Columns" feature.
+export const mockUnits = [
+  // --- COMPANY 1: Sunset Developers (Has Gardens, Land, Penthouse) ---
+  {
+    unit_code: "SUN-001",
+    company_id: 1,
+    project: "Golden Hills",
+    project_id: 101,
+    status: "Available",
+    sales_phasing: "Phase 1",
+    num_bedrooms: "4",
+    building_type: "Villa",
+    unit_type: "Standalone",
+    unit_model: "Luxury",
+    development_delivery_date: "2026-06-01",
+    finishing_specs: "Core & Shell",
+    sellable_area: 350.0,
+    garden_area: 150.0, // Has Garden
+    land_area: 500.0, // Has Land
+    penthouse_area: 50.0, // Has Penthouse
+    roof_terraces_area: 80.0,
+    interest_free_unit_price: 15000000,
+    layout_images: ["https://placehold.co/600x400?text=Villa+Layout"],
+    map_focus_code: "LOC_SUN_001",
+  },
+  {
+    unit_code: "SUN-002",
+    company_id: 1,
+    project: "Golden Hills",
+    project_id: 101,
+    status: "Reserved",
+    sales_phasing: "Phase 1",
+    num_bedrooms: "3",
+    building_type: "Townhouse",
+    unit_type: "Corner",
+    unit_model: "Classic",
+    development_delivery_date: "2026-06-01",
+    finishing_specs: "Core & Shell",
+    sellable_area: 280.0,
+    garden_area: 100.0,
+    land_area: 300.0,
+    penthouse_area: 0,
+    roof_terraces_area: 40.0,
+    interest_free_unit_price: 11000000,
+    layout_images: [],
+    map_focus_code: "LOC_SUN_002",
+  },
+
+  // --- COMPANY 2: Urban Living (Apartments ONLY - No Garden/Land) ---
+  // When you select this company, "Garden", "Land", and "Penthouse" columns should disappear.
+  {
+    unit_code: "URB-101",
+    company_id: 2,
+    project: "Skyline Towers",
+    project_id: 201,
+    status: "Available",
+    sales_phasing: "Launch",
+    num_bedrooms: "2",
+    building_type: "Apartment",
+    unit_type: "Typical Floor",
+    unit_model: "Modern",
+    development_delivery_date: "2025-12-01",
+    finishing_specs: "Fully Finished",
+    sellable_area: 120.0,
+    garden_area: 0, // Empty
+    land_area: 0, // Empty
+    penthouse_area: 0, // Empty
+    roof_terraces_area: 0, // Empty
+    interest_free_unit_price: 4500000,
+    layout_images: ["https://placehold.co/600x400?text=Apt+Layout"],
+    map_focus_code: "LOC_URB_101",
+  },
+  {
+    unit_code: "URB-102",
+    company_id: 2,
+    project: "Skyline Towers",
+    project_id: 201,
+    status: "Sold",
+    sales_phasing: "Launch",
+    num_bedrooms: "3",
+    building_type: "Apartment",
+    unit_type: "Typical Floor",
+    unit_model: "Modern",
+    development_delivery_date: "2025-12-01",
+    finishing_specs: "Fully Finished",
+    sellable_area: 160.0,
+    garden_area: 0,
+    land_area: 0,
+    penthouse_area: 0,
+    roof_terraces_area: 0,
+    interest_free_unit_price: 6200000,
+    layout_images: [],
+    map_focus_code: null,
+  },
+
+  // --- COMPANY 3: Seaside Resorts (Mixed) ---
+  {
+    unit_code: "SEA-505",
+    company_id: 3,
+    project: "Blue Lagoon",
+    project_id: 301,
+    status: "Available",
+    sales_phasing: "Phase 2",
+    num_bedrooms: "2",
+    building_type: "Chalet",
+    unit_type: "Ground",
+    unit_model: "Beach House",
+    development_delivery_date: "2027-08-01",
+    finishing_specs: "Finished",
+    sellable_area: 110.0,
+    garden_area: 60.0, // Has Garden
+    land_area: 0,
+    penthouse_area: 0,
+    roof_terraces_area: 0,
+    interest_free_unit_price: 7500000,
+    layout_images: [],
+    map_focus_code: "LOC_SEA_505",
+  },
+];
+
+// --- GENERATE BULK DATA ---
+// We add 100 extra items to Company 1 (Villas) and Company 2 (Apartments)
+// to test pagination and performance.
+
+// Add more Villas to Company 1
+for (let i = 0; i < 50; i++) {
+  mockUnits.push({
+    unit_code: `SUN-GEN-${i + 100}`,
+    company_id: 1,
+    project: i % 2 === 0 ? "Golden Hills" : "Silver Creek",
+    status: i % 5 === 0 ? "Sold" : "Available",
+    sales_phasing: `Phase ${Math.floor(i / 10) + 1}`,
+    num_bedrooms: "4",
+    building_type: "Villa",
+    unit_type: "Standalone",
+    unit_model: "Luxury",
+    development_delivery_date: "2026-12-01",
+    finishing_specs: "Core & Shell",
+    sellable_area: 300 + i * 2,
+    garden_area: 100 + i, // Ensure these have values
+    land_area: 400 + i, // Ensure these have values
+    penthouse_area: 0,
+    roof_terraces_area: 40,
+    interest_free_unit_price: 12000000 + i * 100000,
+    layout_images: [],
+    map_focus_code: null,
+  });
+}
+
+// Add more Apartments to Company 2 (Ensure NO Garden/Land to test hiding)
+for (let i = 0; i < 50; i++) {
+  mockUnits.push({
+    unit_code: `URB-GEN-${i + 100}`,
+    company_id: 2,
+    project: "Metro City",
+    status: "Available",
+    sales_phasing: "Tower A",
+    num_bedrooms: i % 2 === 0 ? "2" : "3",
+    building_type: "Apartment",
+    unit_type: "Flat",
+    unit_model: "Standard",
+    development_delivery_date: "2025-06-01",
+    finishing_specs: "Fully Finished",
+    sellable_area: 100 + i,
+    garden_area: 0, // Explicitly 0
+    land_area: 0, // Explicitly 0
+    penthouse_area: 0, // Explicitly 0
+    roof_terraces_area: 0, // Explicitly 0
+    interest_free_unit_price: 3000000 + i * 50000,
+    layout_images: [],
+    map_focus_code: null,
+  });
+}
