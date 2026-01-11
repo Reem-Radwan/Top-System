@@ -15,7 +15,7 @@ export default function TopHeader({
     () => [
       { label: "Sales", items: [{ label: "Leads", to: "/sales/leads" }, { label: "Opportunities", to: "/sales/opportunities" }] },
       { label: "Approvals", items: [{ label: "Pending", to: "/approvals/pending" }, { label: "Approved", to: "/approvals/approved" }] },
-      { label: "Projects", items: [{ label: "All Projects", to: "/projects" }, { label: "Create Project", to: "/projects/new" }] },
+      { label: "Projects", items: [{ label: "All Projects", to: "/projects" }, { label: "Create Project", to: "/create-project" }] },
       { label: "Inventory", items: [{ label: "Units", to: "/inventory/units" }, { label: "Availability", to: "/inventory/availability" }] },
       { label: "Reports", items: [{ label: "Summary", to: "/reports/summary" }, { label: "Detailed", to: "/reports/detailed" }] },
       { label: "Market Research", items: [{ label: "Dashboard", to: "/market-research" }] },
