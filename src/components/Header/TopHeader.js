@@ -13,7 +13,7 @@ export default function TopHeader({
 
   const menus = useMemo(
     () => [
-      { label: "Sales", items: [{ label: "Leads", to: "/sales/leads" }, { label: "Opportunities", to: "/sales/opportunities" }] },
+      { label: "Sales", items: [{ label: "Leads", to: "/sales/leads" }, { label: "Cataloge", to: "/cataloge" }] },
       { label: "Approvals", items: [{ label: "Pending", to: "/approvals/pending" }, { label: "Approved", to: "/approvals/approved" }] },
       { label: "Projects", items: [{ label: "All Projects", to: "/projects" }, { label: "Create Project", to: "/create-project" }] },
       { label: "Inventory", items: [{ label: "Units", to: "/inventory/units" }, { label: "Availability", to: "/inventory/availability" }] },
