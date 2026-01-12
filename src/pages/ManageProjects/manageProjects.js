@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import "./manageProjects.css";
+import { useNavigate } from "react-router-dom";
+
 
 // ============================================
 // SWEETALERT HELPERS
@@ -28,6 +30,7 @@ const showLoading = (title = "Processing...", text = "Please wait.") => {
     didOpen: () => Swal.showLoading(),
   });
 };
+
 
 const confirmDialog = async ({
   title = "Are you sure?",
@@ -450,59 +453,11 @@ export default function ManageProjects() {
     Toast.fire({ icon: "success", title: "Project deleted" });
   };
 
-  const createProject = async () => {
-    const { value: formValues } = await Swal.fire({
-      title: "Create Project",
-      html: `
-        <input id="cp-name" class="swal2-input" placeholder="Project name" />
-        <select id="cp-company" class="swal2-select" style="width:100%; padding: 12px; border-radius: 10px; border: 1px solid #e5e7eb;">
-          ${companies.map((c) => `<option value="${c.id}">${c.name}</option>`).join("")}
-        </select>
-        <input id="cp-desc" class="swal2-input" placeholder="Description" />
-      `,
-      showCancelButton: true,
-      confirmButtonText: "Create",
-      focusConfirm: false,
-      preConfirm: () => {
-        const name = document.getElementById("cp-name").value.trim();
-        const companyId = Number(document.getElementById("cp-company").value);
-        const description = document.getElementById("cp-desc").value.trim();
-
-        if (!name) {
-          Swal.showValidationMessage("Project name is required");
-          return;
-        }
-        return { name, companyId, description };
-      },
-    });
-
-    if (!formValues) return;
-
-    const company = companies.find((c) => c.id === formValues.companyId);
-    if (!company) {
-      Toast.fire({ icon: "error", title: "Invalid company selected" });
-      return;
-    }
-
-    showLoading("Creating project...", "Please wait.");
-
-    setTimeout(() => {
-      setProjects((prev) => [
-        {
-          id: Date.now(),
-          name: formValues.name,
-          company: { id: company.id, name: company.name },
-          description: formValues.description || "",
-          projectconfiguration: deepClone(prev[0]?.projectconfiguration || mockProjects[0].projectconfiguration),
-          masterplan: null,
-        },
-        ...prev,
-      ]);
-
-      Swal.close();
-      Toast.fire({ icon: "success", title: "Project created successfully" });
-    }, 600);
-  };
+      const navigate = useNavigate();
+      const createProject = () => {
+      navigate("/create-project");
+    };
+    
 
   return (
     <div className="mp-page">
@@ -519,6 +474,7 @@ export default function ManageProjects() {
           <button className="mp-btn mp-btnSuccess" onClick={createProject}>
             + Create Project
           </button>
+
         </div>
 
         {/* Table Card */}
