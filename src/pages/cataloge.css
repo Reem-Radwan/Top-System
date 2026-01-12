@@ -123,7 +123,7 @@ body {
 .modern-table tbody td:first-child {
   position: sticky;
   left: 0;
-  /* background-color: #fdf2e9; */
+  background-color: white;
   z-index: 90;
   border-right: 2px solid #fbbf24;
   text-align: left;

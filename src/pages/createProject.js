@@ -340,7 +340,7 @@ export default function CreateProjectApp() {
                 />
               </div>
               
-              <div className="form-field-group">
+              {/* <div className="form-field-group">
                 <label>Hours Until Auto Unblock  </label>
                 <input 
                   type="number" 
@@ -348,7 +348,7 @@ export default function CreateProjectApp() {
                   onChange={(e) => setConfigData({...configData, variable_delivery_date: e.target.value})} 
                   placeholder="Enter value" 
                 />
-              </div>
+              </div> */}
               
               <div className="form-field-group">
                 <label>Max Requests per Sales</label>
@@ -387,7 +387,7 @@ export default function CreateProjectApp() {
                 </select>
               </div>
               
-              <div className="form-field-group">
+              <div className="form-field-group special-form">
                 <label className="checkbox-label">
                   <input 
                     type="checkbox" 
