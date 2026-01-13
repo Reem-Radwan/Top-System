@@ -340,6 +340,7 @@ const mockProjects = [...baseProjects, ...extraProjects];
 // ============================================
 // MAIN COMPONENT
 // ============================================
+
 export default function ManageProjects() {
   const navigate = useNavigate();
 
@@ -1134,90 +1135,6 @@ export default function ManageProjects() {
                               digits={2}
                               value={editedData.projectconfiguration.constraints.dp_min}
                               onChange={(v) => updateField("projectconfiguration.constraints.dp_min", v)}
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + First Pmt (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={editedData.projectconfiguration.constraints.dp_plus_first_pmt}
-                              onChange={(v) => updateField("projectconfiguration.constraints.dp_plus_first_pmt", v)}
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + First + Second (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={editedData.projectconfiguration.constraints.dp_plus_first_plus_second_pmt}
-                              onChange={(v) =>
-                                updateField("projectconfiguration.constraints.dp_plus_first_plus_second_pmt", v)
-                              }
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + First + Second + Third (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={editedData.projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt}
-                              onChange={(v) =>
-                                updateField("projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt", v)
-                              }
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + First + Second + Third + Forth (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={
-                                editedData.projectconfiguration.constraints
-                                  .dp_plus_first_plus_second_plus_third_plus_forth_pmt
-                              }
-                              onChange={(v) =>
-                                updateField(
-                                  "projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_plus_forth_pmt",
-                                  v
-                                )
-                              }
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>First Year Min (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={editedData.projectconfiguration.constraints.first_year_min}
-                              onChange={(v) => updateField("projectconfiguration.constraints.first_year_min", v)}
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>Annual Min (%)</th>
-                          <td>
-                            <PercentInput
-                              className="mp-input"
-                              digits={2}
-                              value={editedData.projectconfiguration.constraints.annual_min}
-                              onChange={(v) => updateField("projectconfiguration.constraints.annual_min", v)}
                             />
                           </td>
                         </tr>
