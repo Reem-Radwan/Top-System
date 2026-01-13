@@ -77,7 +77,8 @@ function PercentInput({ value, onChange, digits = 2, className, ...props }) {
     <input
       ref={ref}
       type="text"
-      inputMode="decimal"
+      inputMode="numeric"
+      pattern="[0-9]*" 
       className={className}
       value={text}
       onChange={(e) => {

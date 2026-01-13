@@ -215,7 +215,6 @@ export default function CreateProjectApp() {
       });
     }, 1500);
   };
-
   
   return (
     <div className="min-h-screen">
@@ -397,7 +396,7 @@ export default function CreateProjectApp() {
               <table className="dynamic-table">
                 <thead>
                   <tr>
-                    <th>Years till Delivery</th>
+                    <th>YTD</th>
                     <th>NPV Value</th>
                     <th>Action</th>
                   </tr>
@@ -424,7 +423,7 @@ export default function CreateProjectApp() {
                             }
                             handleTableRowChange(setBaseNPVRows, i, 'term_period', e.target.value, baseNPVRows);
                           }} 
-                          placeholder="Years till Delivery" 
+                          placeholder="YTD" 
                         />
                       </td>
                       <td>
@@ -535,7 +534,7 @@ export default function CreateProjectApp() {
             <table className="dynamic-table">
               <thead>
                 <tr>
-                  <th>Years till Delivery</th>
+                  <th>YTD</th>
                   <th>CTD Value</th>
                   <th>Action</th>
                 </tr>
@@ -562,7 +561,7 @@ export default function CreateProjectApp() {
                           }
                           handleTableRowChange(setCTDRows, i, 'term_period', e.target.value, ctdRows);
                         }} 
-                        placeholder="Years till Delivery" 
+                        placeholder="YTD" 
                       />
                     </td>
                     <td>
@@ -642,7 +641,7 @@ export default function CreateProjectApp() {
                 <table className="dynamic-table">
                   <thead>
                     <tr>
-                      <th>Years till Delivery</th>
+                      <th>YTD</th>
                       <th>Fee Amount</th>
                       <th>Action</th>
                     </tr>
@@ -669,7 +668,7 @@ export default function CreateProjectApp() {
                               }
                               handleTableRowChange(setGasPolicyFeesRows, i, 'term_period', e.target.value, gasPolicyFeesRows);
                             }} 
-                            placeholder="Years till Delivery" 
+                            placeholder="YTD" 
                           />
                         </td>
                         <td>
@@ -703,7 +702,7 @@ export default function CreateProjectApp() {
                 <table className="dynamic-table">
                   <thead>
                     <tr>
-                      <th>Years till Delivery</th>
+                      <th>YTD</th>
                       <th>Offsets</th>
                       <th>Action</th>
                     </tr>
@@ -730,7 +729,7 @@ export default function CreateProjectApp() {
                               }
                               handleTableRowChange(setGasOffsetsRows, i, 'term_period', e.target.value, gasOffsetsRows);
                             }} 
-                            placeholder="Years till Delivery" 
+                            placeholder="YTD" 
                           />
                         </td>
                         <td>
@@ -809,7 +808,7 @@ export default function CreateProjectApp() {
                 <table className="dynamic-table">
                   <thead>
                     <tr>
-                      <th>Years till Delivery</th>
+                      <th>YTD</th>
                       <th>Scheduling</th>
                       <th>Action</th>
                     </tr>
@@ -836,7 +835,7 @@ export default function CreateProjectApp() {
                               }
                               handleTableRowChange(setMaintenanceSchedulingRows, i, 'term_period', e.target.value, maintenanceSchedulingRows);
                             }} 
-                            placeholder="Years till Delivery" 
+                            placeholder="YTD" 
                           />
                         </td>
                         <td>
@@ -871,7 +870,7 @@ export default function CreateProjectApp() {
                 <table className="dynamic-table">
                   <thead>
                     <tr>
-                      <th>Years till Delivery</th>
+                      <th>YTD</th>
                       <th>Offsets</th>
                       <th>Action</th>
                     </tr>
@@ -898,12 +897,12 @@ export default function CreateProjectApp() {
                               }
                               handleTableRowChange(setMaintenanceOffsetsRows, i, 'term_period', e.target.value, maintenanceOffsetsRows);
                             }} 
-                            placeholder="Years till Delivery" 
+                            placeholder="YTD"
                           />
                         </td>
                         <td>
                           <input 
-                            type="number" 
+                            type= "number"
                             step="0.0001" 
                             value={row.offset_value} 
                             onChange={(e) => handleTableRowChange(setMaintenanceOffsetsRows, i, 'offset_value', e.target.value, maintenanceOffsetsRows)} 
