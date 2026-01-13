@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import "./manageProjects.css";
 import { useNavigate } from "react-router-dom";
-
 
 // ============================================
 // SWEETALERT HELPERS
@@ -31,7 +30,6 @@ const showLoading = (title = "Processing...", text = "Please wait.") => {
   });
 };
 
-
 const confirmDialog = async ({
   title = "Are you sure?",
   text = "",
@@ -51,6 +49,66 @@ const confirmDialog = async ({
   });
   return result.isConfirmed;
 };
+
+// ============================================
+// INPUT HELPERS (allow empty -> null)
+// ============================================
+const numOrEmpty = (v) => (v === null || v === undefined ? "" : v);
+const toIntOrNull = (s) => (s === "" ? null : parseInt(s, 10));
+const toFloatOrNull = (s) => (s === "" ? null : parseFloat(s));
+
+// ============================================
+// Percent Input (allows deleting digit-by-digit)
+// value is stored as decimal (e.g. 0.15) but user types percent (e.g. 15)
+// ============================================
+function PercentInput({ value, onChange, digits = 2, className, ...props }) {
+  const ref = useRef(null);
+  const [text, setText] = useState(value === null || value === undefined ? "" : String(value * 100));
+
+  useEffect(() => {
+    const isFocused = document.activeElement === ref.current;
+    if (isFocused) return;
+    setText(value === null || value === undefined ? "" : String(value * 100));
+  }, [value]);
+
+  const isValidPercentText = (t) => /^-?\d*\.?\d*$/.test(t);
+
+  return (
+    <input
+      ref={ref}
+      type="text"
+      inputMode="decimal"
+      className={className}
+      value={text}
+      onChange={(e) => {
+        const t = e.target.value;
+
+        if (t === "") {
+          setText("");
+          onChange(null);
+          return;
+        }
+
+        if (!isValidPercentText(t)) return;
+
+        setText(t);
+
+        const n = parseFloat(t);
+        if (!Number.isNaN(n)) onChange(n / 100);
+      }}
+      onBlur={() => {
+        if (text === "") return;
+
+        const n = parseFloat(text);
+        if (Number.isNaN(n)) return;
+
+        if (text.includes(".")) setText(n.toFixed(digits));
+        else setText(String(n));
+      }}
+      {...props}
+    />
+  );
+}
 
 // ============================================
 // MOCK DATA
@@ -130,9 +188,7 @@ const baseProjects = [
         ],
       },
     },
-    masterplan: {
-      image: "https://via.placeholder.com/400x300?text=Masterplan+1",
-    },
+    masterplan: { image: "https://via.placeholder.com/400x300?text=Masterplan+1" },
   },
 
   {
@@ -240,9 +296,7 @@ const baseProjects = [
         ctd_values: [{ id: 6, term_period: 1, npv_value: 0.32 }],
       },
     },
-    masterplan: {
-      image: "https://via.placeholder.com/400x300?text=Masterplan+3",
-    },
+    masterplan: { image: "https://via.placeholder.com/400x300?text=Masterplan+3" },
   },
 ];
 
@@ -287,6 +341,8 @@ const mockProjects = [...baseProjects, ...extraProjects];
 // MAIN COMPONENT
 // ============================================
 export default function ManageProjects() {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState(mockProjects);
   const [companies] = useState(mockCompanies);
 
@@ -299,7 +355,7 @@ export default function ManageProjects() {
   const [masterplanPreview, setMasterplanPreview] = useState(null);
   const [newMasterplanFile, setNewMasterplanFile] = useState(null);
 
-  const canDelete = true; // Simulate permissions
+  const canDelete = true;
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
@@ -453,16 +509,13 @@ export default function ManageProjects() {
     Toast.fire({ icon: "success", title: "Project deleted" });
   };
 
-      const navigate = useNavigate();
-      const createProject = () => {
-      navigate("/create-project");
-    };
-    
+  const createProject = () => {
+    navigate("/create-project");
+  };
 
   return (
     <div className="mp-page">
       <div className="mp-shell">
-        {/* Top Header */}
         <div className="mp-topBar">
           <div className="mp-topBarLeft">
             <div className="mp-pageIcon" aria-hidden="true" />
@@ -474,10 +527,8 @@ export default function ManageProjects() {
           <button className="mp-btn mp-btnSuccess" onClick={createProject}>
             + Create Project
           </button>
-
         </div>
 
-        {/* Table Card */}
         <div className="mp-card">
           <div className="mp-filters">
             <input
@@ -541,7 +592,6 @@ export default function ManageProjects() {
           </div>
         </div>
 
-        {/* Edit Modal */}
         {showEditModal && editedData && (
           <div className="mp-modalOverlay" onClick={closeEditModal}>
             <div className="mp-modal" onClick={(e) => e.stopPropagation()}>
@@ -586,16 +636,11 @@ export default function ManageProjects() {
                         <tr>
                           <th>Interest Rate (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.interest_rate * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.interest_rate",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
-                              }
+                              digits={2}
+                              value={editedData.projectconfiguration.interest_rate}
+                              onChange={(v) => updateField("projectconfiguration.interest_rate", v)}
                             />
                           </td>
                         </tr>
@@ -603,13 +648,11 @@ export default function ManageProjects() {
                         <tr>
                           <th>Base DP (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.base_dp * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField("projectconfiguration.base_dp", (parseFloat(e.target.value) || 0) / 100)
-                              }
+                              digits={2}
+                              value={editedData.projectconfiguration.base_dp}
+                              onChange={(v) => updateField("projectconfiguration.base_dp", v)}
                             />
                           </td>
                         </tr>
@@ -620,12 +663,9 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.base_tenor_years}
+                              value={numOrEmpty(editedData.projectconfiguration.base_tenor_years)}
                               onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.base_tenor_years",
-                                  parseInt(e.target.value, 10) || 0
-                                )
+                                updateField("projectconfiguration.base_tenor_years", toIntOrNull(e.target.value))
                               }
                             />
                           </td>
@@ -637,12 +677,9 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.max_tenor_years}
+                              value={numOrEmpty(editedData.projectconfiguration.max_tenor_years)}
                               onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.max_tenor_years",
-                                  parseInt(e.target.value, 10) || 0
-                                )
+                                updateField("projectconfiguration.max_tenor_years", toIntOrNull(e.target.value))
                               }
                             />
                           </td>
@@ -654,11 +691,11 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.maximum_requests_per_sales ?? ""}
+                              value={numOrEmpty(editedData.projectconfiguration.maximum_requests_per_sales)}
                               onChange={(e) =>
                                 updateField(
                                   "projectconfiguration.maximum_requests_per_sales",
-                                  e.target.value === "" ? null : parseInt(e.target.value, 10) || 0
+                                  toIntOrNull(e.target.value)
                                 )
                               }
                             />
@@ -671,12 +708,9 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.days_until_unblocking}
+                              value={numOrEmpty(editedData.projectconfiguration.days_until_unblocking)}
                               onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.days_until_unblocking",
-                                  parseInt(e.target.value, 10) || 0
-                                )
+                                updateField("projectconfiguration.days_until_unblocking", toIntOrNull(e.target.value))
                               }
                             />
                           </td>
@@ -688,11 +722,11 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.variable_delivery_date}
+                              value={numOrEmpty(editedData.projectconfiguration.variable_delivery_date)}
                               onChange={(e) =>
                                 updateField(
                                   "projectconfiguration.variable_delivery_date",
-                                  parseInt(e.target.value, 10) || 0
+                                  toIntOrNull(e.target.value)
                                 )
                               }
                             />
@@ -704,8 +738,10 @@ export default function ManageProjects() {
                           <td>
                             <select
                               className="mp-select"
-                              value={editedData.projectconfiguration.base_payment_frequency}
-                              onChange={(e) => updateField("projectconfiguration.base_payment_frequency", e.target.value)}
+                              value={editedData.projectconfiguration.base_payment_frequency || ""}
+                              onChange={(e) =>
+                                updateField("projectconfiguration.base_payment_frequency", e.target.value)
+                              }
                             >
                               <option value="monthly">Monthly</option>
                               <option value="quarterly">Quarterly</option>
@@ -720,7 +756,7 @@ export default function ManageProjects() {
                           <td>
                             <select
                               className="mp-select"
-                              value={editedData.projectconfiguration.default_scheme}
+                              value={editedData.projectconfiguration.default_scheme || ""}
                               onChange={(e) => updateField("projectconfiguration.default_scheme", e.target.value)}
                             >
                               <option value="Flat">Flat</option>
@@ -737,9 +773,7 @@ export default function ManageProjects() {
                             <input
                               type="checkbox"
                               checked={!!editedData.projectconfiguration.use_static_base_npv}
-                              onChange={(e) =>
-                                updateField("projectconfiguration.use_static_base_npv", e.target.checked)
-                              }
+                              onChange={(e) => updateField("projectconfiguration.use_static_base_npv", e.target.checked)}
                             />
                           </td>
                         </tr>
@@ -769,32 +803,29 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.basenpv_set",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
+
                             <td>
-                              <input
+                              <PercentInput
                                 className="mp-input"
-                                type="number"
-                                value={(item.npv_value * 100).toFixed(2)}
-                                onChange={(e) =>
-                                  updateTableItem(
-                                    "projectconfiguration.basenpv_set",
-                                    item.id,
-                                    "npv_value",
-                                    (parseFloat(e.target.value) || 0) / 100
-                                  )
+                                digits={2}
+                                value={item.npv_value}
+                                onChange={(v) =>
+                                  updateTableItem("projectconfiguration.basenpv_set", item.id, "npv_value", v)
                                 }
                               />
                             </td>
+
                             <td>
                               <button
                                 className="mp-btn mp-btnDanger"
@@ -812,7 +843,7 @@ export default function ManageProjects() {
                   <button
                     className="mp-btn mp-btnPrimary"
                     style={{ marginTop: 10 }}
-                    onClick={() => addRow("projectconfiguration.basenpv_set", { term_period: 0, npv_value: 0 })}
+                    onClick={() => addRow("projectconfiguration.basenpv_set", { term_period: null, npv_value: null })}
                   >
                     Add Row
                   </button>
@@ -831,7 +862,9 @@ export default function ManageProjects() {
                             <input
                               type="checkbox"
                               checked={!!editedData.projectconfiguration.gaspolicy.is_applied}
-                              onChange={(e) => updateField("projectconfiguration.gaspolicy.is_applied", e.target.checked)}
+                              onChange={(e) =>
+                                updateField("projectconfiguration.gaspolicy.is_applied", e.target.checked)
+                              }
                             />
                           </td>
                         </tr>
@@ -842,12 +875,9 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.gaspolicy.gas_num_pmts}
+                              value={numOrEmpty(editedData.projectconfiguration.gaspolicy.gas_num_pmts)}
                               onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.gaspolicy.gas_num_pmts",
-                                  parseInt(e.target.value, 10) || 0
-                                )
+                                updateField("projectconfiguration.gaspolicy.gas_num_pmts", toIntOrNull(e.target.value))
                               }
                             />
                           </td>
@@ -858,7 +888,7 @@ export default function ManageProjects() {
                           <td>
                             <select
                               className="mp-select"
-                              value={editedData.projectconfiguration.gaspolicy.scheduling}
+                              value={editedData.projectconfiguration.gaspolicy.scheduling || ""}
                               onChange={(e) => updateField("projectconfiguration.gaspolicy.scheduling", e.target.value)}
                             >
                               <option value="at_delivery">At Delivery</option>
@@ -892,32 +922,34 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.gaspolicy.gaspolicyfees_set",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
+
                             <td>
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.fee_amount}
+                                value={numOrEmpty(item.fee_amount)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.gaspolicy.gaspolicyfees_set",
                                     item.id,
                                     "fee_amount",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
+
                             <td>
                               <button
                                 className="mp-btn mp-btnDanger"
@@ -936,7 +968,10 @@ export default function ManageProjects() {
                     className="mp-btn mp-btnPrimary"
                     style={{ marginTop: 10 }}
                     onClick={() =>
-                      addRow("projectconfiguration.gaspolicy.gaspolicyfees_set", { term_period: 0, fee_amount: 0 })
+                      addRow("projectconfiguration.gaspolicy.gaspolicyfees_set", {
+                        term_period: null,
+                        fee_amount: null,
+                      })
                     }
                   >
                     Add Row
@@ -952,7 +987,7 @@ export default function ManageProjects() {
                       <thead>
                         <tr>
                           <th>YTD</th>
-                          <th>Offset</th>
+                          <th>Offset (%)</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -964,32 +999,29 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.gaspolicy.gaspolicyoffsets_set",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
+
                             <td>
-                              <input
+                              <PercentInput
                                 className="mp-input"
-                                type="number"
+                                digits={5}
                                 value={item.offset_value}
-                                onChange={(e) =>
-                                  updateTableItem(
-                                    "projectconfiguration.gaspolicy.gaspolicyoffsets_set",
-                                    item.id,
-                                    "offset_value",
-                                    parseFloat(e.target.value) || 0
-                                  )
+                                onChange={(v) =>
+                                  updateTableItem("projectconfiguration.gaspolicy.gaspolicyoffsets_set", item.id, "offset_value", v)
                                 }
                               />
                             </td>
+
                             <td>
                               <button
                                 className="mp-btn mp-btnDanger"
@@ -1008,7 +1040,10 @@ export default function ManageProjects() {
                     className="mp-btn mp-btnPrimary"
                     style={{ marginTop: 10 }}
                     onClick={() =>
-                      addRow("projectconfiguration.gaspolicy.gaspolicyoffsets_set", { term_period: 0, offset_value: 0 })
+                      addRow("projectconfiguration.gaspolicy.gaspolicyoffsets_set", {
+                        term_period: null,
+                        offset_value: null,
+                      })
                     }
                   >
                     Add Row
@@ -1036,32 +1071,29 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.constraints.ctd_values",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
+
                             <td>
-                              <input
+                              <PercentInput
                                 className="mp-input"
-                                type="number"
-                                value={(item.npv_value * 100).toFixed(5)}
-                                onChange={(e) =>
-                                  updateTableItem(
-                                    "projectconfiguration.constraints.ctd_values",
-                                    item.id,
-                                    "npv_value",
-                                    (parseFloat(e.target.value) || 0) / 100
-                                  )
+                                digits={5}
+                                value={item.npv_value}
+                                onChange={(v) =>
+                                  updateTableItem("projectconfiguration.constraints.ctd_values", item.id, "npv_value", v)
                                 }
                               />
                             </td>
+
                             <td>
                               <button
                                 className="mp-btn mp-btnDanger"
@@ -1079,7 +1111,9 @@ export default function ManageProjects() {
                   <button
                     className="mp-btn mp-btnPrimary"
                     style={{ marginTop: 10 }}
-                    onClick={() => addRow("projectconfiguration.constraints.ctd_values", { term_period: 0, npv_value: 0 })}
+                    onClick={() =>
+                      addRow("projectconfiguration.constraints.ctd_values", { term_period: null, npv_value: null })
+                    }
                   >
                     Add Row
                   </button>
@@ -1095,79 +1129,69 @@ export default function ManageProjects() {
                         <tr>
                           <th>DP Min (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.dp_min * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField("projectconfiguration.constraints.dp_min", (parseFloat(e.target.value) || 0) / 100)
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.dp_min}
+                              onChange={(v) => updateField("projectconfiguration.constraints.dp_min", v)}
+                            />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <th>DP + First Pmt (%)</th>
+                          <td>
+                            <PercentInput
+                              className="mp-input"
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.dp_plus_first_pmt}
+                              onChange={(v) => updateField("projectconfiguration.constraints.dp_plus_first_pmt", v)}
+                            />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <th>DP + First + Second (%)</th>
+                          <td>
+                            <PercentInput
+                              className="mp-input"
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.dp_plus_first_plus_second_pmt}
+                              onChange={(v) =>
+                                updateField("projectconfiguration.constraints.dp_plus_first_plus_second_pmt", v)
                               }
                             />
                           </td>
                         </tr>
 
                         <tr>
-                          <th>DP + 1st Pmt (%)</th>
+                          <th>DP + First + Second + Third (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.dp_plus_first_pmt * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.dp_plus_first_pmt",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt}
+                              onChange={(v) =>
+                                updateField("projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt", v)
                               }
                             />
                           </td>
                         </tr>
 
                         <tr>
-                          <th>DP + 1st + 2nd Pmt (%)</th>
+                          <th>DP + First + Second + Third + Forth (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.dp_plus_first_plus_second_pmt * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.dp_plus_first_plus_second_pmt",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
+                              digits={2}
+                              value={
+                                editedData.projectconfiguration.constraints
+                                  .dp_plus_first_plus_second_plus_third_plus_forth_pmt
                               }
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + 1st + 2nd + 3rd Pmt (%)</th>
-                          <td>
-                            <input
-                              className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_pmt",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
-                              }
-                            />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th>DP + 1st + 2nd + 3rd + 4th Pmt (%)</th>
-                          <td>
-                            <input
-                              className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_plus_forth_pmt * 100).toFixed(2)}
-                              onChange={(e) =>
+                              onChange={(v) =>
                                 updateField(
                                   "projectconfiguration.constraints.dp_plus_first_plus_second_plus_third_plus_forth_pmt",
-                                  (parseFloat(e.target.value) || 0) / 100
+                                  v
                                 )
                               }
                             />
@@ -1177,16 +1201,11 @@ export default function ManageProjects() {
                         <tr>
                           <th>First Year Min (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.first_year_min * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.first_year_min",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
-                              }
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.first_year_min}
+                              onChange={(v) => updateField("projectconfiguration.constraints.first_year_min", v)}
                             />
                           </td>
                         </tr>
@@ -1194,16 +1213,11 @@ export default function ManageProjects() {
                         <tr>
                           <th>Annual Min (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.annual_min * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.annual_min",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
-                              }
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.annual_min}
+                              onChange={(v) => updateField("projectconfiguration.constraints.annual_min", v)}
                             />
                           </td>
                         </tr>
@@ -1211,16 +1225,11 @@ export default function ManageProjects() {
                         <tr>
                           <th>Max Discount (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.max_discount * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.max_discount",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
-                              }
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.max_discount}
+                              onChange={(v) => updateField("projectconfiguration.constraints.max_discount", v)}
                             />
                           </td>
                         </tr>
@@ -1228,15 +1237,12 @@ export default function ManageProjects() {
                         <tr>
                           <th>Max Exception Discount (%)</th>
                           <td>
-                            <input
+                            <PercentInput
                               className="mp-input"
-                              type="number"
-                              value={(editedData.projectconfiguration.constraints.max_exception_discount * 100).toFixed(2)}
-                              onChange={(e) =>
-                                updateField(
-                                  "projectconfiguration.constraints.max_exception_discount",
-                                  (parseFloat(e.target.value) || 0) / 100
-                                )
+                              digits={2}
+                              value={editedData.projectconfiguration.constraints.max_exception_discount}
+                              onChange={(v) =>
+                                updateField("projectconfiguration.constraints.max_exception_discount", v)
                               }
                             />
                           </td>
@@ -1246,7 +1252,7 @@ export default function ManageProjects() {
                   </div>
                 </div>
 
-                                {/* Maintenance Policy */}
+                {/* Maintenance Policy */}
                 <div className="mp-card" style={{ marginBottom: 14 }}>
                   <h3 style={{ marginTop: 0 }}>Maintenance Policy</h3>
 
@@ -1272,11 +1278,11 @@ export default function ManageProjects() {
                             <input
                               className="mp-input"
                               type="number"
-                              value={editedData.projectconfiguration.maintenancepolicy.maintenance_num_pmts}
+                              value={numOrEmpty(editedData.projectconfiguration.maintenancepolicy.maintenance_num_pmts)}
                               onChange={(e) =>
                                 updateField(
                                   "projectconfiguration.maintenancepolicy.maintenance_num_pmts",
-                                  parseInt(e.target.value, 10) || 0
+                                  toIntOrNull(e.target.value)
                                 )
                               }
                             />
@@ -1324,13 +1330,13 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.maintenancepolicy.maintenancepolicyscheduling_set",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
@@ -1339,7 +1345,7 @@ export default function ManageProjects() {
                             <td>
                               <select
                                 className="mp-select"
-                                value={item.scheduling}
+                                value={item.scheduling || ""}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.maintenancepolicy.maintenancepolicyscheduling_set",
@@ -1358,10 +1364,7 @@ export default function ManageProjects() {
                               <button
                                 className="mp-btn mp-btnDanger"
                                 onClick={() =>
-                                  removeRow(
-                                    "projectconfiguration.maintenancepolicy.maintenancepolicyscheduling_set",
-                                    item.id
-                                  )
+                                  removeRow("projectconfiguration.maintenancepolicy.maintenancepolicyscheduling_set", item.id)
                                 }
                               >
                                 Remove
@@ -1378,7 +1381,7 @@ export default function ManageProjects() {
                     style={{ marginTop: 10 }}
                     onClick={() =>
                       addRow("projectconfiguration.maintenancepolicy.maintenancepolicyscheduling_set", {
-                        term_period: 0,
+                        term_period: null,
                         scheduling: "at_delivery",
                       })
                     }
@@ -1396,7 +1399,7 @@ export default function ManageProjects() {
                       <thead>
                         <tr>
                           <th>YTD</th>
-                          <th>Offset</th>
+                          <th>Offset (%)</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -1408,29 +1411,29 @@ export default function ManageProjects() {
                               <input
                                 className="mp-input"
                                 type="number"
-                                value={item.term_period}
+                                value={numOrEmpty(item.term_period)}
                                 onChange={(e) =>
                                   updateTableItem(
                                     "projectconfiguration.maintenancepolicy.maintenancepolicyoffsets_set",
                                     item.id,
                                     "term_period",
-                                    parseFloat(e.target.value) || 0
+                                    toFloatOrNull(e.target.value)
                                   )
                                 }
                               />
                             </td>
 
                             <td>
-                              <input
+                              <PercentInput
                                 className="mp-input"
-                                type="number"
+                                digits={5}
                                 value={item.offset_value}
-                                onChange={(e) =>
+                                onChange={(v) =>
                                   updateTableItem(
                                     "projectconfiguration.maintenancepolicy.maintenancepolicyoffsets_set",
                                     item.id,
                                     "offset_value",
-                                    parseFloat(e.target.value) || 0
+                                    v
                                   )
                                 }
                               />
@@ -1440,10 +1443,7 @@ export default function ManageProjects() {
                               <button
                                 className="mp-btn mp-btnDanger"
                                 onClick={() =>
-                                  removeRow(
-                                    "projectconfiguration.maintenancepolicy.maintenancepolicyoffsets_set",
-                                    item.id
-                                  )
+                                  removeRow("projectconfiguration.maintenancepolicy.maintenancepolicyoffsets_set", item.id)
                                 }
                               >
                                 Remove
@@ -1460,8 +1460,8 @@ export default function ManageProjects() {
                     style={{ marginTop: 10 }}
                     onClick={() =>
                       addRow("projectconfiguration.maintenancepolicy.maintenancepolicyoffsets_set", {
-                        term_period: 0,
-                        offset_value: 0,
+                        term_period: null,
+                        offset_value: null,
                       })
                     }
                   >
@@ -1527,7 +1527,6 @@ export default function ManageProjects() {
                   )}
                 </div>
 
-                {/* Actions */}
                 <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
                   <button className="mp-btn mp-btnGhost" onClick={closeEditModal}>
                     Cancel
@@ -1544,4 +1543,3 @@ export default function ManageProjects() {
     </div>
   );
 }
-

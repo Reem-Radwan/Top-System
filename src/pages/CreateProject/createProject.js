@@ -286,37 +286,35 @@ export default function CreateProjectApp() {
             <h2>Project Configuration</h2>
             <div className="form-fields-horizontal">
               <div className="form-field-group">
-                <label className="required">Interest Rate (%)</label>
+                <label >Interest Rate (%)</label>
                 <input 
                   type="number" 
                   step="0.00001" 
                   value={configData.interest_rate} 
                   onChange={(e) => setConfigData({...configData, interest_rate: e.target.value})} 
                   placeholder="0.00000" 
-                  required 
                 />
               </div>
               
               <div className="form-field-group">
-                <label className="required">Down Payment</label>
+                <label>Down Payment</label>
                 <input 
                   type="number" 
                   step="0.00001" 
                   value={configData.base_dp} 
                   onChange={(e) => setConfigData({...configData, base_dp: e.target.value})} 
                   placeholder="0.00000" 
-                  required 
                 />
               </div>
               
               <div className="form-field-group">
-                <label className="required">Base Tenor Years</label>
+                <label >Base Tenor Years</label>
                 <input 
                   type="number" 
                   value={configData.base_tenor_years} 
                   onChange={(e) => setConfigData({...configData, base_tenor_years: e.target.value})} 
                   placeholder="Enter years" 
-                  required 
+    
                 />
               </div>
               
@@ -340,15 +338,7 @@ export default function CreateProjectApp() {
                 />
               </div>
               
-              {/* <div className="form-field-group">
-                <label>Hours Until Auto Unblock  </label>
-                <input 
-                  type="number" 
-                  value={configData.variable_delivery_date} 
-                  onChange={(e) => setConfigData({...configData, variable_delivery_date: e.target.value})} 
-                  placeholder="Enter value" 
-                />
-              </div> */}
+              
               
               <div className="form-field-group">
                 <label>Max Requests per Sales</label>
@@ -361,7 +351,7 @@ export default function CreateProjectApp() {
               </div>
               
               <div className="form-field-group">
-                <label className="required">Default Scheme</label>
+                <label>Default Scheme</label>
                 <select 
                   className="default-scheme" 
                   value={configData.default_scheme} 
@@ -374,12 +364,11 @@ export default function CreateProjectApp() {
               </div>
               
               <div className="form-field-group">
-                <label className="required">Payment Frequency</label>
+                <label >Payment Frequency</label>
                 <select 
                   className="payment-freq" 
                   value={configData.base_payment_frequency} 
                   onChange={(e) => setConfigData({...configData, base_payment_frequency: e.target.value})} 
-                  required
                 >
                   {paymentFrequencyChoices.map(f => (
                     <option key={f.value} value={f.value}>{f.label}</option>
@@ -479,72 +468,6 @@ export default function CreateProjectApp() {
                   placeholder="0.00000" 
                 />
               </div>
-              
-              {/* <div className="form-field-group">
-                <label>DP + First PMT (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.dp_plus_first_pmt} 
-                  onChange={(e) => setConstraintsData({...constraintsData, dp_plus_first_pmt: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div>
-              
-              <div className="form-field-group">
-                <label>DP + 1st + 2nd PMT (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.dp_plus_first_plus_second_pmt} 
-                  onChange={(e) => setConstraintsData({...constraintsData, dp_plus_first_plus_second_pmt: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div>
-              
-              <div className="form-field-group">
-                <label>DP + 1st + 2nd + 3rd (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.dp_plus_first_plus_second_plus_third_pmt} 
-                  onChange={(e) => setConstraintsData({...constraintsData, dp_plus_first_plus_second_plus_third_pmt: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div>
-              
-              <div className="form-field-group">
-                <label>DP + 1st + 2nd + 3rd + 4th (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.dp_plus_first_plus_second_plus_third_plus_forth_pmt} 
-                  onChange={(e) => setConstraintsData({...constraintsData, dp_plus_first_plus_second_plus_third_plus_forth_pmt: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div>
-              
-              <div className="form-field-group">
-                <label>First Year Min (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.first_year_min} 
-                  onChange={(e) => setConstraintsData({...constraintsData, first_year_min: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div>
-              
-              <div className="form-field-group">
-                <label>Annual Min (%)</label>
-                <input 
-                  type="number" 
-                  step="0.00001" 
-                  value={constraintsData.annual_min} 
-                  onChange={(e) => setConstraintsData({...constraintsData, annual_min: e.target.value})} 
-                  placeholder="0.00000" 
-                />
-              </div> */}
               
               <div className="form-field-group">
                 <label>Max Discount (%)</label>
