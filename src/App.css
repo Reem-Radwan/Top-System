@@ -10,7 +10,7 @@
 
 :root {
   /* Light Theme Colors */
-  --color-primary: #d97706;
+  --color-primary: #FF6B35;
   --color-primary-dark: #E85A2A;
   --color-primary-light: #FF8556;
   --color-primary-glow: rgba(255, 107, 53, 0.15);
@@ -239,6 +239,7 @@ body {
   align-items: center;
   gap: var(--space-sm);
   box-shadow: var(--shadow-sm);
+  padding: 10px;
 }
 
 .refresh-btn:hover {
@@ -768,8 +769,33 @@ body {
   padding: 0 var(--space-md);
 }
 
+/* Candlestick charts wrapper - no scroll when few bars */
+.candlestick-wrapper-no-scroll {
+  overflow-x: visible;
+  margin: 0;
+  padding: 0;
+}
+
+/* Candlestick charts wrapper - scroll when many bars */
+.candlestick-wrapper-scroll {
+  overflow-x: auto;
+  margin: 0 calc(var(--space-md) * -1);
+  padding: 0 var(--space-md);
+  -webkit-overflow-scrolling: touch;
+}
+
+.candlestick-chart-container {
+  width: 100%;
+}
+
 @media (min-width: 769px) {
   .chart-scroll-wrapper {
+    overflow-x: visible;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .candlestick-wrapper-scroll {
     overflow-x: visible;
     margin: 0;
     padding: 0;
@@ -948,7 +974,7 @@ body {
 }
 
 .chart-controls-wrapper .date-range-controls.compact {
-  flex: 1;
+  /* flex: 1; */
   min-width: 0;
   padding: var(--space-sm) var(--space-md);
   margin-top: 0;
@@ -960,7 +986,7 @@ body {
 }
 
 .chart-controls-wrapper .date-range-controls.compact input[type="date"] {
-  min-width: 130px;
+  /* min-width: 130px; */
   padding: var(--space-xs) var(--space-sm);
   font-size: 0.8rem;
 }
@@ -1037,6 +1063,7 @@ body {
   flex-wrap: wrap;
   border: 2px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  /* width: 100%; */
 }
 
 .date-range-controls label {
@@ -1070,7 +1097,7 @@ body {
 
 @media (max-width: 768px) {
   .date-range-controls {
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: var(--space-sm);
   }
@@ -1078,11 +1105,12 @@ body {
   .date-range-controls label {
     width: auto;
     flex-shrink: 0;
+
   }
   
   .date-range-controls input[type="date"] {
     flex: 1;
-    min-width: 140px;
+    min-width: 100%;
   }
   
   .date-range-separator {
@@ -1214,6 +1242,24 @@ body {
 
 .units-table th:first-child {
   border-top-left-radius: var(--radius-md);
+  background: linear-gradient(135deg, #FF6B35, #FF8C5A);
+  color: white;
+  position: sticky;
+  left: 0;
+  z-index: 20;
+}
+
+.units-table td:first-child {
+  background: #EDF2F7; /**99999999999*/
+  font-weight: 600;
+  color: var(--color-primary);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.units-table tbody tr:hover td:first-child {
+  background: rgba(255, 107, 53, 0.15);
 }
 
 .units-table th:last-child {
@@ -1258,7 +1304,7 @@ body {
 }
 
 .units-table tfoot .footer-label {
-  text-align: right;
+  text-align: center;
   padding-right: var(--space-xl);
   font-weight: 700;
   font-size: 1rem;
@@ -1268,6 +1314,8 @@ body {
   font-weight: 700;
   font-size: 1rem;
   text-align: left;
+  background-color: #EDF2F7!important;
+  color: #FF6B35
 }
 
 @media (max-width: 768px) {
@@ -1290,70 +1338,83 @@ body {
   /* Sticky first column on mobile */
   .units-table thead th:first-child,
   .units-table tbody td:first-child,
-  .units-table tfoot td:first-child 
-  {
+  .units-table tfoot td:first-child {
     position: -webkit-sticky;
     position: sticky;
-    left: -15px;
+    left: 0;
     z-index: 2;
   }
   
   /* Header first column - highest priority */
   .units-table thead th:first-child {
     z-index: 12;
-    background: var(--color-bg-tertiary);
+    background: linear-gradient(135deg, #FF6B35, #FF8C5A);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+    color: white;
   }
   
   /* Body first column */
   .units-table tbody td:first-child {
-    background: var(--color-surface);
+    background:  #EDF2F7;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 2;
+    font-weight: 600;
+    color: var(--color-primary);
+     margin-left: -13px;
   }
   
   /* Maintain hover state background */
   .units-table tbody tr:hover td:first-child {
-    background: var(--color-bg-tertiary);
+    background: rgba(255, 107, 53, 0.15);
   }
   
   /* Footer first column - ensure it's sticky horizontally */
   .units-table tfoot td:first-child {
-    position: -webkit-sticky;
+    /* position: -webkit-sticky; */
     position: sticky;
     left: 0;
-    background: var(--color-primary);
+    /* background: var(--color-primary); */
     z-index: 12;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    min-width: 70px;
+    max-width: 70px;
+   
   }
   
   /* Ensure tfoot is sticky at bottom */
   .units-table tfoot {
-    position: -webkit-sticky;
+    /* position: -webkit-sticky; */
     position: sticky;
     bottom: 0;
     z-index: 11;
-    background: var(--color-primary);
+    background: #EDF2F7;
   }
   
   /* Add background to all footer cells to prevent content bleeding */
   .units-table tfoot td {
-    background: var(--color-primary);
+    /* background: var(--color-primary); */
     color: white;
-    padding: var(--space-md) var(--space-sm);
+    padding: 8px 2px;
+    font-size: 0.65rem;
+    background-color: #EDF2F7 !important;
   }
   
   .units-table tfoot .footer-label {
-    font-size: 0.85rem;
-    padding-right: var(--space-md);
+    font-size: 0.65rem;
+    padding-right: 2px;
     white-space: nowrap;
     text-align: right;
+    overflow: visible;
+    font-weight: 600;
   }
   
   .units-table tfoot .footer-value {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     white-space: nowrap;
     font-weight: 700;
+    padding-left: 4px;
+    padding-right: 4px;
+    min-width: 100px;
   }
   
   .units-table th,
@@ -1475,15 +1536,16 @@ body {
 }
 
 .pdf-btn {
-  background: linear-gradient(135deg, #2fe235, #1e9b3d);
+  background: linear-gradient(135deg, #3bd333, #1dab40);
   color: white;
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
+  padding: 10px;
 }
 
 .pdf-btn:hover {
-  background: linear-gradient(135deg, #29d82f, #198234);
+  background: linear-gradient(135deg, #2bc02b, #1c9c49);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -1772,6 +1834,7 @@ body {
   .chart-modal-body {
     padding: var(--space-lg);
   }
+ 
 }
 
 /* ========================================
@@ -1993,6 +2056,7 @@ body {
   .show-mobile {
     display: none !important;
   }
+
 }
 
 /* Landscape Mobile */
@@ -2081,3 +2145,4 @@ button:disabled {
 section {
   scroll-margin-top: var(--space-2xl);
 }
+

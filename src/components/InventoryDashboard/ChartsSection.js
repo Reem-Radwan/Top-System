@@ -1,5 +1,4 @@
 
-
 import React, { useState, useMemo } from 'react';
 // Version: Updated with gradient fills - Jan 14, 2026
 import {
@@ -14,6 +13,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+
 import { Pie, Bar, Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import UnitsModal from './UnitsModal';
@@ -38,7 +38,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
   const [deliveryPeriod, setDeliveryPeriod] = useState('quarterly');
   const [salesDateRange, setSalesDateRange] = useState({ start: '', end: '' });
   const [deliveryDateRange, setDeliveryDateRange] = useState({ start: '', end: '' });
-  
+
   // Modal state for Delivery Compliance
   const [modalOpen, setModalOpen] = useState(false);
   const [modalUnits, setModalUnits] = useState([]);
@@ -58,27 +58,69 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     setChartModalOpen(true);
   };
 
+  // Pie options for modal - uses dataset.salesByLabel
+  const modalPieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { boxWidth: 12, padding: 15 }
+      },
+      datalabels: {
+        color: '#fff',
+        font: { weight: 'bold', size: 11 },
+        formatter: (val, ctx) => {
+          const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+          const pct = total ? ((val / total) * 100).toFixed(1) : '0.0';
+          return Number(pct) > 5 ? `${pct}%` : '';
+        }
+      },
+      tooltip: {
+        callbacks: {
+          title: (context) => context[0].label,
+          label: (context) => {
+            const value = context.parsed;
+            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+            const percentage = total ? ((value / total) * 100).toFixed(2) : '0.00';
+
+            const label = context.label;
+
+            // ✅ read from dataset (reliable in modal)
+            const salesMap = context.dataset.salesByLabel || {};
+            const totalSalesValue = salesMap[label] || 0;
+
+            return [
+              `Number of Units: ${value}`,
+              `Total Sales Value: EGP ${Number(totalSalesValue).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              `% of Total Inventory: ${percentage}%`
+            ];
+          },
+          footer: (context) => `${context[0].label}: ${context[0].parsed} units`
+        }
+      }
+    }
+  };
+
   // Click-to-filter handler
   const handleChartClick = (filterType, value) => {
     if (!onFilterChange) return;
-    
-    // Get current filter values
+
     const currentValues = filters[filterType] || [];
-    
+
     // If this value is the only one selected, select all (clear filter)
     if (currentValues.length === 1 && currentValues[0] === value) {
-      // Get all possible values for this filter type from units
       const allValues = [...new Set(allUnits.map(u => {
-        switch(filterType) {
+        switch (filterType) {
           case 'statuses': return u.status;
           case 'unitTypes': return u.unit_type;
           case 'contractPaymentPlans': return u.adj_contract_payment_plan;
           default: return null;
         }
       }).filter(Boolean))];
+
       onFilterChange(filterType, allValues);
     } else {
-      // Otherwise, filter to just this value
       onFilterChange(filterType, [value]);
     }
   };
@@ -88,25 +130,23 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     if (elements.length > 0) {
       const index = elements[0].index;
       const label = chart.data.labels[index];
-      
-      // Categorize units based on delivery compliance
+
       const categorizedUnits = [];
-      
+
       units.forEach(unit => {
         if (!unit.contract_delivery_date || !unit.development_delivery_date) return;
-        
+
         try {
           const contractDate = new Date(unit.contract_delivery_date);
           const developmentDate = new Date(unit.development_delivery_date);
-          
+
           if (isNaN(contractDate.getTime()) || isNaN(developmentDate.getTime())) return;
-          
+
           const adjustedContractDate = new Date(contractDate);
           adjustedContractDate.setMonth(adjustedContractDate.getMonth() + (parseInt(unit.grace_period_months) || 0));
-          
+
           const isOnTime = adjustedContractDate >= developmentDate;
-          
-          // Check if this unit belongs to the clicked category
+
           if ((label.includes('On Time') && isOnTime) || (label.includes('Delayed') && !isOnTime)) {
             categorizedUnits.push(unit);
           }
@@ -114,12 +154,10 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
           console.warn('Error categorizing unit:', unit);
         }
       });
-      
-      // Extract count from label (e.g., "On Time (123)" -> "123")
+
       const countMatch = label.match(/\((\d+)\)/);
       const count = countMatch ? countMatch[1] : categorizedUnits.length;
-      
-      // Open modal with filtered units
+
       setModalUnits(categorizedUnits);
       setModalTitle(label.replace(/\s*\(\d+\)/, '') + ` (${count})`);
       setModalOpen(true);
@@ -142,9 +180,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     const grouped = {};
     unitsData.forEach(unit => {
       const status = unit.status || 'Unknown';
-      if (status !== 'Unknown') {
-        grouped[status] = (grouped[status] || 0) + 1;
-      }
+      if (status !== 'Unknown') grouped[status] = (grouped[status] || 0) + 1;
     });
     return grouped;
   };
@@ -153,9 +189,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     const grouped = {};
     unitsData.forEach(unit => {
       const type = unit.unit_type || 'Unknown';
-      if (type !== 'Unknown') {
-        grouped[type] = (grouped[type] || 0) + 1;
-      }
+      if (type !== 'Unknown') grouped[type] = (grouped[type] || 0) + 1;
     });
     return grouped;
   };
@@ -164,19 +198,25 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     const grouped = {};
     unitsData.forEach(unit => {
       const plan = unit.adj_contract_payment_plan || 'Unknown';
-      if (plan !== 'Unknown') {
-        grouped[plan] = (grouped[plan] || 0) + 1;
-      }
+      if (plan !== 'Unknown') grouped[plan] = (grouped[plan] || 0) + 1;
     });
     return grouped;
   };
 
-  // Chart data - memoized for performance
+  // ✅ Inventory chart data (salesByLabel moved into dataset)
   const inventoryChartData = useMemo(() => {
     const statusCounts = groupByStatus(units);
     const labels = Object.keys(statusCounts);
     const data = Object.values(statusCounts);
     const backgroundColors = labels.map(label => statusColors[label] || '#CCCCCC');
+
+    const salesByLabel = {};
+    allUnits.forEach(unit => {
+      const status = unit.status || 'Unknown';
+      if (status !== 'Unknown') {
+        salesByLabel[status] = (salesByLabel[status] || 0) + (parseFloat(unit.sales_value) || 0);
+      }
+    });
 
     return {
       labels,
@@ -184,14 +224,24 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         data,
         backgroundColor: backgroundColors,
         borderWidth: 2,
-        borderColor: '#fff'
+        borderColor: '#fff',
+        salesByLabel // ✅ here
       }]
     };
-  }, [units]);
+  }, [units, allUnits]);
 
+  // ✅ Unit type chart data (salesByLabel moved into dataset)
   const unitModelChartData = useMemo(() => {
     const typeCounts = groupByUnitType(units);
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+
+    const salesByLabel = {};
+    allUnits.forEach(unit => {
+      const type = unit.unit_type || 'Unknown';
+      if (type !== 'Unknown') {
+        salesByLabel[type] = (salesByLabel[type] || 0) + (parseFloat(unit.sales_value) || 0);
+      }
+    });
 
     return {
       labels: Object.keys(typeCounts),
@@ -199,10 +249,11 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         data: Object.values(typeCounts),
         backgroundColor: colors,
         borderWidth: 2,
-        borderColor: '#fff'
+        borderColor: '#fff',
+        salesByLabel // ✅ here
       }]
     };
-  }, [units]);
+  }, [units, allUnits]);
 
   const paymentPlanChartData = useMemo(() => {
     const planCounts = groupByPaymentPlan(units);
@@ -227,7 +278,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
   const salesTrendChartData = useMemo(() => {
     const contractedUnits = units.filter(u => u.status === 'Contracted');
     const grouped = {};
-    
+
     contractedUnits.forEach(unit => {
       if (!unit.reservation_date) return;
       const date = new Date(unit.reservation_date);
@@ -239,11 +290,12 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
           key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
           label = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
           break;
-        case 'quarterly':
+        case 'quarterly': {
           const quarter = Math.floor(date.getMonth() / 3) + 1;
           key = `${date.getFullYear()}-Q${quarter}`;
           label = `Q${quarter} ${date.getFullYear()}`;
           break;
+        }
         default:
           key = `${date.getFullYear()}`;
           label = `${date.getFullYear()}`;
@@ -266,13 +318,13 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         borderColor: '#FF6B35',
         backgroundColor: (context) => {
           const chart = context.chart;
-          const {ctx, chartArea} = chart;
+          const { ctx, chartArea } = chart;
           if (!chartArea) return 'rgba(255, 107, 53, 0.3)';
-          
+
           const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-          gradient.addColorStop(0, 'rgba(255, 107, 53, 0.1)');   // Bottom - lighter
-          gradient.addColorStop(0.5, 'rgba(255, 107, 53, 0.25)'); // Middle
-          gradient.addColorStop(1, 'rgba(255, 107, 53, 0.4)');    // Top - darker
+          gradient.addColorStop(0, 'rgba(255, 107, 53, 0.1)');
+          gradient.addColorStop(0.5, 'rgba(255, 107, 53, 0.25)');
+          gradient.addColorStop(1, 'rgba(255, 107, 53, 0.4)');
           return gradient;
         },
         tension: 0.4,
@@ -289,7 +341,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
 
   const deliveryProgressChartData = useMemo(() => {
     const grouped = {};
-    
+
     units.forEach(unit => {
       if (!unit.development_delivery_date) return;
       const date = new Date(unit.development_delivery_date);
@@ -301,11 +353,12 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
           key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
           label = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
           break;
-        case 'quarterly':
+        case 'quarterly': {
           const quarter = Math.floor(date.getMonth() / 3) + 1;
           key = `${date.getFullYear()}-Q${quarter}`;
           label = `Q${quarter} ${date.getFullYear()}`;
           break;
+        }
         default:
           key = `${date.getFullYear()}`;
           label = `${date.getFullYear()}`;
@@ -328,13 +381,13 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         borderColor: '#FF6B35',
         backgroundColor: (context) => {
           const chart = context.chart;
-          const {ctx, chartArea} = chart;
+          const { ctx, chartArea } = chart;
           if (!chartArea) return 'rgba(255, 107, 53, 0.3)';
-          
+
           const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-          gradient.addColorStop(0, 'rgba(255, 107, 53, 0.1)');   // Bottom - lighter
-          gradient.addColorStop(0.5, 'rgba(255, 107, 53, 0.25)'); // Middle
-          gradient.addColorStop(1, 'rgba(255, 107, 53, 0.4)');    // Top - darker
+          gradient.addColorStop(0, 'rgba(255, 107, 53, 0.1)');
+          gradient.addColorStop(0.5, 'rgba(255, 107, 53, 0.25)');
+          gradient.addColorStop(1, 'rgba(255, 107, 53, 0.4)');
           return gradient;
         },
         tension: 0.4,
@@ -386,8 +439,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
       if (elements.length > 0) {
         const index = elements[0].index;
         const label = chart.data.labels[index];
-        
-        // Determine which filter type based on chart
+
         if (chart.canvas.id === 'inventory-chart') {
           handleChartClick('statuses', label);
         } else if (chart.canvas.id === 'unit-type-chart') {
@@ -396,11 +448,10 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
       }
     },
     plugins: {
-      legend: { 
-        position: 'bottom', 
+      legend: {
+        position: 'bottom',
         labels: { boxWidth: 12, padding: 15 },
         onClick: (e, legendItem, legend) => {
-          // Click on legend also filters
           const label = legendItem.text;
           if (legend.chart.canvas.id === 'inventory-chart') {
             handleChartClick('statuses', label);
@@ -414,43 +465,39 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         font: { weight: 'bold', size: 11 },
         formatter: (val, ctx) => {
           const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-          const pct = ((val / total) * 100).toFixed(1);
-          return pct > 5 ? `${pct}%` : '';
+          const pct = total ? ((val / total) * 100).toFixed(1) : '0.0';
+          return Number(pct) > 5 ? `${pct}%` : '';
         }
       },
       tooltip: {
         callbacks: {
-          title: (context) => {
-            return context[0].label;
-          },
+          title: (context) => context[0].label,
           label: (context) => {
             const value = context.parsed;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((value / total) * 100).toFixed(2);
-            
-            // Calculate total sales value for this segment
+            const percentage = total ? ((value / total) * 100).toFixed(2) : '0.00';
+
             const label = context.label;
             let totalSalesValue = 0;
-            
+
+            // your original (non-modal) tooltip logic:
             if (context.chart.canvas.id === 'inventory-chart') {
-              totalSalesValue = units
+              totalSalesValue = allUnits
                 .filter(u => u.status === label)
                 .reduce((sum, u) => sum + (parseFloat(u.sales_value) || 0), 0);
             } else if (context.chart.canvas.id === 'unit-type-chart') {
-              totalSalesValue = units
+              totalSalesValue = allUnits
                 .filter(u => u.unit_type === label)
                 .reduce((sum, u) => sum + (parseFloat(u.sales_value) || 0), 0);
             }
-            
+
             return [
               `Number of Units: ${value}`,
-              `Total Sales Value: EGP ${totalSalesValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              `Total Sales Value: EGP ${Number(totalSalesValue).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
               `% of Total Inventory: ${percentage}%`
             ];
           },
-          footer: (context) => {
-            return `${context[0].label}: ${context[0].parsed} units`;
-          }
+          footer: (context) => `${context[0].label}: ${context[0].parsed} units`
         }
       }
     }
@@ -476,14 +523,12 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
       },
       tooltip: {
         callbacks: {
-          title: (context) => {
-            return context[0].label;
-          },
+          title: (context) => context[0].label,
           label: (context) => {
             const value = context.parsed.y;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
-            
+            const percentage = total ? ((value / total) * 100).toFixed(1) : '0.0';
+
             return [
               `Number of Units: ${value}`,
               `Percentage: ${percentage}%`
@@ -512,11 +557,10 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
     maintainAspectRatio: false,
     onClick: handleDeliveryComplianceClick,
     plugins: {
-      legend: { 
-        position: 'bottom', 
+      legend: {
+        position: 'bottom',
         labels: { boxWidth: 12, padding: 15 },
         onClick: (e, legendItem, legend) => {
-          // Also trigger modal on legend click
           const chart = legend.chart;
           const index = legendItem.index;
           handleDeliveryComplianceClick(null, [{ index }], chart);
@@ -527,8 +571,8 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         font: { weight: 'bold', size: 11 },
         formatter: (val, ctx) => {
           const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-          const pct = ((val / total) * 100).toFixed(1);
-          return pct > 5 ? `${pct}%` : '';
+          const pct = total ? ((val / total) * 100).toFixed(1) : '0.0';
+          return Number(pct) > 5 ? `${pct}%` : '';
         }
       },
       tooltip: {
@@ -545,8 +589,8 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         <div className="chart-card">
           <div className="chart-header">
             <h3>Inventory Status</h3>
-            <button 
-              className="chart-btn chart-expand-btn" 
+            <button
+              className="chart-btn chart-expand-btn"
               onClick={() => openChartModal('Inventory Status', inventoryChartData, 'pie')}
               title="Expand chart"
             >
@@ -561,8 +605,8 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         <div className="chart-card">
           <div className="chart-header">
             <h3>Unit Type Distribution</h3>
-            <button 
-              className="chart-btn chart-expand-btn" 
+            <button
+              className="chart-btn chart-expand-btn"
               onClick={() => openChartModal('Unit Type Distribution', unitModelChartData, 'pie')}
               title="Expand chart"
             >
@@ -577,8 +621,8 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         <div className="chart-card">
           <div className="chart-header">
             <h3>Contract Payment Plan</h3>
-            <button 
-              className="chart-btn chart-expand-btn" 
+            <button
+              className="chart-btn chart-expand-btn"
               onClick={() => openChartModal('Contract Payment Plan', paymentPlanChartData, 'bar')}
               title="Expand chart"
             >
@@ -595,14 +639,15 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
         <div className="chart-card">
           <div className="chart-header">
             <h3>Sales Trend</h3>
-            <button 
-              className="chart-btn chart-expand-btn" 
+            <button
+              className="chart-btn chart-expand-btn"
               onClick={() => openChartModal('Sales Trend', salesTrendChartData, 'line')}
               title="Expand chart"
             >
               ⛶
             </button>
           </div>
+
           <div className="chart-scroll-wrapper">
             <div style={{ height: '220px', minWidth: '600px' }}>
               <Line data={salesTrendChartData} options={lineOptions} />
@@ -617,7 +662,6 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
                 value={salesDateRange.start}
                 onChange={(e) => setSalesDateRange({ ...salesDateRange, start: e.target.value })}
               />
-              <span className="date-range-separator">to</span>
               <label>To:</label>
               <input
                 type="date"
@@ -678,14 +722,15 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
               <div className="delivery-analysis" style={{ minWidth: 0 }}>
                 <div className="chart-header">
                   <h3>Delivery Analysis</h3>
-                  <button 
-                    className="chart-btn chart-expand-btn" 
+                  <button
+                    className="chart-btn chart-expand-btn"
                     onClick={() => openChartModal('Delivery Analysis', deliveryProgressChartData, 'line')}
                     title="Expand chart"
                   >
                     ⛶
                   </button>
                 </div>
+
                 <div className="chart-scroll-wrapper">
                   <div style={{ height: '220px', minWidth: '600px' }}>
                     <Line data={deliveryProgressChartData} options={lineOptions} />
@@ -700,7 +745,6 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
                       value={deliveryDateRange.start}
                       onChange={(e) => setDeliveryDateRange({ ...deliveryDateRange, start: e.target.value })}
                     />
-                    <span className="date-range-separator">to</span>
                     <label>To:</label>
                     <input
                       type="date"
@@ -755,8 +799,8 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
               <div className="delivery-compliance" style={{ minWidth: 0 }}>
                 <div className="chart-header">
                   <h3>Delivery Compliance</h3>
-                  <button 
-                    className="chart-btn chart-expand-btn" 
+                  <button
+                    className="chart-btn chart-expand-btn"
                     onClick={() => openChartModal('Delivery Compliance', deliveryComplianceChartData, 'pie')}
                     title="Expand chart"
                   >
@@ -788,7 +832,7 @@ const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterCh
       >
         {chartModalData && (
           <div style={{ height: '75vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {chartModalType === 'pie' && <Pie data={chartModalData} options={pieOptions} />}
+            {chartModalType === 'pie' && <Pie data={chartModalData} options={modalPieOptions} />}
             {chartModalType === 'bar' && <Bar data={chartModalData} options={barOptions} />}
             {chartModalType === 'line' && <Line data={chartModalData} options={lineOptions} />}
           </div>

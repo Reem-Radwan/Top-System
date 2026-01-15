@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { getCompanyUnits } from '../../data/inventorymockData.js';
+import { getCompanyUnits } from '../../data/inventorymockData';
 import { generatePDFReport } from './Pdfgenerator';
 import FilterSection from './FilterSection';
 import KPISection from './KpiSection';
-import ChartsSection from './ChartsSection.js';
+import ChartsSection from './ChartsSection';
 import UnitMetricsCharts from './Unitmetricscharts';
 import DataTable from './DataTable';
 
@@ -163,7 +164,7 @@ const Dashboard = ({ companyId, companyName }) => {
       {generatingPDF && (
         <div className="dashboard-loading">
           <div className="spinner spinner-large"></div>
-          <p className="loading-text">Generating PDF Report...</p>
+          <p className="loading-text">Generating Report...</p>
         </div>
       )}
       
@@ -195,7 +196,7 @@ const Dashboard = ({ companyId, companyName }) => {
               onClick={handleGeneratePDF}
               disabled={generatingPDF || filteredUnits.length === 0}
             >
-              📄 Generate PDF Report
+              📄 Generate  Report
             </button>
             <button className="refresh-btn" onClick={loadCompanyData}>
               🔄 Refresh

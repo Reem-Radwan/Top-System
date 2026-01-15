@@ -1,12 +1,12 @@
+
+
 import React from 'react';
 
 const ChartModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
+    if (e.target === e.currentTarget) onClose();
   };
 
   return (

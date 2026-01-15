@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from 'react';
 // Version: Updated tooltip position - Jan 14, 2026
 import {
@@ -20,7 +19,7 @@ ChartJS.register(
   Legend
 );
 
-// Enhanced candlestick plugin exactly matching the screenshot
+// Enhanced candlestick plugin - values attached to line ends
 const candlestickPlugin = {
   id: 'candlestickPlugin',
   afterDatasetsDraw(chart) {
@@ -93,7 +92,7 @@ const candlestickPlugin = {
       const maxY = yScale.getPixelForValue(max);
       const avgY = yScale.getPixelForValue(avg);
       
-      // Format numbers with commas (like screenshot: 47,564,000)
+      // Format numbers with commas
       const formatValue = (val) => {
         return Math.round(val).toLocaleString('en-US');
       };
@@ -102,14 +101,14 @@ const candlestickPlugin = {
       ctx.textAlign = 'center';
       ctx.font = 'bold 10px Arial';
       
-      // MAX value label (black text on white background with black border)
+      // MAX value label - ATTACHED TO TOP OF LINE
       const maxText = formatValue(max);
       const maxPadding = 8;
       const maxMetrics = ctx.measureText(maxText);
       const maxBoxWidth = maxMetrics.width + maxPadding * 2;
       const maxBoxHeight = 20;
       const maxBoxX = x - maxBoxWidth / 2;
-      const maxBoxY = maxY - maxBoxHeight - 8;
+      const maxBoxY = maxY - maxBoxHeight; // Attached directly to line top
       
       // White background
       ctx.fillStyle = '#fff';
@@ -141,14 +140,14 @@ const candlestickPlugin = {
       ctx.fillStyle = '#fff';
       ctx.fillText(avgText, x, avgBoxY + 13);
       
-      // MIN value label (black text on white background with black border)
+      // MIN value label - ATTACHED TO BOTTOM OF LINE
       const minText = formatValue(min);
       const minPadding = 8;
       const minMetrics = ctx.measureText(minText);
       const minBoxWidth = minMetrics.width + minPadding * 2;
       const minBoxHeight = 20;
       const minBoxX = x - minBoxWidth / 2;
-      const minBoxY = minY + 8;
+      const minBoxY = minY; // Attached directly to line bottom
       
       // White background
       ctx.fillStyle = '#fff';
@@ -299,27 +298,31 @@ const UnitMetricsCharts = ({ units }) => {
       legend: { 
         display: false
       },
+      datalabels: {
+        display: false  // Hide the gray max value on bars
+      },
       tooltip: {
         enabled: true,
-        backgroundColor: 'rgba(26, 32, 44, 0.95)',
-        padding: 16,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 6,
         titleColor: '#fff',
         bodyColor: '#fff',
         borderColor: '#FF6B35',
-        borderWidth: 2,
-        cornerRadius: 8,
+        borderWidth: 1,
+        cornerRadius: 4,
         displayColors: false,
         titleFont: {
-          size: 14,
+          size: 9,
           weight: 'bold'
         },
         bodyFont: {
-          size: 13
+          size: 8
         },
-        bodySpacing: 6,
-        position: 'nearest',
-        yAlign: 'bottom', // Position ABOVE the bar for clear visibility
-        xAlign: 'center',  // Center horizontally above bar
+        bodySpacing: 2,
+        xAlign: 'left',     // Position to the left of cursor
+        yAlign: 'bottom',      // Position above cursor
+        caretSize: 4,
+        caretPadding: 15,
         callbacks: {
           title: (items) => items[0].label,
           label: (context) => {
@@ -328,11 +331,10 @@ const UnitMetricsCharts = ({ units }) => {
             const dataPoint = dataset.minMax[index];
             
             return [
-              `Maximum: ${Math.round(dataPoint.max).toLocaleString('en-US')}`,
-              `Average: ${Math.round(dataPoint.avg).toLocaleString('en-US')}`,
-              `Minimum: ${Math.round(dataPoint.min).toLocaleString('en-US')}`,
-              ``,
-              `Total Units: ${dataPoint.count}`
+              `Max: ${(dataPoint.max / 1000000).toFixed(1)}M`,
+              `Avg: ${(dataPoint.avg / 1000000).toFixed(1)}M`,
+              `Min: ${(dataPoint.min / 1000000).toFixed(1)}M`,
+              `Units: ${dataPoint.count}`
             ];
           }
         }
@@ -407,8 +409,15 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className="chart-scroll-wrapper">
-          <div style={{ height: '350px', minWidth: '800px', padding: '10px' }}>
+        <div className={priceChartData.labels.length > 2? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+          <div 
+            className="candlestick-chart-container" 
+            style={{ 
+              height: '350px', 
+              padding: '10px',
+              minWidth: priceChartData.labels.length > 2 ? '800px' : 'auto'
+            }}
+          >
             <Bar 
               key="price-chart"
               data={priceChartData} 
@@ -429,8 +438,15 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className="chart-scroll-wrapper">
-          <div style={{ height: '350px', minWidth: '800px', padding: '10px' }}>
+        <div className={psmChartData.labels.length > 2 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+          <div 
+            className="candlestick-chart-container" 
+            style={{ 
+              height: '350px', 
+              padding: '10px',
+              minWidth: psmChartData.labels.length > 2 ? '800px' : 'auto'
+            }}
+          >
             <Bar 
               key="psm-chart"
               data={psmChartData} 
@@ -451,8 +467,15 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className="chart-scroll-wrapper">
-          <div style={{ height: '350px', minWidth: '800px', padding: '10px' }}>
+        <div className={areaChartData.labels.length > 2 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+          <div 
+            className="candlestick-chart-container" 
+            style={{ 
+              height: '350px', 
+              padding: '10px',
+              minWidth: areaChartData.labels.length > 2 ? '800px' : 'auto'
+            }}
+          >
             <Bar 
               key="area-chart"
               data={areaChartData} 
