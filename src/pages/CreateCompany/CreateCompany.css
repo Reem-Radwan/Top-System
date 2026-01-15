@@ -9,10 +9,18 @@
   --gap: 16px;
 }
 
+.create-company-page{
+  margin-top: 60px;
+}
+
 .page-shell{
   background: var(--bg);
   min-height: calc(100vh - 52px);
   padding: 18px 16px 48px;
+  font-family: "Times New Roman", Times, serif;
+  
+  
+
 }
 
 .page-header{
@@ -38,6 +46,7 @@
   border-radius: var(--r);
   box-shadow: var(--shadow);
   padding: 18px;
+   margin-top: 60px;
 }
 
 .section{
@@ -45,6 +54,7 @@
   border-radius: 12px;
   padding: 14px;
   background: #fff;
+   margin-top: 60px;
 }
 
 .section + .section{

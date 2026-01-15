@@ -1,13 +1,11 @@
 // Define the companies available in the dropdown
 export const mockCompanies = [
-  { id: 1, name: "Sunset Developers (Villas & Gardens)" },
-  { id: 2, name: "Urban Living (Apartments Only)" },
-  { id: 3, name: "Seaside Resorts (Mixed)" },
+  { id: 1, name: "Mint" },
+  { id: 2, name: "Palmier Developments" },
+  { id: 3, name: "IGI Developments" },
 ];
 
-// Define the units
-// Note: We intentionally leave some fields null/0 for specific companies
-// to demonstrate the "Auto-Hide Empty Columns" feature.
+
 export const mockUnits = [
   // --- COMPANY 1: Sunset Developers (Has Gardens, Land, Penthouse) ---
   {

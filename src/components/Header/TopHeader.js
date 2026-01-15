@@ -1,26 +1,53 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import "./TopHeader.css";
 
+// Real Estate Icon Component - Simpler version
+const RealEstateIcon = () => (
+  <svg 
+    className="real-estate-icon" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M3 21V10L12 3L21 10V21H14V14H10V21H3Z" fill="currentColor"/>
+  </svg>
+);
+
 export default function TopHeader({
-  userName = "Reem Slama",
+  userName = "Reem Radwan",
   onLogout,
 }) {
-  const navigate = useNavigate(); // programmatic navigation [web:638]
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState(null); // which dropdown open (mobile)
+  const [openMenu, setOpenMenu] = useState(null);
   const [openUser, setOpenUser] = useState(false);
+
+  // Get user initials for avatar
+  const userInitials = useMemo(() => {
+    return userName
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  }, [userName]);
 
   const menus = useMemo(
     () => [
-      { label: "Sales", items: [{ label: "Leads", to: "/sales/leads" }, { label: "Cataloge", to: "/cataloge" }] },
-      { label: "Approvals", items: [{ label: "Pending", to: "/approvals/pending" }, { label: "Approved", to: "/approvals/approved" }] },
-      { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "Create Project", to: "/create-project" }] },
-      { label: "Inventory", items: [{ label: "Units", to: "/inventory/units" }, { label: "Availability", to: "/inventory/availability" }] },
-      { label: "Reports", items: [{ label: "Summary", to: "/reports/summary" }, { label: "Detailed", to: "/reports/detailed" }] },
-      { label: "Market Research", items: [{ label: "Dashboard", to: "/market-research" }] },
-      { label: "Pricing", items: [{ label: "Price List", to: "/pricing" }] },
-      { label: "Users & Companies", items: [{ label: "Manage Users", to: "/" }, { label: "Manage Companies", to: "/manage-companies" }] },
+      { label: "Sales", items: [{ label: "TOP", to: "/" },{ label: "MasterPlans", to: "/masterlans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals", to: "/approvals" }] },
+      { label: "Approvals", items: [{ label: "Approvals", to: "/approvals" }, { label: "Approvals History", to: "/approvals-history" },] },
+      { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterPlan-settings" },
+        { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }
+      ] },
+      { label: "Inventory", items: [{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure" }] },
+      { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performavce Analysis", to: "/sales-performavce-analysis" } ,
+         { label: "Sales Team Report", to: "/sales-team-report" }] },
+      { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } ,{ label: "Market Explorer", to: "/market-explorer" }] },
+      { label: "Pricing", items: [{ label: "Pricing Model", to: "/pricing-model" }] },
+      { label: "Users & Companies", items: [{ label: "Manage Users", to: "/manage-users" },{ label: "Manage Companies", to: "/manage-companies" }, { label: "Attendance Sheet", to: "/attendance-sheet" } ,{ label: "Goole Sheets", to: "/google-sheets" }
+      ] },
     ],
     []
   );
@@ -51,22 +78,45 @@ export default function TopHeader({
   }, []);
 
   function go(to) {
-    navigate(to); // route change [web:638]
+    navigate(to);
     setMobileOpen(false);
     setOpenMenu(null);
     setOpenUser(false);
   }
 
-  function handleLogout() {
-    if (onLogout) onLogout();
-    else navigate("/login"); // fallback [web:638]
-  }
+  async function handleLogout() {
+  const res = await Swal.fire({
+    title: "Logout?",
+    text: "Are you sure you want to logout?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Logout",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#c45a18",
+    cancelButtonColor: "#7a7a7a",
+  });
+
+  if (!res.isConfirmed) return;
+
+  if (onLogout) onLogout();
+  else navigate("/login");
+}
+
 
   return (
     <header className="topheader">
       <div className="topheader-inner">
-        {/* Left side */}
+        {/* Left side with Logo */}
         <div className="topheader-left">
+          {/* Logo with Real Estate Icon */}
+          <div className="topheader-logo">
+            <div className="logo-icon">
+              <RealEstateIcon />
+            </div>
+            <div className="logo-text">Prometheus</div>
+          </div>
+
+          {/* Mobile burger menu */}
           <button
             type="button"
             className="topheader-burger"
@@ -74,18 +124,25 @@ export default function TopHeader({
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
           >
-            ☰
+            {mobileOpen ? "✕" : "☰"}
           </button>
 
+          {/* Desktop Menus */}
           <div className={mobileOpen ? "topheader-menus open" : "topheader-menus"}>
             {menus.map((m) => (
-              <div className="topheader-dd" key={m.label}>
+              <div 
+                className="topheader-dd" 
+                key={m.label}
+                onMouseEnter={() => window.innerWidth > 900 && setOpenMenu(m.label)}
+                onMouseLeave={() => window.innerWidth > 900 && setOpenMenu(null)}
+              >
                 <button
                   className="topheader-dd-btn"
                   type="button"
                   onClick={() => {
-                    // On mobile: toggle dropdown. On desktop: hover handles it.
-                    if (window.innerWidth <= 900) setOpenMenu((prev) => (prev === m.label ? null : m.label));
+                    if (window.innerWidth <= 900) {
+                      setOpenMenu((prev) => (prev === m.label ? null : m.label));
+                    }
                   }}
                 >
                   {m.label} <span className="topheader-caret">▼</span>
@@ -93,12 +150,12 @@ export default function TopHeader({
 
                 <div
                   className={
-                    window.innerWidth <= 900
-                      ? openMenu === m.label
-                        ? "topheader-dd-menu mobile-open"
-                        : "topheader-dd-menu"
+                    window.innerWidth <= 900 && openMenu === m.label
+                      ? "topheader-dd-menu mobile-open"
                       : "topheader-dd-menu"
                   }
+                  onMouseEnter={() => window.innerWidth > 900 && setOpenMenu(m.label)}
+                  onMouseLeave={() => window.innerWidth > 900 && setOpenMenu(null)}
                 >
                   {m.items.map((it) => (
                     <NavLink
@@ -106,7 +163,6 @@ export default function TopHeader({
                       to={it.to}
                       className={({ isActive }) => (isActive ? "topheader-dd-item active" : "topheader-dd-item")}
                       onClick={(e) => {
-                        // ensure mobile closes after click
                         e.preventDefault();
                         go(it.to);
                       }}
@@ -120,28 +176,33 @@ export default function TopHeader({
           </div>
         </div>
 
-        {/* Right side */}
+        {/* Right side with User Info and Logout */}
         <div className="topheader-right">
+          {/* User Section - Compact */}
           <div className="topheader-dd">
-            <button
-              className="topheader-dd-btn"
-              type="button"
+            <div 
+              className="user-section"
               onClick={() => setOpenUser((v) => !v)}
-              aria-expanded={openUser}
+              onMouseEnter={() => window.innerWidth > 900 && setOpenUser(true)}
+              onMouseLeave={() => window.innerWidth > 900 && setOpenUser(false)}
             >
-              {userName} <span className="topheader-caret">▼</span>
-            </button>
+              <div className="user-avatar">{userInitials}</div>
+              <div className="user-name">{userName}</div>
+              <span className="user-arrow">▼</span>
+            </div>
 
-            <div className={openUser ? "topheader-dd-menu right mobile-open" : "topheader-dd-menu right"}>
-              <button className="topheader-dd-item" type="button" onClick={() => go("/profile")}>
-                Profile
-              </button>
-              <button className="topheader-dd-item" type="button" onClick={() => go("/settings")}>
-                Settings
+            <div 
+              className={openUser ? "topheader-dd-menu right mobile-open" : "topheader-dd-menu right"}
+              onMouseEnter={() => window.innerWidth > 900 && setOpenUser(true)}
+              onMouseLeave={() => window.innerWidth > 900 && setOpenUser(false)}
+            >
+              <button className="topheader-dd-item" type="button" onClick={() => go("/change-password")}>
+                Change Password
               </button>
             </div>
           </div>
 
+          {/* Logout Button - Now clearly visible */}
           <button className="topheader-logout" type="button" onClick={handleLogout}>
             Logout
           </button>
@@ -150,4 +211,3 @@ export default function TopHeader({
     </header>
   );
 }
-

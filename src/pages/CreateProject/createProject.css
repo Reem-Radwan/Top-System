@@ -19,6 +19,7 @@ body {
   min-height: 100vh;
   padding: 2rem 1rem;
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  margin-top: 40px;
 }
 
 .create-project-container {
@@ -291,7 +292,7 @@ h1::after {
 /* ===== BUTTONS ===== */
 .submit-button {
   padding: 0.875rem 2.5rem;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #d76412 0%, #d97706 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -544,4 +545,72 @@ input:disabled, select:disabled {
 
 .special-form{
   margin-top: 27px;
+}
+
+
+.page-header-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:18px 22px;
+  margin-bottom:18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+
+.page-header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width: 0;
+}
+
+.page-header-icon{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:#f3f4f6;
+  color:#f97316;
+  flex: 0 0 auto;
+}
+
+.page-header-title{
+  margin:0;
+  font-size:32px;
+  font-weight:700;
+  color:#5f666d;
+  line-height:1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  background:#d97706;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:10px 16px;
+  font-weight:600;
+  cursor:pointer;
+  flex: 0 0 auto;
+}
+
+.page-back-btn:hover{
+  background:#c6710f
+}
+
+@media (max-width: 640px){
+  .page-header-title{ font-size:24px; }
+  .page-header-card{ padding:14px 16px; }
 }

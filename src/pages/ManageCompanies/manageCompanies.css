@@ -6,6 +6,8 @@
   width: 100%;
   max-width: 100%;
   overflow-x: hidden; /* important */
+   margin-top: 60px;
+   font-family: "Times New Roman", Times, serif;
 }
 
 /* Header */

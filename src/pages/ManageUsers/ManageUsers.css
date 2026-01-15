@@ -19,9 +19,10 @@ html, body {
   --border-medium: #d0d7de;
 
   /* Accent Colors - Light Dark Orange Theme */
-  --orange-primary: #f57c00;
+  /* --orange-primary: #f57c00; */
+  --orange-primary:#d97706;
   --orange-light: #ffb74d;
-  --orange-dark: #e65100;
+  --orange-dark: #d97706;
 
   /* Status Colors */
   --success: #28a745;
@@ -58,6 +59,7 @@ html, body {
   background: var(--bg-secondary);
   min-height: calc(100vh - 20px);
   font-family: "Times New Roman", Times, serif;
+  margin-top: 60px;
 }
 
 /* Top Bar with Toggle */
@@ -72,6 +74,7 @@ html, body {
   margin-bottom: var(--space-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-light);
+  
 }
 
 .lux-title {
@@ -217,7 +220,7 @@ html, body {
 .lux-group-role {
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--orange-dark);
+  color: #d97706;
   display: flex;
   align-items: center;
   gap: var(--space-sm);

@@ -9,6 +9,7 @@
 .mp-page {
   min-height: 100vh;
   background-color: #f9fafb;
+  margin-top: 60px;
 }
 
 .mp-shell {
@@ -40,7 +41,7 @@
 .mp-pageIcon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #f97316 0%, #d97706);
   border-radius: 10px;
   position: relative;
 }
@@ -64,7 +65,7 @@
   margin: 0;
   font-size: 28px;
   font-weight: 700;
-  color: #1f2937;
+  color:  #5f666d;
   letter-spacing: -0.5px;
 }
 
@@ -104,12 +105,12 @@
 }
 
 .mp-btnSuccess {
-  background-color: #f97316;
+  background-color: #d97706; /*87888888888888888*/
   color: white;
 }
 
 .mp-btnSuccess:hover {
-  background-color: #ea580c; 
+  background-color: #ca781a; 
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
 }
 
@@ -179,7 +180,7 @@
 
 .mp-input:focus {
   outline: none;
-  border-color: #f97316;
+  border-color: #d97706;
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
@@ -196,7 +197,7 @@
 
 .mp-select:focus {
   outline: none;
-  border-color: #f97316;
+  border-color: #d97706;
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
@@ -309,7 +310,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #c2c0be 0%, #7f7d7c 100%);
+  background: linear-gradient(135deg, #d7d7d6 0%, #c0bfbf 100%);
+  /* background: linear-gradient(135deg, #f38537 0%, #d97706 100%); */
   border-radius: 16px 16px 0 0;
   color: white;
 }
@@ -391,7 +393,7 @@
 .mp-modalBody .mp-table input[type="number"]:focus,
 .mp-modalBody .mp-table select:focus {
   outline: none;
-  border-color: #f97316;
+  border-color: #d97706;
 }
 
 /* ============================================
@@ -400,7 +402,7 @@
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #f97316;
+  accent-color: #d97706;
   cursor: pointer;
 }
 

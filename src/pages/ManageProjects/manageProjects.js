@@ -527,7 +527,7 @@ export default function ManageProjects() {
           </div>
 
           <button className="mp-btn mp-btnSuccess" onClick={createProject}>
-            + Create Project
+            <i className="fas fa-plus" aria-hidden="true" style={{ marginRight: 8 }}></i>Create Project
           </button>
         </div>
 
