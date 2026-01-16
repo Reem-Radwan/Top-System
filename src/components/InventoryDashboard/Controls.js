@@ -1,4 +1,6 @@
 import React from 'react';
+import './controls.css'
+// import '../../App.css'
 
 const Controls = ({ companies, selectedCompanyId, onCompanyChange }) => {
   const handleDownloadReport = () => {
@@ -23,16 +25,7 @@ const Controls = ({ companies, selectedCompanyId, onCompanyChange }) => {
       <button
         id="downloadReportBtn"
         onClick={handleDownloadReport}
-        style={{
-          marginLeft: '10px',
-          padding: '0.5rem 1rem',
-          backgroundColor: '#28a745',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          fontWeight: 'bold',
-          cursor: 'pointer'
-        }}
+        className="pdf-btn"
       >
         <i className="fas fa-download"></i> Report
       </button>

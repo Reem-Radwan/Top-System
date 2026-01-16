@@ -70,11 +70,11 @@ const UnitsModal = ({ isOpen, onClose, units, title }) => {
           borderRadius: '12px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
           zIndex: 9999,
-          maxWidth: '95vw',
+          maxWidth: '97vw',
           maxHeight: '90vh',
           width: '1400px',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -146,7 +146,7 @@ const UnitsModal = ({ isOpen, onClose, units, title }) => {
                   <th style={headerStyle}>STATUS</th>
                   <th style={headerStyle}>PRICE</th>
                   <th style={headerStyle}>PSM</th>
-                  <th style={headerStyle}>CONTRACT + GRACE</th>
+                  <th style={headerStyle}>CONTRACT DELIVERY DATE</th>
                   <th style={headerStyle}>GRACE (M)</th>
                   <th style={headerStyle}>DELIVERY DATE</th>
                   <th style={headerStyle}>COMPLIANCE</th>
@@ -229,7 +229,7 @@ const UnitsModal = ({ isOpen, onClose, units, title }) => {
 // Styles
 const headerStyle = {
   padding: '12px 10px',
-  textAlign: 'left',
+  textAlign: 'center',
   fontWeight: 'bold',
   fontSize: '12px',
   color: '#333',
@@ -239,7 +239,7 @@ const headerStyle = {
 
 const cellStyle = {
   padding: '10px',
-  textAlign: 'left',
+  textAlign: 'center',
   fontSize: '13px',
   color: '#333'
 };

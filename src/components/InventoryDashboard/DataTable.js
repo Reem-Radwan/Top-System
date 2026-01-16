@@ -163,6 +163,7 @@
 
 
 import React, { useState, useRef, useEffect } from 'react';
+import './datatable.css'
 import * as XLSX from 'xlsx';
 
 const DataTable = ({ units }) => {
@@ -263,7 +264,7 @@ const DataTable = ({ units }) => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search BY Unit Code..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

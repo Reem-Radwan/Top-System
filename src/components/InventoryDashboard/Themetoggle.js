@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../InventoryDashboard/Themecontext';
+import './themecontext.css'
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();

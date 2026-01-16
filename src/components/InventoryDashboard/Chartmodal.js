@@ -1,6 +1,6 @@
 
-
 import React from 'react';
+import './chartmodal.css'
 
 const ChartModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;

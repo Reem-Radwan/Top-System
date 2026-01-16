@@ -239,6 +239,7 @@ import KPISection from './KpiSection';
 import ChartsSection from './ChartsSection';
 import UnitMetricsCharts from './Unitmetricscharts';
 import DataTable from './DataTable';
+import './dashboard.css'
 
 const Dashboard = ({ companyId, companyName }) => {
   const [units, setUnits] = useState([]);
@@ -395,54 +396,7 @@ const Dashboard = ({ companyId, companyName }) => {
 
   return (
     <>
-      {generatingPDF && (
-        <div className="dashboard-loading">
-          <div className="spinner spinner-large"></div>
-          <p className="loading-text">Generating Report...</p>
-        </div>
-      )}
-
       <div className="dashboard-container">
-        <div className="dashboard-header">
-          <div className="quick-stats">
-            <div className="quick-stat-item">
-              <span className="quick-stat-label">Total Units</span>
-              <span className="quick-stat-value">{filteredUnits.length}</span>
-            </div>
-
-            <div className="quick-stat-divider"></div>
-
-            <div className="quick-stat-item">
-              <span className="quick-stat-label">Total Value</span>
-              <span className="quick-stat-value">
-                {new Intl.NumberFormat('en-US', {
-                  notation: 'compact',
-                  compactDisplay: 'short',
-                  maximumFractionDigits: 1
-                }).format(
-                  filteredUnits.reduce(
-                    (sum, unit) => sum + (parseFloat(unit.sales_value) || 0),
-                    0
-                  )
-                )} EGP
-              </span>
-            </div>
-          </div>
-
-          <div className="dashboard-controls">
-            <button
-              className="btn btn-primary pdf-btn"
-              onClick={handleGeneratePDF}
-              disabled={generatingPDF || filteredUnits.length === 0}
-            >
-              📄 Generate Report
-            </button>
-
-            <button className="refresh-btn" onClick={loadCompanyData}>
-              🔄 Refresh
-            </button>
-          </div>
-        </div>
 
         <FilterSection
           filterOptions={filterOptions}

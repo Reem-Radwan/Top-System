@@ -1,7 +1,5 @@
-
-
 import React from 'react';
-
+import './kpisection.css'
 const KPISection = ({ units }) => {
   const formatNumber = (num) => {
     if (isNaN(num)) return '-';
@@ -101,7 +99,7 @@ const KPISection = ({ units }) => {
             <div className="kpi-metric-value">{formatNumber(unsoldValue)}</div>
           </div>
           <div className="kpi-metric">
-            <div className="kpi-metric-label">Avg. Sales Value</div>
+            <div className="kpi-metric-label">Avg. Interest-Free Price</div>
             <div className="kpi-metric-value">{formatNumber(avgUnsoldPrice)}</div>
           </div>
           <div className="kpi-metric">

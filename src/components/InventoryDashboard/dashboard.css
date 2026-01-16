@@ -1,0 +1,300 @@
+/* ========================================
+   DASHBOARD LAYOUT
+   ======================================== */
+
+   body{
+    margin-top: 60px; 
+   }
+.dashboard-container {
+  /* min-height: 100vh; */
+  background: var(--color-bg-secondary);
+  padding:  var(--space-xl)  ;
+  transition: background-color var(--transition-base);
+  /* */
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: var(--space-md);
+  }
+}
+
+/* ========================================
+   HEADER & NAVIGATION
+   ======================================== */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  animation: slideDown 0.5s ease-out;
+  gap: var(--space-lg);
+}
+
+/* Quick Stats */
+.quick-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.quick-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.quick-stat-label {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quick-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.quick-stat-divider {
+  width: 1px;
+  height: 35px;
+  background: var(--color-border);
+}
+
+@media (max-width: 968px) {
+  .quick-stats {
+    display: none;
+  }
+}
+
+.dashboard-header h2 {
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.dashboard-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.refresh-btn {
+  padding: var(--space-sm) var(--space-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 10px;
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.refresh-btn:active {
+  transform: translateY(0);
+}
+
+.dashboard-header h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.dashboard-header h1::before {
+  /* content: '📊'; */
+  font-size: 1.8rem;
+  filter: none;
+  -webkit-text-fill-color: initial;
+}
+
+.dashboard-header h1 span {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dashboard-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* PDF/Download Button */
+.pdf-btn {
+  background: linear-gradient(135deg, #3bd333, #1dab40);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px;
+}
+
+.pdf-btn:hover {
+  background: linear-gradient(135deg, #2bc02b, #1c9c49);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.pdf-btn:disabled {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .dashboard-controls {
+    width: 100%;
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+  
+  .dashboard-controls .pdf-btn,
+  .dashboard-controls .refresh-btn {
+    flex: 1;
+    min-width: 140px;
+    font-size: 0.875rem;
+    padding: var(--space-sm) var(--space-md);
+  }
+  
+  .company-selector-wrapper {
+    flex: 1;
+  }
+  
+  .company-selector select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.dashboard-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+}
+
+[data-theme="dark"] .dashboard-loading {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner-large {
+  width: 80px;
+  height: 80px;
+  border-width: 6px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

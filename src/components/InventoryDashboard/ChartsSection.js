@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
+import './chartssection.css'
 // Version: Updated with gradient fills - Jan 14, 2026
 import {
   Chart as ChartJS,
@@ -35,7 +36,7 @@ ChartJS.register(
 
 const ChartsSection = ({ units, allUnits, filters, onDateRangeChange, onFilterChange }) => {
   const [salesPeriod, setSalesPeriod] = useState('annually');
-  const [deliveryPeriod, setDeliveryPeriod] = useState('quarterly');
+  const [deliveryPeriod, setDeliveryPeriod] = useState('annually');
   const [salesDateRange, setSalesDateRange] = useState({ start: '', end: '' });
   const [deliveryDateRange, setDeliveryDateRange] = useState({ start: '', end: '' });
 
