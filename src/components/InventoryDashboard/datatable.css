@@ -84,9 +84,7 @@
   overflow-y: auto;
 }
 
-.table-scroll.at-bottom {
-  /* Add any specific styles for when at bottom */
-}
+
 
 .units-table {
   width: 100%;
@@ -222,13 +220,15 @@
   .units-table tfoot td:first-child {
     /* position: -webkit-sticky; */
     position: sticky;
-    left: 0;
+    left: -13px;
     z-index: 2;
+  
+   
   }
   
   /* Header first column - highest priority */
   .units-table thead th:first-child {
-    z-index: 12;
+    z-index: 120;
     background: linear-gradient(135deg, #FF6B35, #FF8C5A);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
     color: white;
@@ -246,7 +246,7 @@
   
   /* Maintain hover state background */
   .units-table tbody tr:hover td:first-child {
-    background: rgba(255, 107, 53, 0.15);
+    background: rgb(249, 171, 143);
   }
   
   /* Footer first column - ensure it's sticky horizontally */
