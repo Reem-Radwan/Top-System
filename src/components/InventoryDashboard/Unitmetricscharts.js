@@ -470,13 +470,13 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className={priceChartData.labels.length > 6 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+        <div className={priceChartData.labels.length > 2 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
           <div 
             className="candlestick-chart-container" 
             style={{ 
               height: '350px', 
               padding: '10px',
-              minWidth: priceChartData.labels.length > 6 ? '800px' : 'auto'
+              minWidth: priceChartData.labels.length > 2 ? '800px' : 'auto'
             }}
           >
             <Bar 
@@ -499,13 +499,13 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className={psmChartData.labels.length > 6 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+        <div className={psmChartData.labels.length > 2 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
           <div 
             className="candlestick-chart-container" 
             style={{ 
               height: '350px', 
               padding: '10px',
-              minWidth: psmChartData.labels.length > 6 ? '800px' : 'auto'
+              minWidth: psmChartData.labels.length > 2 ? '800px' : 'auto'
             }}
           >
             <Bar 
@@ -528,13 +528,13 @@ const UnitMetricsCharts = ({ units }) => {
             ⛶
           </button>
         </div>
-        <div className={areaChartData.labels.length > 6 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
+        <div className={areaChartData.labels.length > 2 ? 'chart-scroll-wrapper candlestick-wrapper-scroll' : 'candlestick-wrapper-no-scroll'}>
           <div 
             className="candlestick-chart-container" 
             style={{ 
               height: '350px', 
               padding: '10px',
-              minWidth: areaChartData.labels.length > 6 ? '800px' : 'auto'
+              minWidth: areaChartData.labels.length > 2 ? '800px' : 'auto'
             }}
           >
             <Bar 
