@@ -118,3 +118,7 @@
 [data-theme="dark"] .dashboard-header h1 {
   color: white !important;
 }
+
+[data-theme="dark"] .units-table td:first-child {
+  background: #334155;
+}

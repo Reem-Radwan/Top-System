@@ -36,16 +36,7 @@
   gap: var(--space-lg);
 }
 
-/* Quick Stats */
-.quick-stats {
-  display: flex;
-  align-items: center;
-  gap: var(--space-lg);
-  padding: var(--space-sm) var(--space-lg);
-  background: var(--color-bg-tertiary);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-}
+
 
 .quick-stat-item {
   display: flex;
@@ -90,37 +81,7 @@
   margin: 0;
 }
 
-.dashboard-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
 
-.refresh-btn {
-  padding: var(--space-sm) var(--space-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  box-shadow: var(--shadow-sm);
-  padding: 10px;
-}
-
-.refresh-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md), var(--shadow-glow);
-}
-
-.refresh-btn:active {
-  transform: translateY(0);
-}
 
 .dashboard-header h1 {
   font-size: clamp(1.5rem, 4vw, 2rem);
@@ -256,7 +217,7 @@
 }
 
 [data-theme="dark"] .dashboard-loading {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(19, 42, 15, 0.95);
 }
 
 .spinner {

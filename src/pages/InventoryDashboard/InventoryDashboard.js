@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "../../App.css"; // or a dedicated css file for this page
+import "./inventoryDashboard.css"; // or a dedicated css file for this page
 
-import Dashboard from "../../components/InventoryDashboard/Dashboard";
+import Dashboard from "../../components/InventoryDashboard/DashBoard/Dashboard"
 // import Controls from "../../components/Controls"; // not used in your code (remove if unnecessary)
 import ThemeToggle from "../../components/InventoryDashboard/Themetoggle";
 

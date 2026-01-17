@@ -512,7 +512,6 @@ section {
 
 
 
-
 company-selector-wrapper {
   display: flex;
   flex-direction: column;
@@ -616,3 +615,5 @@ company-selector-wrapper {
     min-width: 100%;
   }
 }
+
+

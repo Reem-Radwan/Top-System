@@ -355,3 +355,26 @@
     transform: translateY(0);
   }
 }
+
+
+
+
+
+
+.filter-option {
+  opacity: 1;
+  cursor: pointer;
+}
+Disabled Option:css.filter-option.disabled {
+  opacity: 0.5;           /* Whole row faded */
+  cursor: not-allowed;    /* ⛔ cursor */
+}
+
+.filter-option.disabled label {
+  opacity: 0.4;           /* Text extra faded */
+  color: var(--color-text-muted);
+}
+
+.filter-option.disabled:hover {
+  background: transparent; /* No hover effect */
+}
