@@ -296,6 +296,7 @@ const toggleCity = (cityName) => {
               className="expand-btn" 
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault()
                 onToggle();
               }}
             >
