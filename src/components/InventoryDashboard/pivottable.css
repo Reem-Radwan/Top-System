@@ -1,0 +1,441 @@
+/* Pivot Table Container */
+.pivot-table-container {
+  width: 100%;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Controls Section */
+.pivot-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* Category Toggle */
+.category-toggle {
+  display: flex;
+  gap: var(--space-sm);
+  background: var(--color-bg-secondary);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.category-btn {
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.category-btn.active {
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  color: white;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.category-btn:hover:not(.active) {
+  background: var(--color-bg-tertiary);
+}
+
+/* Expand Controls */
+.expand-controls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.control-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border-light);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.control-btn:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Dropdown Controls Wrapper */
+.dropdown-controls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* Row Toggle Dropdown */
+.row-toggle {
+  position: relative;
+}
+
+.row-dropdown {
+  display: block;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-md);
+  min-width: 220px;
+  z-index: 100;
+}
+
+.dropdown-section {
+  margin-bottom: var(--space-sm);
+}
+
+.dropdown-section:last-child {
+  margin-bottom: 0;
+}
+
+.dropdown-section h4 {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: var(--space-xs);
+}
+
+.row-dropdown label,
+.column-dropdown label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  transition: background var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.row-dropdown label:hover:not(:has(input:disabled)),
+.column-dropdown label:hover {
+  background: var(--color-bg-secondary);
+}
+
+.row-dropdown label:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.row-dropdown input[type="checkbox"],
+.column-dropdown input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+/* Column Toggle Dropdown */
+.column-toggle {
+  position: relative;
+}
+
+.column-dropdown {
+  display: block;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-md);
+  min-width: 220px;
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Pivot Table Scroll */
+.pivot-table-scroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 70vh;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+}
+
+.pivot-table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.pivot-table-scroll::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+  border-radius: 4px;
+}
+
+.pivot-table-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium);
+  border-radius: 4px;
+}
+
+.pivot-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Pivot Table */
+.pivot-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+}
+
+/* Header Row */
+.header-row {
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-row th {
+  padding: var(--space-md);
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 2px solid #2E6BA8;
+}
+
+.group-header {
+  position: sticky;
+  left: 0;
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  z-index: 11;
+  min-width: 250px;
+}
+
+/* Pivot Rows */
+.pivot-row {
+  transition: background var(--transition-fast);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.pivot-row:hover {
+  background: rgba(74, 144, 226, 0.05);
+}
+
+/* Level-based styling */
+.pivot-row.level-0 {
+  background: rgba(74, 144, 226, 0.1);
+  font-weight: 600;
+}
+
+.pivot-row.level-1 {
+  background: rgba(74, 144, 226, 0.05);
+  font-weight: 500;
+}
+
+.pivot-row.level-2 {
+  background: var(--color-bg-primary);
+}
+
+.pivot-row.level-3 {
+  background: var(--color-bg-secondary);
+}
+
+/* Group Column */
+.group-column {
+  position: sticky;
+  left: 0;
+  background: inherit;
+  z-index: 5;
+  min-width: 250px;
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border-right: 2px solid var(--color-border-light);
+}
+
+.expand-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--color-bg-secondary);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.expand-btn:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Level Labels */
+.level-0-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.level-1-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.level-2-label {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.level-3-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Metric Cells */
+.metric-cell {
+  padding: var(--space-md);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .pivot-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .category-toggle,
+  .expand-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pivot-table-scroll {
+    max-height: 60vh;
+  }
+
+  .header-row th {
+    font-size: 0.75rem;
+    padding: var(--space-sm);
+  }
+
+  .metric-cell {
+    font-size: 0.8rem;
+    padding: var(--space-sm);
+  }
+
+  .group-column {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pivot-table-container {
+    padding: var(--space-md);
+  }
+
+  .pivot-controls {
+    gap: var(--space-sm);
+  }
+
+  .category-btn {
+    font-size: 0.8rem;
+    padding: var(--space-sm);
+  }
+
+  .control-btn {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .pivot-table-scroll {
+    max-height: 50vh;
+  }
+
+  .group-column {
+    min-width: 150px;
+  }
+
+  .level-0-label {
+    font-size: 0.9rem;
+  }
+
+  .level-1-label {
+    font-size: 0.85rem;
+  }
+
+  .level-2-label,
+  .level-3-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .header-row {
+  background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
+}
+
+[data-theme="dark"] .group-header {
+  background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
+}
+
+[data-theme="dark"] .pivot-row.level-0 {
+  background: rgba(46, 107, 168, 0.15);
+}
+
+[data-theme="dark"] .pivot-row.level-1 {
+  background: rgba(46, 107, 168, 0.08);
+}
+
+[data-theme="dark"] .pivot-row:hover {
+  background: rgba(46, 107, 168, 0.12);
+}
+
+/* Print Styles */
+@media print {
+  .pivot-controls {
+    display: none;
+  }
+
+  .pivot-table-scroll {
+    overflow: visible;
+    max-height: none;
+    border: none;
+  }
+
+  .expand-btn {
+    display: none;
+  }
+}
