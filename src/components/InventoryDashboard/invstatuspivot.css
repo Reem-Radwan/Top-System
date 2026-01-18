@@ -600,3 +600,148 @@
     display: none;
   }
 }
+
+
+/* New CSS for row control group */
+.row-control-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.row-toggle {
+  position: relative;
+}
+
+.row-toggle .row-control-group {
+  display: flex;
+}
+
+/* Adjust existing styles if needed */
+.pivot-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dropdown-controls {
+  display: flex;
+  gap: 20px;
+}
+
+.control-btn {
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.control-btn:hover {
+  background: #e0e0e0;
+}
+
+
+/* Center the status tabs */
+.centered-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+  max-width: fit-content;
+}
+
+/* Adjust status tabs wrapper */
+.status-tabs-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Right aligned controls */
+.right-aligned-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.controls-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Dropdown positioning */
+.row-toggle,
+.column-toggle {
+  position: relative;
+}
+
+.row-dropdown,
+.column-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  min-width: 200px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-top: 5px;
+}
+
+.column-dropdown {
+  right: 0;
+}
+
+/* Make sure the category toggle (status tabs) is centered */
+.category-toggle {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Adjust status tabs container for centering */
+.status-tabs-container {
+  position: relative;
+  margin: 20px auto;
+  max-width: 90%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .controls-group {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  
+  .status-tabs-container {
+    max-width: 100%;
+  }
+}
+
+/* existing styles ... */
+
+/* Status multi-select container (reuses dropdown styles) */
+.status-multi-toggle {
+  position: relative;
+}
+
+/* everything else remains as you have it */
+
+
+/* vertical separator after each status group */
+.status-group-end:not(:last-child) {
+  border-right: 2px solid #bab9b9;
+}
+
+/* optional: remove double border with next group */
+ .status-group-end + td,
+ .status-group-end + th {
+  border-left: none;
+}

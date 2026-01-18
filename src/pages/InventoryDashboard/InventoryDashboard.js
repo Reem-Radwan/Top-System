@@ -155,9 +155,9 @@ export default function InventoryDashboardPage() {
       case 'home':
         return '📊 Inventory Dashboard';
       case 'project-data':
-        return '📊 Pivot Table: Units by Status';
+        return '📊 Un/Sold Analysis'
       case 'inv-status':
-        return '📦 Inventory Status';
+        return '📦 Inventory Status Analysis'
       case 'sales-progress':
         return '📈 Sales Progress';
       case 'delivery-plan':

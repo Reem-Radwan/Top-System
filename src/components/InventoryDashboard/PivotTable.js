@@ -2,13 +2,12 @@
 // import React, { useState, useMemo, useEffect, useRef } from 'react';
 // import './pivottable.css';
 
-
 // const PivotTable = ({ units }) => {
 //   // State for expand/collapse
 //   const [expandedCities, setExpandedCities] = useState({});
 //   const [expandedProjects, setExpandedProjects] = useState({});
 //   const [expandedTypes, setExpandedTypes] = useState({});
-  
+
 //   // State for column visibility
 //   const [visibleColumns, setVisibleColumns] = useState({
 //     percentage: true,
@@ -33,7 +32,7 @@
 
 //   // State for column dropdown visibility
 //   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
-  
+
 //   // State for row dropdown visibility
 //   const [showRowDropdown, setShowRowDropdown] = useState(false);
 
@@ -43,6 +42,9 @@
 //   // Refs for dropdown detection
 //   const columnDropdownRef = useRef(null);
 //   const rowDropdownRef = useRef(null);
+
+//   // Ref for horizontal scroll reset (mobile)
+//   const pivotScrollRef = useRef(null);
 
 //   // Close dropdowns when clicking outside
 //   useEffect(() => {
@@ -61,6 +63,13 @@
 //     };
 //   }, []);
 
+//   // Ensure mobile horizontal scroll starts from the beginning
+//   useEffect(() => {
+//     if (pivotScrollRef.current) {
+//       pivotScrollRef.current.scrollLeft = 0;
+//     }
+//   }, []);
+
 //   // Calculate hierarchical pivot data
 //   const pivotData = useMemo(() => {
 //     const cityMap = {};
@@ -71,7 +80,7 @@
 //       const unitType = unit.unit_type || 'Unknown';
 //       const areaRange = unit.area_range || 'Unknown';
 //       const status = unit.status || 'Unknown';
-      
+
 //       // Determine if sold or unsold
 //       const isSold = status === 'Contracted' || status === 'Reserved';
 //       const category = isSold ? 'sold' : 'unsold';
@@ -162,7 +171,7 @@
 //     }
 
 //     const { units, count, totalArea, totalValue } = categoryData;
-    
+
 //     // Calculate PSM values
 //     const psmValues = units.map(u => parseFloat(u.psm) || 0).filter(v => v > 0);
 //     const priceValues = units.map(u => parseFloat(u.interest_free_unit_price) || 0).filter(v => v > 0);
@@ -191,20 +200,12 @@
 //   };
 
 //   // Toggle city expansion
-// //   const toggleCity = (cityName) => {
-// //     setExpandedCities(prev => ({
-// //       ...prev,
-// //       [cityName]: !prev[cityName]
-// //     }));
-// //   };
-
-// // Toggle city expansion
-// const toggleCity = (cityName) => {
-//   setExpandedCities(prev => ({
-//     ...prev,
-//     [cityName]: !(prev[cityName] === true) // Explicitly check for true
-//   }));
-// };
+//   const toggleCity = (cityName) => {
+//     setExpandedCities(prev => ({
+//       ...prev,
+//       [cityName]: !(prev[cityName] === true) // Explicitly check for true
+//     }));
+//   };
 
 //   // Toggle project expansion
 //   const toggleProject = (cityName, projectName) => {
@@ -259,13 +260,13 @@
 //     const newExpandedCities = {};
 //     const newExpandedProjects = {};
 //     const newExpandedTypes = {};
-    
+
 //     pivotData.forEach(city => {
 //       newExpandedCities[city.name] = true;
 //       Object.keys(city.projects).forEach(projectName => {
 //         const projectKey = `${city.name}-${projectName}`;
 //         newExpandedProjects[projectKey] = true;
-        
+
 //         const project = city.projects[projectName];
 //         Object.keys(project.unitTypes).forEach(typeName => {
 //           const typeKey = `${city.name}-${projectName}-${typeName}`;
@@ -273,7 +274,7 @@
 //         });
 //       });
 //     });
-    
+
 //     setExpandedCities(newExpandedCities);
 //     setExpandedProjects(newExpandedProjects);
 //     setExpandedTypes(newExpandedTypes);
@@ -292,11 +293,11 @@
 //       <tr className={`pivot-row level-${level}`} key={name}>
 //         <td className="group-column" style={{ paddingLeft: `${indent * 20 + 10}px` }}>
 //           {expandable && (
-//             <button 
-//               className="expand-btn" 
+//             <button
+//               className="expand-btn"
 //               onClick={(e) => {
 //                 e.stopPropagation();
-//                 e.preventDefault()
+//                 e.preventDefault();
 //                 onToggle();
 //               }}
 //             >
@@ -320,17 +321,21 @@
 //   };
 
 //   return (
-//     <div className="pivot-table-container">
-//       {/* Controls */}
+//     <div
+//       className={`pivot-table-container ${activeCategory === 'sold' ? 'theme-unsold' : 'theme-sold'}`}
+//     >
+//       {/* Controls */} 
 //       <div className="pivot-controls">
 //         <div className="category-toggle">
-//           <button 
+
+//             <button
 //             className={`category-btn ${activeCategory === 'unsold' ? 'active' : ''}`}
 //             onClick={() => setActiveCategory('unsold')}
 //           >
 //             📦 UNSOLD
 //           </button>
-//           <button 
+
+//             <button
 //             className={`category-btn ${activeCategory === 'sold' ? 'active' : ''}`}
 //             onClick={() => setActiveCategory('sold')}
 //           >
@@ -354,16 +359,16 @@
 //                 <div className="dropdown-section">
 //                   <h4>Hierarchy Levels</h4>
 //                   <label>
-//                     <input 
-//                       type="checkbox" 
+//                     <input
+//                       type="checkbox"
 //                       checked={visibleRows.cities}
 //                       onChange={() => toggleRow('cities')}
 //                     />
 //                     📍 Cities
 //                   </label>
 //                   <label>
-//                     <input 
-//                       type="checkbox" 
+//                     <input
+//                       type="checkbox"
 //                       checked={visibleRows.projects}
 //                       onChange={() => toggleRow('projects')}
 //                       disabled={!visibleRows.cities}
@@ -371,8 +376,8 @@
 //                     📁 Projects
 //                   </label>
 //                   <label>
-//                     <input 
-//                       type="checkbox" 
+//                     <input
+//                       type="checkbox"
 //                       checked={visibleRows.unitTypes}
 //                       onChange={() => toggleRow('unitTypes')}
 //                       disabled={!visibleRows.projects}
@@ -380,8 +385,8 @@
 //                     🏠 Unit Types
 //                   </label>
 //                   <label>
-//                     <input 
-//                       type="checkbox" 
+//                     <input
+//                       type="checkbox"
 //                       checked={visibleRows.areaRanges}
 //                       onChange={() => toggleRow('areaRanges')}
 //                       disabled={!visibleRows.unitTypes}
@@ -404,22 +409,22 @@
 //                   <h4>Data Fields</h4>
 //                   {Object.keys(visibleColumns).map(key => (
 //                     <label key={key}>
-//                       <input 
-//                         type="checkbox" 
+//                       <input
+//                         type="checkbox"
 //                         checked={visibleColumns[key]}
 //                         onChange={() => toggleColumn(key)}
 //                       />
-//                       {key === 'percentage' ? 'Percentage' : 
-//                        key === 'noOfUnits' ? 'No. of Units' :
-//                        key === 'sellableArea' ? 'Sellable Area' :
-//                        key === 'salesValue' ? 'Sales Value' :
-//                        key === 'minPSM' ? 'Min PSM' :
-//                        key === 'avgPSM' ? 'Avg PSM' :
-//                        key === 'maxPSM' ? 'Max PSM' :
-//                        key === 'minUnitPrice' ? 'Min Unit Price' :
-//                        key === 'avgUnitPrice' ? 'Avg Unit Price' :
-//                        key === 'maxUnitPrice' ? 'Max Unit Price' :
-//                        key.replace(/([A-Z])/g, ' $1').trim()}
+//                       {key === 'percentage' ? '%' :
+//                         key === 'noOfUnits' ? 'Units' :
+//                           key === 'sellableArea' ? 'Total Area' :
+//                             key === 'salesValue' ? ' Total Sales' :
+//                               key === 'minPSM' ? 'Min PSM' :
+//                                 key === 'avgPSM' ? 'Avg PSM' :
+//                                   key === 'maxPSM' ? 'Max PSM' :
+//                                     key === 'minUnitPrice' ? 'Min Price' :
+//                                       key === 'avgUnitPrice' ? 'Avg Price' :
+//                                         key === 'maxUnitPrice' ? 'Max Price' :
+//                                           key.replace(/([A-Z])/g, ' $1').trim()}
 //                     </label>
 //                   ))}
 //                 </div>
@@ -430,23 +435,23 @@
 //       </div>
 
 //       {/* Pivot Table */}
-//       <div className="pivot-table-scroll">
+//       <div className="pivot-table-scroll" ref={pivotScrollRef}>
 //         <table className="pivot-table">
 //           <thead>
-//             <tr className="header-row">
-//               <th className="group-header">GROUP</th>
-//               {visibleColumns.percentage && <th>PERCENTAGE</th>}
-//               {visibleColumns.noOfUnits && <th>NO. OF UNITS</th>}
-//               {visibleColumns.sellableArea && <th>SELLABLE AREA</th>}
-//               {visibleColumns.salesValue && <th>SALES VALUE</th>}
-//               {visibleColumns.minPSM && <th>MIN PSM</th>}
-//               {visibleColumns.avgPSM && <th>AVG PSM</th>}
-//               {visibleColumns.maxPSM && <th>MAX PSM</th>}
-//               {visibleColumns.minUnitPrice && <th>MIN UNIT PRICE</th>}
-//               {visibleColumns.avgUnitPrice && <th>AVG UNIT PRICE</th>}
-//               {visibleColumns.maxUnitPrice && <th>MAX UNIT PRICE</th>}
-//             </tr>
-//           </thead>
+//           <tr className="header-row">
+//             <th className="group-header">GROUP</th>
+//             {visibleColumns.percentage && <th className="col-group-1">%</th>}
+//             {visibleColumns.noOfUnits && <th className="col-group-1">UNITS</th>}
+//             {visibleColumns.sellableArea && <th className="col-group-1">TOTAL AREA</th>}
+//             {visibleColumns.salesValue && <th className="col-group-1">TOTAL SALES</th>}
+//             {visibleColumns.minPSM && <th className="col-group-2">MIN PSM</th>}
+//             {visibleColumns.avgPSM && <th className="col-group-2">AVG PSM</th>}
+//             {visibleColumns.maxPSM && <th className="col-group-2">MAX PSM</th>}
+//             {visibleColumns.minUnitPrice && <th>MIN PRICE</th>}
+//             {visibleColumns.avgUnitPrice && <th>AVG PRICE</th>}
+//             {visibleColumns.maxUnitPrice && <th>MAX PRICE</th>}
+//           </tr>
+//         </thead>
 //           <tbody>
 //             {visibleRows.cities && pivotData.map(city => {
 //               // Calculate total units in city (sold + unsold)
@@ -459,10 +464,10 @@
 //                 <React.Fragment key={city.name}>
 //                   {/* City Row */}
 //                   {renderRow(
-//                     0, 
-//                     `📍 ${city.name}`, 
-//                     cityMetrics, 
-//                     cityHasExpandable, 
+//                     0,
+//                     `📍 ${city.name}`,
+//                     cityMetrics,
+//                     cityHasExpandable,
 //                     isCityExpanded,
 //                     () => toggleCity(city.name),
 //                     0
@@ -548,6 +553,11 @@
 
 
 
+
+
+
+
+
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './pivottable.css';
 
@@ -586,7 +596,7 @@ const PivotTable = ({ units }) => {
   const [showRowDropdown, setShowRowDropdown] = useState(false);
 
   // State for active category (Sold/Unsold)
-  const [activeCategory, setActiveCategory] = useState('sold');
+  const [activeCategory, setActiveCategory] = useState('unsold');
 
   // Refs for dropdown detection
   const columnDropdownRef = useRef(null);
@@ -702,57 +712,61 @@ const PivotTable = ({ units }) => {
     return Object.values(cityMap);
   }, [units]);
 
-  // Calculate metrics for a category
-  const calculateMetrics = (categoryData, totalUnitsInLevel) => {
-    if (!categoryData || categoryData.count === 0) {
+  // Calculate metrics for a category - memoized to prevent recalculations
+  const calculateMetrics = useMemo(() => {
+    return (categoryData, totalUnitsInLevel) => {
+      if (!categoryData || categoryData.count === 0) {
+        return {
+          percentage: '0%',
+          count: 0,
+          totalArea: 0,
+          totalValue: 0,
+          minPSM: 0,
+          avgPSM: 0,
+          maxPSM: 0,
+          minPrice: 0,
+          avgPrice: 0,
+          maxPrice: 0
+        };
+      }
+
+      const { units, count, totalArea, totalValue } = categoryData;
+
+      // Calculate PSM values
+      const psmValues = units.map(u => parseFloat(u.psm) || 0).filter(v => v > 0);
+      const priceValues = units.map(u => parseFloat(u.interest_free_unit_price) || 0).filter(v => v > 0);
+
+      const totalUnits = count;
+      // Calculate percentage based on TOTAL units in this level (sold + unsold)
+      const percentage = totalUnitsInLevel > 0 ? ((count / totalUnitsInLevel) * 100).toFixed(2) : 0;
+
       return {
-        percentage: '0%',
-        count: 0,
-        totalArea: 0,
-        totalValue: 0,
-        minPSM: 0,
-        avgPSM: 0,
-        maxPSM: 0,
-        minPrice: 0,
-        avgPrice: 0,
-        maxPrice: 0
+        percentage: `${percentage}%`,
+        count: totalUnits,
+        totalArea: Math.round(totalArea),
+        totalValue: Math.round(totalValue),
+        minPSM: psmValues.length > 0 ? Math.round(Math.min(...psmValues)) : 0,
+        avgPSM: psmValues.length > 0 ? Math.round(psmValues.reduce((a, b) => a + b, 0) / psmValues.length) : 0,
+        maxPSM: psmValues.length > 0 ? Math.round(Math.max(...psmValues)) : 0,
+        minPrice: priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0,
+        avgPrice: priceValues.length > 0 ? Math.round(priceValues.reduce((a, b) => a + b, 0) / priceValues.length) : 0,
+        maxPrice: priceValues.length > 0 ? Math.round(Math.max(...priceValues)) : 0
       };
-    }
-
-    const { units, count, totalArea, totalValue } = categoryData;
-
-    // Calculate PSM values
-    const psmValues = units.map(u => parseFloat(u.psm) || 0).filter(v => v > 0);
-    const priceValues = units.map(u => parseFloat(u.interest_free_unit_price) || 0).filter(v => v > 0);
-
-    const totalUnits = count;
-    // Calculate percentage based on TOTAL units in this level (sold + unsold)
-    const percentage = totalUnitsInLevel > 0 ? ((count / totalUnitsInLevel) * 100).toFixed(2) : 0;
-
-    return {
-      percentage: `${percentage}%`,
-      count: totalUnits,
-      totalArea: Math.round(totalArea),
-      totalValue: Math.round(totalValue),
-      minPSM: psmValues.length > 0 ? Math.round(Math.min(...psmValues)) : 0,
-      avgPSM: psmValues.length > 0 ? Math.round(psmValues.reduce((a, b) => a + b, 0) / psmValues.length) : 0,
-      maxPSM: psmValues.length > 0 ? Math.round(Math.max(...psmValues)) : 0,
-      minPrice: priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0,
-      avgPrice: priceValues.length > 0 ? Math.round(priceValues.reduce((a, b) => a + b, 0) / priceValues.length) : 0,
-      maxPrice: priceValues.length > 0 ? Math.round(Math.max(...priceValues)) : 0
     };
-  };
+  }, []);
 
-  // Format number with commas
-  const formatNumber = (num) => {
-    return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
-  };
+  // Format number with commas - memoized
+  const formatNumber = useMemo(() => {
+    return (num) => {
+      return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    };
+  }, []);
 
   // Toggle city expansion
   const toggleCity = (cityName) => {
     setExpandedCities(prev => ({
       ...prev,
-      [cityName]: !(prev[cityName] === true) // Explicitly check for true
+      [cityName]: !prev[cityName]
     }));
   };
 
@@ -836,69 +850,125 @@ const PivotTable = ({ units }) => {
     setExpandedTypes({});
   };
 
-  // Render row for any level
-  const renderRow = (level, name, metrics, expandable, expanded, onToggle, indent = 0) => {
-    return (
-      <tr className={`pivot-row level-${level}`} key={name}>
-        <td className="group-column" style={{ paddingLeft: `${indent * 20 + 10}px` }}>
-          {expandable && (
-            <button
-              className="expand-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                onToggle();
-              }}
-            >
-              {expanded ? '▼' : '▶'}
-            </button>
-          )}
-          <span className={`level-${level}-label`}>{name}</span>
-        </td>
-        {visibleColumns.percentage && <td className="metric-cell">{metrics.percentage}</td>}
-        {visibleColumns.noOfUnits && <td className="metric-cell">{formatNumber(metrics.count)}</td>}
-        {visibleColumns.sellableArea && <td className="metric-cell">{formatNumber(metrics.totalArea)}</td>}
-        {visibleColumns.salesValue && <td className="metric-cell">{formatNumber(metrics.totalValue)}</td>}
-        {visibleColumns.minPSM && <td className="metric-cell">{formatNumber(metrics.minPSM)}</td>}
-        {visibleColumns.avgPSM && <td className="metric-cell">{formatNumber(metrics.avgPSM)}</td>}
-        {visibleColumns.maxPSM && <td className="metric-cell">{formatNumber(metrics.maxPSM)}</td>}
-        {visibleColumns.minUnitPrice && <td className="metric-cell">{formatNumber(metrics.minPrice)}</td>}
-        {visibleColumns.avgUnitPrice && <td className="metric-cell">{formatNumber(metrics.avgPrice)}</td>}
-        {visibleColumns.maxUnitPrice && <td className="metric-cell">{formatNumber(metrics.maxPrice)}</td>}
-      </tr>
-    );
-  };
+  // Check if everything is expanded - memoized for performance
+  const isEverythingExpanded = useMemo(() => {
+    // Check if all cities are expanded
+    const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+    
+    // Check if all projects are expanded (for expanded cities)
+    let allProjectsExpanded = true;
+    pivotData.forEach(city => {
+      if (expandedCities[city.name]) {
+        Object.keys(city.projects).forEach(projectName => {
+          const projectKey = `${city.name}-${projectName}`;
+          if (!expandedProjects[projectKey]) {
+            allProjectsExpanded = false;
+          }
+        });
+      }
+    });
+    
+    // Check if all types are expanded (for expanded projects)
+    let allTypesExpanded = true;
+    pivotData.forEach(city => {
+      if (expandedCities[city.name]) {
+        Object.keys(city.projects).forEach(projectName => {
+          const projectKey = `${city.name}-${projectName}`;
+          if (expandedProjects[projectKey]) {
+            const project = city.projects[projectName];
+            Object.keys(project.unitTypes).forEach(typeName => {
+              const typeKey = `${city.name}-${projectName}-${typeName}`;
+              if (!expandedTypes[typeKey]) {
+                allTypesExpanded = false;
+              }
+            });
+          }
+        });
+      }
+    });
+    
+    return allCitiesExpanded && allProjectsExpanded && allTypesExpanded;
+  }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
+
+  // Check if everything is collapsed - memoized for performance
+  const isEverythingCollapsed = useMemo(() => {
+    const hasExpandedCities = Object.keys(expandedCities).some(key => expandedCities[key]);
+    const hasExpandedProjects = Object.keys(expandedProjects).some(key => expandedProjects[key]);
+    const hasExpandedTypes = Object.keys(expandedTypes).some(key => expandedTypes[key]);
+    
+    return !hasExpandedCities && !hasExpandedProjects && !hasExpandedTypes;
+  }, [expandedCities, expandedProjects, expandedTypes]);
+
+  // Render row for any level - memoized callback
+  const renderRow = useMemo(() => {
+    return (level, name, metrics, expandable, expanded, onToggle, indent = 0) => {
+      return (
+        <tr className={`pivot-row level-${level}`} key={name}>
+          <td className="group-column" style={{ paddingLeft: `${indent * 20 + 10}px` }}>
+            {expandable && (
+              <button
+                className="expand-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onToggle();
+                }}
+              >
+                {expanded ? '▼' : '▶'}
+              </button>
+            )}
+            <span className={`level-${level}-label`}>{name}</span>
+          </td>
+          {visibleColumns.percentage && <td className="metric-cell">{metrics.percentage}</td>}
+          {visibleColumns.noOfUnits && <td className="metric-cell">{formatNumber(metrics.count)}</td>}
+          {visibleColumns.sellableArea && <td className="metric-cell">{formatNumber(metrics.totalArea)}</td>}
+          {visibleColumns.salesValue && <td className="metric-cell">{formatNumber(metrics.totalValue)}</td>}
+          {visibleColumns.minPSM && <td className="metric-cell">{formatNumber(metrics.minPSM)}</td>}
+          {visibleColumns.avgPSM && <td className="metric-cell">{formatNumber(metrics.avgPSM)}</td>}
+          {visibleColumns.maxPSM && <td className="metric-cell">{formatNumber(metrics.maxPSM)}</td>}
+          {visibleColumns.minUnitPrice && <td className="metric-cell">{formatNumber(metrics.minPrice)}</td>}
+          {visibleColumns.avgUnitPrice && <td className="metric-cell">{formatNumber(metrics.avgPrice)}</td>}
+          {visibleColumns.maxUnitPrice && <td className="metric-cell">{formatNumber(metrics.maxPrice)}</td>}
+        </tr>
+      );
+    };
+  }, [visibleColumns, formatNumber]);
 
   return (
     <div
-      className={`pivot-table-container ${activeCategory === 'sold' ? 'theme-sold' : 'theme-unsold'}`}
+      className={`pivot-table-container ${activeCategory === 'sold' ? 'theme-unsold' : 'theme-sold'}`}
     >
-      {/* Controls */}
-      <div className="pivot-controls">
-        <div className="category-toggle">
+      {/* Category Toggle - Centered */}
+      <div className="category-toggle centered-tabs">
+        <button
+          className={`category-btn ${activeCategory === 'unsold' ? 'active' : ''}`}
+          onClick={() => setActiveCategory('unsold')}
+        >
+          📦 UNSOLD
+        </button>
 
-            <button
-            className={`category-btn ${activeCategory === 'sold' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('sold')}
-          >
-            ✅ SOLD
-          </button>
-          
-          <button
-            className={`category-btn ${activeCategory === 'unsold' ? 'active' : ''}`}
-            onClick={() => setActiveCategory('unsold')}
-          >
-            📦 UNSOLD
-          </button>
-          
-        </div>
+        <button
+          className={`category-btn ${activeCategory === 'sold' ? 'active' : ''}`}
+          onClick={() => setActiveCategory('sold')}
+        >
+          ✅ SOLD
+        </button>
+      </div>
 
-        <div className="expand-controls">
-          <button className="control-btn" onClick={expandAll}>▼ Collapse All</button>
-          <button className="control-btn" onClick={collapseAll}>▶ Expand All </button>
-        </div>
+      {/* Controls - All buttons on right side */}
+      <div className="pivot-controls right-aligned-controls">
+        <div className="controls-group">
+          {/* Collapse/Expand All button */}
+          {isEverythingExpanded ? (
+            <button className="control-btn" onClick={collapseAll}>
+              ▶ Collapse All
+            </button>
+          ) : (
+            <button className="control-btn" onClick={expandAll}>
+              ▼ Expand All
+            </button>
+          )}
 
-        <div className="dropdown-controls">
           {/* Rows/Fields Dropdown */}
           <div className="row-toggle" ref={rowDropdownRef}>
             <button className="control-btn" onClick={toggleRowDropdown}>
@@ -964,16 +1034,16 @@ const PivotTable = ({ units }) => {
                         checked={visibleColumns[key]}
                         onChange={() => toggleColumn(key)}
                       />
-                      {key === 'percentage' ? 'Percentage' :
-                        key === 'noOfUnits' ? 'No. of Units' :
-                          key === 'sellableArea' ? 'Sellable Area' :
-                            key === 'salesValue' ? 'Sales Value' :
+                      {key === 'percentage' ? '%' :
+                        key === 'noOfUnits' ? 'Units' :
+                          key === 'sellableArea' ? 'Total Area' :
+                            key === 'salesValue' ? ' Total Sales' :
                               key === 'minPSM' ? 'Min PSM' :
                                 key === 'avgPSM' ? 'Avg PSM' :
                                   key === 'maxPSM' ? 'Max PSM' :
-                                    key === 'minUnitPrice' ? 'Min Unit Price' :
-                                      key === 'avgUnitPrice' ? 'Avg Unit Price' :
-                                        key === 'maxUnitPrice' ? 'Max Unit Price' :
+                                    key === 'minUnitPrice' ? 'Min Price' :
+                                      key === 'avgUnitPrice' ? 'Avg Price' :
+                                        key === 'maxUnitPrice' ? 'Max Price' :
                                           key.replace(/([A-Z])/g, ' $1').trim()}
                     </label>
                   ))}
@@ -988,26 +1058,26 @@ const PivotTable = ({ units }) => {
       <div className="pivot-table-scroll" ref={pivotScrollRef}>
         <table className="pivot-table">
           <thead>
-            <tr className="header-row">
-              <th className="group-header">GROUP</th>
-              {visibleColumns.percentage && <th>PERCENTAGE</th>}
-              {visibleColumns.noOfUnits && <th>NO. OF UNITS</th>}
-              {visibleColumns.sellableArea && <th>SELLABLE AREA</th>}
-              {visibleColumns.salesValue && <th>SALES VALUE</th>}
-              {visibleColumns.minPSM && <th>MIN PSM</th>}
-              {visibleColumns.avgPSM && <th>AVG PSM</th>}
-              {visibleColumns.maxPSM && <th>MAX PSM</th>}
-              {visibleColumns.minUnitPrice && <th>MIN UNIT PRICE</th>}
-              {visibleColumns.avgUnitPrice && <th>AVG UNIT PRICE</th>}
-              {visibleColumns.maxUnitPrice && <th>MAX UNIT PRICE</th>}
-            </tr>
-          </thead>
+          <tr className="header-row">
+            <th className="group-header">GROUP</th>
+            {visibleColumns.percentage && <th className="col-group-1">%</th>}
+            {visibleColumns.noOfUnits && <th className="col-group-1">UNITS</th>}
+            {visibleColumns.sellableArea && <th className="col-group-1">TOTAL AREA</th>}
+            {visibleColumns.salesValue && <th className="col-group-1">TOTAL SALES</th>}
+            {visibleColumns.minPSM && <th className="col-group-2">MIN PSM</th>}
+            {visibleColumns.avgPSM && <th className="col-group-2">AVG PSM</th>}
+            {visibleColumns.maxPSM && <th className="col-group-2">MAX PSM</th>}
+            {visibleColumns.minUnitPrice && <th>MIN PRICE</th>}
+            {visibleColumns.avgUnitPrice && <th>AVG PRICE</th>}
+            {visibleColumns.maxUnitPrice && <th>MAX PRICE</th>}
+          </tr>
+        </thead>
           <tbody>
             {visibleRows.cities && pivotData.map(city => {
               // Calculate total units in city (sold + unsold)
               const cityTotalUnits = city.sold.count + city.unsold.count;
               const cityMetrics = calculateMetrics(city[activeCategory], cityTotalUnits);
-              const isCityExpanded = expandedCities[city.name] !== true// Default true
+              const isCityExpanded = expandedCities[city.name];
               const cityHasExpandable = visibleRows.projects; // City can expand if projects are visible
 
               return (
