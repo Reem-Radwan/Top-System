@@ -7,7 +7,6 @@
   box-shadow: var(--shadow-md);
 }
 
-
 /* Controls Section */
 .pivot-controls {
   display: flex;
@@ -18,7 +17,6 @@
   gap: var(--space-md);
 }
 
-
 /* Category Toggle */
 .category-toggle {
   display: flex;
@@ -27,7 +25,6 @@
   padding: 4px;
   border-radius: var(--radius-md);
 }
-
 
 .category-btn {
   padding: var(--space-sm) var(--space-lg);
@@ -42,25 +39,21 @@
   user-select: none;
 }
 
-
 .category-btn.active {
   background: linear-gradient(135deg, #4A90E2, #357ABD);
   color: white;
   box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }
 
-
 .category-btn:hover:not(.active) {
   background: var(--color-bg-tertiary);
 }
 
-
-/* Expand Controls */
+/* Expand & Control Buttons */
 .expand-controls {
   display: flex;
   gap: var(--space-sm);
 }
-
 
 .control-btn {
   padding: var(--space-sm) var(--space-md);
@@ -75,33 +68,27 @@
   user-select: none;
 }
 
-
 .control-btn:hover {
   background: var(--color-bg-secondary);
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
-
 .control-btn:active {
   transform: scale(0.98);
 }
 
-
-/* Dropdown Controls Wrapper */
+/* Dropdown Controls */
 .dropdown-controls {
   display: flex;
   gap: var(--space-sm);
 }
 
-
-/* Row Toggle Dropdown */
-.row-toggle {
+.row-toggle, .column-toggle {
   position: relative;
 }
 
-
-.row-dropdown {
+.row-dropdown, .column-dropdown {
   display: block;
   position: absolute;
   top: 100%;
@@ -116,16 +103,18 @@
   z-index: 100;
 }
 
+.column-dropdown {
+  max-height: 400px;
+  overflow-y: auto;
+}
 
 .dropdown-section {
   margin-bottom: var(--space-sm);
 }
 
-
 .dropdown-section:last-child {
   margin-bottom: 0;
 }
-
 
 .dropdown-section h4 {
   margin: 0 0 var(--space-sm) 0;
@@ -138,9 +127,7 @@
   padding-bottom: var(--space-xs);
 }
 
-
-.row-dropdown label,
-.column-dropdown label {
+.row-dropdown label, .column-dropdown label {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -153,18 +140,15 @@
   user-select: none;
 }
 
-
 .row-dropdown label:hover:not(:has(input:disabled)),
 .column-dropdown label:hover {
   background: var(--color-bg-secondary);
 }
 
-
 .row-dropdown label:has(input:disabled) {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 
 .row-dropdown input[type="checkbox"],
 .column-dropdown input[type="checkbox"] {
@@ -173,31 +157,6 @@
   accent-color: var(--color-primary);
   cursor: pointer;
 }
-
-
-/* Column Toggle Dropdown */
-.column-toggle {
-  position: relative;
-}
-
-
-.column-dropdown {
-  display: block;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: var(--space-sm);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-md);
-  min-width: 220px;
-  z-index: 100;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
 
 /* Pivot Table Scroll */
 .pivot-table-scroll {
@@ -208,29 +167,24 @@
   border: 1px solid var(--color-border-light);
 }
 
-
 .pivot-table-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 
 .pivot-table-scroll::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
   border-radius: 4px;
 }
 
-
 .pivot-table-scroll::-webkit-scrollbar-thumb {
   background: var(--color-border-medium);
   border-radius: 4px;
 }
 
-
 .pivot-table-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
-
 
 /* Pivot Table */
 .pivot-table {
@@ -238,8 +192,8 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9rem;
+  table-layout: auto;
 }
-
 
 /* Header Row */
 .header-row {
@@ -250,17 +204,16 @@
   z-index: 10;
 }
 
-
 .header-row th {
   padding: var(--space-md);
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
   white-space: nowrap;
   border-bottom: 2px solid #2E6BA8;
+  min-width: 120px;
 }
-
 
 .group-header {
   position: sticky;
@@ -268,9 +221,9 @@
   background: linear-gradient(135deg, #4A90E2, #357ABD);
   z-index: 11;
   min-width: 250px;
-  max-width: 250px;
+  width: 250px;
+  text-align: left !important;
 }
-
 
 /* Pivot Rows */
 .pivot-row {
@@ -278,11 +231,9 @@
   border-bottom: 1px solid var(--color-border-light);
 }
 
-
 .pivot-row:hover {
   background: rgba(74, 144, 226, 0.05);
 }
-
 
 /* Level-based styling */
 .pivot-row.level-0 {
@@ -290,22 +241,18 @@
   font-weight: 600;
 }
 
-
 .pivot-row.level-1 {
   background: rgba(74, 144, 226, 0.05);
   font-weight: 500;
 }
 
-
 .pivot-row.level-2 {
   background: var(--color-bg-primary);
 }
 
-
 .pivot-row.level-3 {
   background: var(--color-bg-secondary);
 }
-
 
 /* Group Column */
 .group-column {
@@ -314,7 +261,7 @@
   background: #e3effd;
   z-index: 5;
   min-width: 250px;
-  max-width: 250px;
+  width: 250px;
   padding: var(--space-md);
   display: flex;
   align-items: center;
@@ -324,7 +271,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 .expand-btn {
   width: 24px;
@@ -344,18 +290,15 @@
   user-select: none;
 }
 
-
 .expand-btn:hover {
   background: var(--color-primary);
   color: white;
   transform: scale(1.1);
 }
 
-
 .expand-btn:active {
   transform: scale(1.05);
 }
-
 
 /* Level Labels */
 .level-0-label {
@@ -366,7 +309,6 @@
   text-overflow: ellipsis;
 }
 
-
 .level-1-label {
   font-size: 0.95rem;
   font-weight: 600;
@@ -375,14 +317,12 @@
   text-overflow: ellipsis;
 }
 
-
 .level-2-label {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 
 .level-3-label {
   font-size: 0.85rem;
@@ -391,16 +331,15 @@
   text-overflow: ellipsis;
 }
 
-
 /* Metric Cells */
 .metric-cell {
   padding: var(--space-md);
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   color: var(--color-text-secondary);
+  min-width: 120px;
 }
-
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -409,110 +348,74 @@
     align-items: stretch;
   }
 
-
   .category-toggle,
-  .expand-controls {
-    width: 100%;
-    justify-content: center;
-  }
-
+  .expand-controls,
   .dropdown-controls {
     width: 100%;
     justify-content: center;
   }
 
-
   .pivot-table-scroll {
     max-height: 60vh;
   }
 
-
   .header-row th {
     font-size: 0.75rem;
     padding: var(--space-sm);
+    min-width: 100px;
   }
-
 
   .metric-cell {
     font-size: 0.8rem;
     padding: var(--space-sm);
+    min-width: 100px;
   }
 
-
-  .group-column {
-    min-width: 200px;
-    max-width: 200px;
-  }
-
+  .group-column,
   .group-header {
     min-width: 200px;
-    max-width: 200px;
+    width: 200px;
   }
 }
-
 
 @media (max-width: 768px) {
   .pivot-table-container {
     padding: var(--space-md);
   }
 
-
   .pivot-controls {
     gap: var(--space-sm);
   }
-
 
   .category-btn {
     font-size: 0.8rem;
     padding: var(--space-sm);
   }
 
-
   .control-btn {
     font-size: 0.75rem;
     padding: 6px 12px;
   }
 
-
   .pivot-table-scroll {
     max-height: 50vh;
   }
 
-
-  .group-column {
+  .group-column,
+  .group-header {
     min-width: 170px;
-    max-width: 170px;
+    width: 170px;
     padding: var(--space-sm);
     font-size: 0.75rem;
   }
-
-  .group-header {
-    min-width: 120px;
-    max-width: 120px;
-    font-size: 0.75rem;
-  }
-
-  .dropdown-controls {
-    justify-content: center;
-  }
-
-  .row-dropdown,
-  .column-dropdown {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
 
   .level-0-label {
     font-size: 0.8rem;
   }
 
-
   .level-1-label {
     font-size: 0.75rem;
   }
-
 
   .level-2-label,
   .level-3-label {
@@ -525,34 +428,40 @@
     min-width: 20px;
     font-size: 0.65rem;
   }
-}
 
+  .header-row th {
+    min-width: 80px;
+  }
+
+  .metric-cell {
+    min-width: 80px;
+  }
+
+  .row-dropdown,
+  .column-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
 
 /* Dark Mode Support */
-[data-theme="dark"] .header-row {
-  background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
-}
-
-
+[data-theme="dark"] .header-row,
 [data-theme="dark"] .group-header {
   background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
 }
-
 
 [data-theme="dark"] .pivot-row.level-0 {
   background: rgba(46, 107, 168, 0.15);
 }
 
-
 [data-theme="dark"] .pivot-row.level-1 {
   background: rgba(46, 107, 168, 0.08);
 }
 
-
 [data-theme="dark"] .pivot-row:hover {
   background: rgba(46, 107, 168, 0.12);
 }
-
 
 /* Print Styles */
 @media print {
@@ -560,13 +469,11 @@
     display: none;
   }
 
-
   .pivot-table-scroll {
     overflow: visible;
     max-height: none;
     border: none;
   }
-
 
   .expand-btn {
     display: none;
