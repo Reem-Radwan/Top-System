@@ -1,4 +1,4 @@
-/* Pivot Table Container */
+/* Inv Status Pivot Table Container */
 .pivot-table-container {
   width: 100%;
   background: var(--color-bg-primary);
@@ -7,8 +7,8 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Theme variables (Sold = blue, Unsold = gray) */
-.pivot-table-container.theme-sold {
+/* Theme variables */
+.pivot-table-container.theme-blue {
   --pivot-accent-start: #4A90E2;
   --pivot-accent-end: #357ABD;
   --pivot-accent-border: #2E6BA8;
@@ -17,7 +17,7 @@
   --pivot-primary: var(--color-primary);
 }
 
-.pivot-table-container.theme-unsold {
+.pivot-table-container.theme-gray {
   --pivot-accent-start: #9E9E9E;
   --pivot-accent-end: #616161;
   --pivot-accent-border: #4E4E4E;
@@ -26,36 +26,72 @@
   --pivot-primary: #757575;
 }
 
-/* Controls Section */
-.pivot-controls {
+/* Status Tabs Container with Mobile Navigation */
+.status-tabs-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
   margin-bottom: var(--space-lg);
-  flex-wrap: wrap;
-  gap: var(--space-md);
+  position: relative;
 }
 
-/* Category Toggle */
+.status-tabs-wrapper {
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.status-tabs-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scroll-btn {
+  display: none; /* Hidden by default, shown only on mobile */
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  z-index: 2;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.scroll-btn:hover {
+  background: var(--pivot-primary);
+  color: white;
+  border-color: var(--pivot-primary);
+}
+
+/* Category Toggle - Updated for mobile */
 .category-toggle {
   display: flex;
-  gap: var(--space-sm);
+  gap: 10px;
   background: var(--color-bg-secondary);
-  padding: 4px;
+  padding: 10px 80px;
   border-radius: var(--radius-md);
+  flex-wrap: nowrap;
+  min-width: min-content;
 }
 
 .category-btn {
-  padding: var(--space-sm) var(--space-lg);
+  padding: var(--space-xs) var(--space-sm);
   border: none;
   background: transparent;
   color: var(--color-text-secondary);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 36px;
 }
 
 .category-btn.active {
@@ -66,6 +102,16 @@
 
 .category-btn:hover:not(.active) {
   background: var(--color-bg-tertiary);
+}
+
+/* Controls Section */
+.pivot-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-md);
 }
 
 /* Expand & Control Buttons */
@@ -245,32 +291,28 @@
 }
 
 /* Pivot Rows */
-.pivot-row {
+.data-row {
   transition: background var(--transition-fast);
   border-bottom: 1px solid var(--color-border-light);
 }
 
-.pivot-row:hover {
+.data-row:hover {
   background: rgba(var(--pivot-accent-rgb), 0.05);
 }
 
 /* Level-based styling */
-.pivot-row.level-0 {
+.data-row.level-0 {
   background: rgba(var(--pivot-accent-rgb), 0.1);
   font-weight: 600;
 }
 
-.pivot-row.level-1 {
+.data-row.level-1 {
   background: rgba(var(--pivot-accent-rgb), 0.05);
   font-weight: 500;
 }
 
-.pivot-row.level-2 {
+.data-row.level-2 {
   background: var(--color-bg-primary);
-}
-
-.pivot-row.level-3 {
-  background: var(--color-bg-secondary);
 }
 
 /* Group Column */
@@ -343,13 +385,6 @@
   text-overflow: ellipsis;
 }
 
-.level-3-label {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* Metric Cells */
 .metric-cell {
   padding: var(--space-md);
@@ -367,7 +402,11 @@
     align-items: stretch;
   }
 
-  .category-toggle,
+  .category-toggle {
+    width: 100%;
+    overflow-x: auto;
+  }
+
   .expand-controls,
   .dropdown-controls {
     width: 100%;
@@ -402,13 +441,35 @@
     padding: var(--space-md);
   }
 
-  .pivot-controls {
-    gap: var(--space-sm);
+  /* Show scroll buttons on mobile */
+  .scroll-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .status-tabs-container {
+    gap: 4px;
+  }
+
+  .status-tabs-wrapper {
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+  }
+
+  .category-toggle {
+    padding: 3px;
+    gap: 3px;
   }
 
   .category-btn {
-    font-size: 0.8rem;
-    padding: var(--space-sm);
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+
+  .pivot-controls {
+    gap: var(--space-sm);
   }
 
   .control-btn {
@@ -436,8 +497,7 @@
     font-size: 0.75rem;
   }
 
-  .level-2-label,
-  .level-3-label {
+  .level-2-label {
     font-size: 0.7rem;
   }
 
@@ -450,10 +510,14 @@
 
   .header-row th {
     min-width: 80px;
+    font-size: 0.7rem;
+    padding: 8px 4px;
   }
 
   .metric-cell {
     min-width: 80px;
+    font-size: 0.75rem;
+    padding: 8px 4px;
   }
 
   .row-dropdown,
@@ -461,19 +525,62 @@
     right: auto;
     left: 50%;
     transform: translateX(-50%);
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-btn {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    min-height: 30px;
+  }
+
+  .control-btn {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .group-column,
+  .group-header {
+    min-width: 140px;
+    width: 140px;
+    padding: 6px 8px;
+  }
+
+  .header-row th {
+    min-width: 70px;
+    font-size: 0.65rem;
+  }
+
+  .metric-cell {
+    min-width: 70px;
+    font-size: 0.7rem;
+  }
+
+  .level-0-label {
+    font-size: 0.75rem;
+  }
+
+  .level-1-label {
+    font-size: 0.7rem;
+  }
+
+  .level-2-label {
+    font-size: 0.65rem;
   }
 }
 
 /* Dark Mode Support */
-[data-theme="dark"] .pivot-row.level-0 {
+[data-theme="dark"] .data-row.level-0 {
   background: rgba(var(--pivot-accent-rgb), 0.15);
 }
 
-[data-theme="dark"] .pivot-row.level-1 {
+[data-theme="dark"] .data-row.level-1 {
   background: rgba(var(--pivot-accent-rgb), 0.08);
 }
 
-[data-theme="dark"] .pivot-row:hover {
+[data-theme="dark"] .data-row:hover {
   background: rgba(var(--pivot-accent-rgb), 0.12);
 }
 
@@ -493,6 +600,3 @@
     display: none;
   }
 }
-
-
-

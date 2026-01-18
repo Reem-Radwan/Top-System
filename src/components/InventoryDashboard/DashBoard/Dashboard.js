@@ -1,1294 +1,5 @@
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import { getCompanyUnits } from '../../data/inventorymockData';
-// import { generatePDFReport } from './Pdfgenerator';
-// import FilterSection from './FilterSection';
-// import KPISection from './KpiSection';
-// import ChartsSection from './ChartsSection';
-// import UnitMetricsCharts from './Unitmetricscharts';
-// import DataTable from './DataTable';
-
-// const Dashboard = ({ companyId, companyName }) => {
-//   const [units, setUnits] = useState([]);
-//   const [filteredUnits, setFilteredUnits] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [generatingPDF, setGeneratingPDF] = useState(false);
-  
-//   // Filter states
-//   const [filters, setFilters] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: [],
-//     salesDateRange: { start: null, end: null },
-//     deliveryDateRange: { start: null, end: null }
-//   });
-
-//   // Available filter options
-//   const [filterOptions, setFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   useEffect(() => {
-//     loadCompanyData();
-//   }, [companyId]);
-
-//   useEffect(() => {
-//     applyFilters();
-//   }, [units, filters]);
-
-//   const loadCompanyData = async () => {
-//     setLoading(true);
-//     try {
-//       const data = await getCompanyUnits(companyId);
-//       setUnits(data.units);
-//       initializeFilterOptions(data.units);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error loading company data:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const initializeFilterOptions = (unitsData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(unitsData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const options = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     setFilterOptions(options);
-
-//     // Initialize all filters as selected
-//     setFilters({
-//       projects: options.projects,
-//       unitTypes: options.unitTypes,
-//       contractPaymentPlans: options.contractPaymentPlans,
-//       statuses: options.statuses,
-//       areas: options.areas,
-//       cities: options.cities,
-//       salesDateRange: { start: null, end: null },
-//       deliveryDateRange: { start: null, end: null }
-//     });
-//   };
-
-//   const applyFilters = useCallback(() => {
-//     let filtered = units.filter(unit => {
-//       // Basic filters
-//       const matchesBasicFilters = (
-//         (filters.projects.length === 0 || filters.projects.includes(unit.project)) &&
-//         (filters.unitTypes.length === 0 || filters.unitTypes.includes(unit.unit_type)) &&
-//         (filters.contractPaymentPlans.length === 0 || filters.contractPaymentPlans.includes(unit.adj_contract_payment_plan)) &&
-//         (filters.statuses.length === 0 || filters.statuses.includes(unit.status)) &&
-//         (filters.areas.length === 0 || filters.areas.includes(unit.area_range)) &&
-//         (filters.cities.length === 0 || filters.cities.includes(unit.city))
-//       );
-
-//       if (!matchesBasicFilters) return false;
-
-//       // Sales date range filter
-//       if (filters.salesDateRange.start || filters.salesDateRange.end) {
-//         if (!unit.reservation_date) return false;
-//         const reservationDate = new Date(unit.reservation_date);
-//         const afterStart = !filters.salesDateRange.start || reservationDate >= filters.salesDateRange.start;
-//         const beforeEnd = !filters.salesDateRange.end || reservationDate <= filters.salesDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       // Delivery date range filter
-//       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
-//         if (!unit.development_delivery_date) return false;
-//         const deliveryDate = new Date(unit.development_delivery_date);
-//         const afterStart = !filters.deliveryDateRange.start || deliveryDate >= filters.deliveryDateRange.start;
-//         const beforeEnd = !filters.deliveryDateRange.end || deliveryDate <= filters.deliveryDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       return true;
-//     });
-
-//     setFilteredUnits(filtered);
-//   }, [units, filters]);
-
-//   const updateFilter = (filterType, values) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [filterType]: values
-//     }));
-//   };
-
-//   const updateDateRange = (rangeType, start, end) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [rangeType]: { start, end }
-//     }));
-//   };
-
-//   const handleGeneratePDF = async () => {
-//     setGeneratingPDF(true);
-//     try {
-//       await generatePDFReport(companyName, filteredUnits.length, units.length);
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Error generating PDF report. Please try again.');
-//     } finally {
-//       setGeneratingPDF(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="dashboard-loading">
-//         <div className="spinner spinner-large"></div>
-//         <p className="loading-text">Loading {companyName} data...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       {generatingPDF && (
-//         <div className="dashboard-loading">
-//           <div className="spinner spinner-large"></div>
-//           <p className="loading-text">Generating Report...</p>
-//         </div>
-//       )}
-      
-//       <div className="dashboard-container">
-//         <div className="dashboard-header">
-//           <div className="quick-stats">
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Units</span>
-//               <span className="quick-stat-value">{filteredUnits.length}</span>
-//             </div>
-//             <div className="quick-stat-divider"></div>
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Value</span>
-//               <span className="quick-stat-value">
-//                 {new Intl.NumberFormat('en-US', {
-//                   notation: 'compact',
-//                   compactDisplay: 'short',
-//                   maximumFractionDigits: 1
-//                 }).format(
-//                   filteredUnits.reduce((sum, unit) => sum + (parseFloat(unit.sales_value) || 0), 0)
-//                 )} EGP
-//               </span>
-//             </div>
-//           </div>
-          
-//           <div className="dashboard-controls">
-//             <button 
-//               className="btn btn-primary pdf-btn" 
-//               onClick={handleGeneratePDF}
-//               disabled={generatingPDF || filteredUnits.length === 0}
-//             >
-//               📄 Generate  Report
-//             </button>
-//             <button className="refresh-btn" onClick={loadCompanyData}>
-//               🔄 Refresh
-//             </button>
-//           </div>
-//         </div>
-
-//         <FilterSection
-//           filterOptions={filterOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <KPISection units={filteredUnits} />
-
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <UnitMetricsCharts units={filteredUnits} />
-
-//         <DataTable units={filteredUnits} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
-
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import { getCompanyUnits } from '../../data/inventorymockData';
-// import { generatePDFReport } from './Pdfgenerator';
-// import FilterSection from './FilterSection';
-// import KPISection from './KpiSection';
-// import ChartsSection from './ChartsSection';
-// import UnitMetricsCharts from './Unitmetricscharts';
-// import DataTable from './DataTable';
-// import './dashboard.css'
-
-// const Dashboard = ({ companyId, companyName }) => {
-//   const [units, setUnits] = useState([]);
-//   const [filteredUnits, setFilteredUnits] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [generatingPDF, setGeneratingPDF] = useState(false);
-
-//   // Filters state
-//   const [filters, setFilters] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: [],
-//     salesDateRange: { start: null, end: null },
-//     deliveryDateRange: { start: null, end: null }
-//   });
-
-//   // Filter options
-//   const [filterOptions, setFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   // Initialize filter options
-//   const initializeFilterOptions = useCallback((unitsData) => {
-//     const getUniqueValues = (field) =>
-//       [...new Set(unitsData.map(u => u[field]).filter(Boolean))];
-
-//     const options = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     setFilterOptions(options);
-
-//     setFilters({
-//       projects: options.projects,
-//       unitTypes: options.unitTypes,
-//       contractPaymentPlans: options.contractPaymentPlans,
-//       statuses: options.statuses,
-//       areas: options.areas,
-//       cities: options.cities,
-//       salesDateRange: { start: null, end: null },
-//       deliveryDateRange: { start: null, end: null }
-//     });
-//   }, []);
-
-//   // Load company data
-//   const loadCompanyData = useCallback(async () => {
-//     setLoading(true);
-//     try {
-//       const data = await getCompanyUnits(companyId);
-//       setUnits(data.units);
-//       initializeFilterOptions(data.units);
-//     } catch (error) {
-//       console.error('Error loading company data:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, [companyId, initializeFilterOptions]);
-
-//   // Apply filters
-//   const applyFilters = useCallback(() => {
-//     const filtered = units.filter(unit => {
-//       const matchesBasicFilters =
-//         (filters.projects.length === 0 || filters.projects.includes(unit.project)) &&
-//         (filters.unitTypes.length === 0 || filters.unitTypes.includes(unit.unit_type)) &&
-//         (filters.contractPaymentPlans.length === 0 ||
-//           filters.contractPaymentPlans.includes(unit.adj_contract_payment_plan)) &&
-//         (filters.statuses.length === 0 || filters.statuses.includes(unit.status)) &&
-//         (filters.areas.length === 0 || filters.areas.includes(unit.area_range)) &&
-//         (filters.cities.length === 0 || filters.cities.includes(unit.city));
-
-//       if (!matchesBasicFilters) return false;
-
-//       // Sales date filter
-//       if (filters.salesDateRange.start || filters.salesDateRange.end) {
-//         if (!unit.reservation_date) return false;
-//         const date = new Date(unit.reservation_date);
-//         if (
-//           (filters.salesDateRange.start && date < filters.salesDateRange.start) ||
-//           (filters.salesDateRange.end && date > filters.salesDateRange.end)
-//         ) {
-//           return false;
-//         }
-//       }
-
-//       // Delivery date filter
-//       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
-//         if (!unit.development_delivery_date) return false;
-//         const date = new Date(unit.development_delivery_date);
-//         if (
-//           (filters.deliveryDateRange.start && date < filters.deliveryDateRange.start) ||
-//           (filters.deliveryDateRange.end && date > filters.deliveryDateRange.end)
-//         ) {
-//           return false;
-//         }
-//       }
-
-//       return true;
-//     });
-
-//     setFilteredUnits(filtered);
-//   }, [units, filters]);
-
-//   // Effects
-//   useEffect(() => {
-//     loadCompanyData();
-//   }, [loadCompanyData]);
-
-//   useEffect(() => {
-//     applyFilters();
-//   }, [applyFilters]);
-
-//   // Handlers
-//   const updateFilter = (filterType, values) => {
-//     setFilters(prev => ({ ...prev, [filterType]: values }));
-//   };
-
-//   const updateDateRange = (rangeType, start, end) => {
-//     setFilters(prev => ({ ...prev, [rangeType]: { start, end } }));
-//   };
-
-//   const handleGeneratePDF = async () => {
-//     setGeneratingPDF(true);
-//     try {
-//       await generatePDFReport(companyName, filteredUnits.length, units.length);
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Error generating PDF report.');
-//     } finally {
-//       setGeneratingPDF(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="dashboard-loading">
-//         <div className="spinner spinner-large"></div>
-//         <p className="loading-text">Loading {companyName} data...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       <div className="dashboard-container">
-
-//         <FilterSection
-//           filterOptions={filterOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <KPISection units={filteredUnits} />
-
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <UnitMetricsCharts units={filteredUnits} />
-
-//         <DataTable units={filteredUnits} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-
-
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import { getCompanyUnits } from '../../data/inventorymockData';
-// import { generatePDFReport } from './Pdfgenerator';
-// import FilterSection from './FilterSection';
-// import KPISection from './KpiSection';
-// import ChartsSection from './ChartsSection';
-// import UnitMetricsCharts from './Unitmetricscharts';
-// import DataTable from './DataTable';
-// import './dashboard.css'
-
-// const Dashboard = ({ companyId, companyName }) => {
-//   const [units, setUnits] = useState([]);
-//   const [filteredUnits, setFilteredUnits] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [generatingPDF, setGeneratingPDF] = useState(false);
-//   const isUpdatingFiltersRef = React.useRef(false);
-  
-//   // Filter states
-//   const [filters, setFilters] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: [],
-//     salesDateRange: { start: null, end: null },
-//     deliveryDateRange: { start: null, end: null }
-//   });
-
-//   // Available filter options
-//   const [filterOptions, setFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   useEffect(() => {
-//     loadCompanyData();
-//   }, [companyId]);
-
-//   useEffect(() => {
-//     // Skip if we're internally updating filters to prevent infinite loop
-//     if (isUpdatingFiltersRef.current) {
-//       isUpdatingFiltersRef.current = false;
-//       return;
-//     }
-//     applyFilters();
-//   }, [units, filters]);
-
-//   const loadCompanyData = async () => {
-//     setLoading(true);
-//     try {
-//       const data = await getCompanyUnits(companyId);
-//       setUnits(data.units);
-//       initializeFilterOptions(data.units);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error loading company data:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const initializeFilterOptions = (unitsData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(unitsData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const options = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     setFilterOptions(options);
-
-//     // Initialize all filters as SELECTED (show all data by default)
-//     setFilters({
-//       projects: options.projects,
-//       unitTypes: options.unitTypes,
-//       contractPaymentPlans: options.contractPaymentPlans,
-//       statuses: options.statuses,
-//       areas: options.areas,
-//       cities: options.cities,
-//       salesDateRange: { start: null, end: null },
-//       deliveryDateRange: { start: null, end: null }
-//     });
-//   };
-
-//   // Update available filter options based on currently filtered data
-//   const updateAvailableFilterOptions = (filteredData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(filteredData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const newOptions = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     setFilterOptions(newOptions);
-    
-//     // Update selected filters to only include values that still exist in new options
-//     // Set flag to prevent infinite loop
-//     isUpdatingFiltersRef.current = true;
-//     setFilters(prevFilters => ({
-//       ...prevFilters,
-//       projects: prevFilters.projects.filter(p => newOptions.projects.includes(p)),
-//       unitTypes: prevFilters.unitTypes.filter(t => newOptions.unitTypes.includes(t)),
-//       contractPaymentPlans: prevFilters.contractPaymentPlans.filter(c => newOptions.contractPaymentPlans.includes(c)),
-//       statuses: prevFilters.statuses.filter(s => newOptions.statuses.includes(s)),
-//       areas: prevFilters.areas.filter(a => newOptions.areas.includes(a)),
-//       cities: prevFilters.cities.filter(c => newOptions.cities.includes(c))
-//     }));
-//   };
-
-//   const applyFilters = useCallback(() => {
-//     let filtered = units.filter(unit => {
-//       // Basic filters - if filter is empty OR unit matches selected values
-//       const matchesProject = filters.projects.length === 0 || filters.projects.includes(unit.project);
-//       const matchesUnitType = filters.unitTypes.length === 0 || filters.unitTypes.includes(unit.unit_type);
-//       const matchesPaymentPlan = filters.contractPaymentPlans.length === 0 || filters.contractPaymentPlans.includes(unit.adj_contract_payment_plan);
-//       const matchesStatus = filters.statuses.length === 0 || filters.statuses.includes(unit.status);
-//       const matchesArea = filters.areas.length === 0 || filters.areas.includes(unit.area_range);
-//       const matchesCity = filters.cities.length === 0 || filters.cities.includes(unit.city);
-
-//       const matchesBasicFilters = (
-//         matchesProject &&
-//         matchesUnitType &&
-//         matchesPaymentPlan &&
-//         matchesStatus &&
-//         matchesArea &&
-//         matchesCity
-//       );
-
-//       if (!matchesBasicFilters) return false;
-
-//       // Sales date range filter
-//       if (filters.salesDateRange.start || filters.salesDateRange.end) {
-//         if (!unit.reservation_date) return false;
-//         const reservationDate = new Date(unit.reservation_date);
-//         const afterStart = !filters.salesDateRange.start || reservationDate >= filters.salesDateRange.start;
-//         const beforeEnd = !filters.salesDateRange.end || reservationDate <= filters.salesDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       // Delivery date range filter
-//       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
-//         if (!unit.development_delivery_date) return false;
-//         const deliveryDate = new Date(unit.development_delivery_date);
-//         const afterStart = !filters.deliveryDateRange.start || deliveryDate >= filters.deliveryDateRange.start;
-//         const beforeEnd = !filters.deliveryDateRange.end || deliveryDate <= filters.deliveryDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       return true;
-//     });
-
-//     setFilteredUnits(filtered);
-    
-//     // Update available filter options based on filtered data
-//     updateAvailableFilterOptions(filtered);
-//   }, [units, filters]);
-
-//   const updateFilter = (filterType, values) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [filterType]: values
-//     }));
-//   };
-
-//   const updateDateRange = (rangeType, start, end) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [rangeType]: { start, end }
-//     }));
-//   };
-
-//   const handleGeneratePDF = async () => {
-//     setGeneratingPDF(true);
-//     try {
-//       await generatePDFReport(companyName, filteredUnits.length, units.length);
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Error generating PDF report. Please try again.');
-//     } finally {
-//       setGeneratingPDF(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="dashboard-loading">
-//         <div className="spinner spinner-large"></div>
-//         <p className="loading-text">Loading {companyName} data...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       {generatingPDF && (
-//         <div className="dashboard-loading">
-//           <div className="spinner spinner-large"></div>
-//           <p className="loading-text">Generating PDF Report...</p>
-//         </div>
-//       )}
-      
-//       <div className="dashboard-container">
-//         <div className="dashboard-header">
-//           <div className="quick-stats">
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Units</span>
-//               <span className="quick-stat-value">{filteredUnits.length}</span>
-//             </div>
-//             <div className="quick-stat-divider"></div>
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Value</span>
-//               <span className="quick-stat-value">
-//                 {new Intl.NumberFormat('en-US', {
-//                   notation: 'compact',
-//                   compactDisplay: 'short',
-//                   maximumFractionDigits: 1
-//                 }).format(
-//                   filteredUnits.reduce((sum, unit) => sum + (parseFloat(unit.sales_value) || 0), 0)
-//                 )} EGP
-//               </span>
-//             </div>
-//           </div>
-          
-//           <div className="dashboard-controls">
-//             <button 
-//               className="btn btn-primary pdf-btn" 
-//               onClick={handleGeneratePDF}
-//               disabled={generatingPDF || filteredUnits.length === 0}
-//             >
-//               📄 Generate PDF Report
-//             </button>
-//             <button className="refresh-btn" onClick={loadCompanyData}>
-//               🔄 Refresh
-//             </button>
-//           </div>
-//         </div>
-
-//         <FilterSection
-//           filterOptions={filterOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <KPISection units={filteredUnits} />
-
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <UnitMetricsCharts units={filteredUnits} />
-
-//         <DataTable units={filteredUnits} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import { getCompanyUnits } from '../../data/inventorymockData';
-// import { generatePDFReport } from './Pdfgenerator';
-// import FilterSection from './FilterSection';
-// import KPISection from './KpiSection';
-// import ChartsSection from './ChartsSection';
-// import UnitMetricsCharts from './Unitmetricscharts';
-// import DataTable from './DataTable';
-// import './dashboard.css'
-
-
-// const Dashboard = ({ companyId, companyName }) => {
-//   const [units, setUnits] = useState([]);
-//   const [filteredUnits, setFilteredUnits] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [generatingPDF, setGeneratingPDF] = useState(false);
-//   const isUpdatingFiltersRef = React.useRef(false);
-  
-//   // Filter states
-//   const [filters, setFilters] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: [],
-//     salesDateRange: { start: null, end: null },
-//     deliveryDateRange: { start: null, end: null }
-//   });
-
-//   // Available filter options
-//   const [filterOptions, setFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   // All possible filter options (never changes after initial load)
-//   const [allFilterOptions, setAllFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   useEffect(() => {
-//     loadCompanyData();
-//   }, [companyId]);
-
-//   useEffect(() => {
-//     // Skip if we're internally updating filters to prevent infinite loop
-//     if (isUpdatingFiltersRef.current) {
-//       isUpdatingFiltersRef.current = false;
-//       return;
-//     }
-//     applyFilters();
-//   }, [units, filters]);
-
-//   const loadCompanyData = async () => {
-//     setLoading(true);
-//     try {
-//       const data = await getCompanyUnits(companyId);
-//       setUnits(data.units);
-//       initializeFilterOptions(data.units);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error loading company data:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const initializeFilterOptions = (unitsData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(unitsData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const options = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     // Store all possible options (never changes)
-//     setAllFilterOptions(options);
-//     // Initially, available options = all options
-//     setFilterOptions(options);
-
-//     // Initialize all filters as SELECTED (show all data by default)
-//     setFilters({
-//       projects: options.projects,
-//       unitTypes: options.unitTypes,
-//       contractPaymentPlans: options.contractPaymentPlans,
-//       statuses: options.statuses,
-//       areas: options.areas,
-//       cities: options.cities,
-//       salesDateRange: { start: null, end: null },
-//       deliveryDateRange: { start: null, end: null }
-//     });
-//   };
-
-//   // Update available filter options based on currently filtered data
-//   const updateAvailableFilterOptions = (filteredData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(filteredData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const newOptions = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     setFilterOptions(newOptions);
-//     // Don't update selected filters - keep them as is
-//     // FilterSection will handle disabling non-existent options
-//   };
-
-//   const applyFilters = useCallback(() => {
-//     let filtered = units.filter(unit => {
-//       // Basic filters - if filter is empty OR unit matches selected values
-//       const matchesProject = filters.projects.length === 0 || filters.projects.includes(unit.project);
-//       const matchesUnitType = filters.unitTypes.length === 0 || filters.unitTypes.includes(unit.unit_type);
-//       const matchesPaymentPlan = filters.contractPaymentPlans.length === 0 || filters.contractPaymentPlans.includes(unit.adj_contract_payment_plan);
-//       const matchesStatus = filters.statuses.length === 0 || filters.statuses.includes(unit.status);
-//       const matchesArea = filters.areas.length === 0 || filters.areas.includes(unit.area_range);
-//       const matchesCity = filters.cities.length === 0 || filters.cities.includes(unit.city);
-
-//       const matchesBasicFilters = (
-//         matchesProject &&
-//         matchesUnitType &&
-//         matchesPaymentPlan &&
-//         matchesStatus &&
-//         matchesArea &&
-//         matchesCity
-//       );
-
-//       if (!matchesBasicFilters) return false;
-
-//       // Sales date range filter
-//       if (filters.salesDateRange.start || filters.salesDateRange.end) {
-//         if (!unit.reservation_date) return false;
-//         const reservationDate = new Date(unit.reservation_date);
-//         const afterStart = !filters.salesDateRange.start || reservationDate >= filters.salesDateRange.start;
-//         const beforeEnd = !filters.salesDateRange.end || reservationDate <= filters.salesDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       // Delivery date range filter
-//       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
-//         if (!unit.development_delivery_date) return false;
-//         const deliveryDate = new Date(unit.development_delivery_date);
-//         const afterStart = !filters.deliveryDateRange.start || deliveryDate >= filters.deliveryDateRange.start;
-//         const beforeEnd = !filters.deliveryDateRange.end || deliveryDate <= filters.deliveryDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       return true;
-//     });
-
-//     setFilteredUnits(filtered);
-    
-//     // Update available filter options based on filtered data
-//     updateAvailableFilterOptions(filtered);
-//   }, [units, filters]);
-
-//   const updateFilter = (filterType, values) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [filterType]: values
-//     }));
-//   };
-
-//   const updateDateRange = (rangeType, start, end) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [rangeType]: { start, end }
-//     }));
-//   };
-
-//   const handleGeneratePDF = async () => {
-//     setGeneratingPDF(true);
-//     try {
-//       await generatePDFReport(companyName, filteredUnits.length, units.length);
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Error generating PDF report. Please try again.');
-//     } finally {
-//       setGeneratingPDF(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="dashboard-loading">
-//         <div className="spinner spinner-large"></div>
-//         <p className="loading-text">Loading {companyName} data...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       {generatingPDF && (
-//         <div className="dashboard-loading">
-//           <div className="spinner spinner-large"></div>
-//           <p className="loading-text">Generating PDF Report...</p>
-//         </div>
-//       )}
-      
-//       <div className="dashboard-container">
-//         <div className="dashboard-header">
-//           <div className="quick-stats">
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Units</span>
-//               <span className="quick-stat-value">{filteredUnits.length}</span>
-//             </div>
-//             <div className="quick-stat-divider"></div>
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Value</span>
-//               <span className="quick-stat-value">
-//                 {new Intl.NumberFormat('en-US', {
-//                   notation: 'compact',
-//                   compactDisplay: 'short',
-//                   maximumFractionDigits: 1
-//                 }).format(
-//                   filteredUnits.reduce((sum, unit) => sum + (parseFloat(unit.sales_value) || 0), 0)
-//                 )} EGP
-//               </span>
-//             </div>
-//           </div>
-          
-//           <div className="dashboard-controls">
-//             <button 
-//               className="btn btn-primary pdf-btn" 
-//               onClick={handleGeneratePDF}
-//               disabled={generatingPDF || filteredUnits.length === 0}
-//             >
-//               📄 Generate PDF Report
-//             </button>
-//             <button className="refresh-btn" onClick={loadCompanyData}>
-//               🔄 Refresh
-//             </button>
-//           </div>
-//         </div>
-
-//         <FilterSection
-//           filterOptions={allFilterOptions}
-//           availableOptions={filterOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <KPISection units={filteredUnits} />
-
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <UnitMetricsCharts units={filteredUnits} />
-
-//         <DataTable units={filteredUnits} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import { getCompanyUnits } from '../../data/inventorymockData';
-// import { generatePDFReport } from './Pdfgenerator';
-// import FilterSection from './FilterSection';
-// import KPISection from './KpiSection';
-// import ChartsSection from './ChartsSection';
-// import UnitMetricsCharts from './Unitmetricscharts';
-// import DataTable from './DataTable';
-// import './dashboard.css'
-
-// const Dashboard = ({ companyId, companyName }) => {
-//   const [units, setUnits] = useState([]);
-//   const [filteredUnits, setFilteredUnits] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [generatingPDF, setGeneratingPDF] = useState(false);
-//   const isUpdatingFiltersRef = React.useRef(false);
-  
-//   // Filter states
-//   const [filters, setFilters] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: [],
-//     salesDateRange: { start: null, end: null },
-//     deliveryDateRange: { start: null, end: null }
-//   });
-
-//   // Available filter options
-//   const [filterOptions, setFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   // All possible filter options (never changes after initial load)
-//   const [allFilterOptions, setAllFilterOptions] = useState({
-//     projects: [],
-//     unitTypes: [],
-//     contractPaymentPlans: [],
-//     statuses: [],
-//     areas: [],
-//     cities: []
-//   });
-
-//   useEffect(() => {
-//     loadCompanyData();
-//   }, [companyId]);
-
-//   useEffect(() => {
-//     // Skip if we're internally updating filters to prevent infinite loop
-//     if (isUpdatingFiltersRef.current) {
-//       isUpdatingFiltersRef.current = false;
-//       return;
-//     }
-//     applyFilters();
-//   }, [units, filters]);
-
-//   const loadCompanyData = async () => {
-//     setLoading(true);
-//     try {
-//       const data = await getCompanyUnits(companyId);
-//       setUnits(data.units);
-//       initializeFilterOptions(data.units);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error loading company data:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const initializeFilterOptions = (unitsData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(unitsData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const options = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     // Store all possible options (never changes)
-//     setAllFilterOptions(options);
-//     // Initially, available options = all options
-//     setFilterOptions(options);
-
-//     // Initialize all filters as SELECTED (show all data by default)
-//     setFilters({
-//       projects: options.projects,
-//       unitTypes: options.unitTypes,
-//       contractPaymentPlans: options.contractPaymentPlans,
-//       statuses: options.statuses,
-//       areas: options.areas,
-//       cities: options.cities,
-//       salesDateRange: { start: null, end: null },
-//       deliveryDateRange: { start: null, end: null }
-//     });
-//   };
-
-//   // Update available filter options based on currently filtered data
-//   const updateAvailableFilterOptions = (filteredData) => {
-//     const getUniqueValues = (field) => {
-//       return [...new Set(filteredData.map(u => u[field]).filter(Boolean))];
-//     };
-
-//     const newOptions = {
-//       projects: getUniqueValues('project'),
-//       unitTypes: getUniqueValues('unit_type'),
-//       contractPaymentPlans: getUniqueValues('adj_contract_payment_plan'),
-//       statuses: getUniqueValues('status'),
-//       areas: getUniqueValues('area_range'),
-//       cities: getUniqueValues('city')
-//     };
-
-//     console.log('Updating available options:', {
-//       totalUnits: filteredData.length,
-//       availableProjects: newOptions.projects,
-//       availableTypes: newOptions.unitTypes
-//     });
-
-//     setFilterOptions(newOptions);
-//     // Don't update selected filters - keep them as is
-//     // FilterSection will handle disabling non-existent options
-//   };
-
-//   const applyFilters = useCallback(() => {
-//     let filtered = units.filter(unit => {
-//       // Basic filters - if filter is empty OR unit matches selected values
-//       const matchesProject = filters.projects.length === 0 || filters.projects.includes(unit.project);
-//       const matchesUnitType = filters.unitTypes.length === 0 || filters.unitTypes.includes(unit.unit_type);
-//       const matchesPaymentPlan = filters.contractPaymentPlans.length === 0 || filters.contractPaymentPlans.includes(unit.adj_contract_payment_plan);
-//       const matchesStatus = filters.statuses.length === 0 || filters.statuses.includes(unit.status);
-//       const matchesArea = filters.areas.length === 0 || filters.areas.includes(unit.area_range);
-//       const matchesCity = filters.cities.length === 0 || filters.cities.includes(unit.city);
-
-//       const matchesBasicFilters = (
-//         matchesProject &&
-//         matchesUnitType &&
-//         matchesPaymentPlan &&
-//         matchesStatus &&
-//         matchesArea &&
-//         matchesCity
-//       );
-
-//       if (!matchesBasicFilters) return false;
-
-//       // Sales date range filter
-//       if (filters.salesDateRange.start || filters.salesDateRange.end) {
-//         if (!unit.reservation_date) return false;
-//         const reservationDate = new Date(unit.reservation_date);
-//         const afterStart = !filters.salesDateRange.start || reservationDate >= filters.salesDateRange.start;
-//         const beforeEnd = !filters.salesDateRange.end || reservationDate <= filters.salesDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       // Delivery date range filter
-//       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
-//         if (!unit.development_delivery_date) return false;
-//         const deliveryDate = new Date(unit.development_delivery_date);
-//         const afterStart = !filters.deliveryDateRange.start || deliveryDate >= filters.deliveryDateRange.start;
-//         const beforeEnd = !filters.deliveryDateRange.end || deliveryDate <= filters.deliveryDateRange.end;
-//         if (!afterStart || !beforeEnd) return false;
-//       }
-
-//       return true;
-//     });
-
-//     setFilteredUnits(filtered);
-    
-//     // Update available filter options based on filtered data
-//     updateAvailableFilterOptions(filtered);
-//   }, [units, filters]);
-
-//   const updateFilter = (filterType, values) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [filterType]: values
-//     }));
-//   };
-
-//   const updateDateRange = (rangeType, start, end) => {
-//     setFilters(prev => ({
-//       ...prev,
-//       [rangeType]: { start, end }
-//     }));
-//   };
-
-//   const handleGeneratePDF = async () => {
-//     setGeneratingPDF(true);
-//     try {
-//       await generatePDFReport(companyName, filteredUnits.length, units.length);
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Error generating PDF report. Please try again.');
-//     } finally {
-//       setGeneratingPDF(false);
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="dashboard-loading">
-//         <div className="spinner spinner-large"></div>
-//         <p className="loading-text">Loading {companyName} data...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       {generatingPDF && (
-//         <div className="dashboard-loading">
-//           <div className="spinner spinner-large"></div>
-//           <p className="loading-text">Generating PDF Report...</p>
-//         </div>
-//       )}
-      
-//       <div className="dashboard-container">
-//         <div className="dashboard-header">
-//           <div className="quick-stats">
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Units</span>
-//               <span className="quick-stat-value">{filteredUnits.length}</span>
-//             </div>
-//             <div className="quick-stat-divider"></div>
-//             <div className="quick-stat-item">
-//               <span className="quick-stat-label">Total Value</span>
-//               <span className="quick-stat-value">
-//                 {new Intl.NumberFormat('en-US', {
-//                   notation: 'compact',
-//                   compactDisplay: 'short',
-//                   maximumFractionDigits: 1
-//                 }).format(
-//                   filteredUnits.reduce((sum, unit) => sum + (parseFloat(unit.sales_value) || 0), 0)
-//                 )} EGP
-//               </span>
-//             </div>
-//           </div>
-          
-//           <div className="dashboard-controls">
-//             <button 
-//               className="btn btn-primary pdf-btn" 
-//               onClick={handleGeneratePDF}
-//               disabled={generatingPDF || filteredUnits.length === 0}
-//             >
-//               📄 Generate PDF Report
-//             </button>
-//             <button className="refresh-btn" onClick={loadCompanyData}>
-//               🔄 Refresh
-//             </button>
-//           </div>
-//         </div>
-
-//         <FilterSection
-//           filterOptions={allFilterOptions}
-//           availableOptions={filterOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <KPISection units={filteredUnits} />
-
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
-
-//         <UnitMetricsCharts units={filteredUnits} />
-
-//         <DataTable units={filteredUnits} />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
 // import React, { useState, useEffect } from 'react';
-// import { getCompanyUnits } from '../../../data/inventorymockData'
+// import { getCompanyUnits } from '../../../data/inventorymockData';
 // import { generatePDFReport } from '../Pdfgenerator';
 // import FilterSection from '../FilterSection/FilterSection';
 // import KPISection from '../KpiSection/KpiSection';
@@ -1296,14 +7,20 @@
 // import UnitMetricsCharts from '../UnitMetricsCharts/Unitmetricscharts';
 // import DataTable from '../DataTable/DataTable';
 // import './dashboard.css';
+// import PivotTable from '../PivotTable';
+// import InvStatusPivot from '../Invstatuspivot'
 
-// const Dashboard = ({ companyId, companyName }) => {
+
+// const Dashboard = ({ companyId, companyName, onViewChange }) => {
 //   const [units, setUnits] = useState([]);
 //   const [filteredUnits, setFilteredUnits] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [generatingPDF, setGeneratingPDF] = useState(false);
+//   const [currentView, setCurrentView] = useState('home'); // 'home', 'project-data', 'inv-status', 'sales-progress', 'delivery-plan'
+
 
 //   const internalUpdateRef = React.useRef(false);
+
 
 //   const [filters, setFilters] = useState({
 //     projects: [],
@@ -1316,6 +33,7 @@
 //     deliveryDateRange: { start: null, end: null },
 //   });
 
+
 //   // Available options for CURRENT filtered result (drives disabled)
 //   const [availableOptions, setAvailableOptions] = useState({
 //     projects: [],
@@ -1325,6 +43,7 @@
 //     areas: [],
 //     cities: [],
 //   });
+
 
 //   // Master lists (always visible)
 //   const [allFilterOptions, setAllFilterOptions] = useState({
@@ -1336,19 +55,30 @@
 //     cities: [],
 //   });
 
+//   // Notify parent when view changes
+//   useEffect(() => {
+//     if (onViewChange) {
+//       onViewChange(currentView);
+//     }
+//   }, [currentView, onViewChange]);
+
+
 //   useEffect(() => {
 //     loadCompanyData();
 //     // eslint-disable-next-line react-hooks/exhaustive-deps
 //   }, [companyId]);
 
+
 //   const uniq = (arr) => [...new Set(arr.filter(Boolean))];
 //   const getUniqueValues = (arr, field) => uniq(arr.map((u) => u[field]));
+
 
 //   const loadCompanyData = async () => {
 //     setLoading(true);
 //     try {
 //       const data = await getCompanyUnits(companyId);
 //       setUnits(data.units);
+
 
 //       const options = {
 //         projects: getUniqueValues(data.units, 'project'),
@@ -1359,8 +89,10 @@
 //         cities: getUniqueValues(data.units, 'city'),
 //       };
 
+
 //       setAllFilterOptions(options);
 //       setAvailableOptions(options);
+
 
 //       // default: select all
 //       setFilters({
@@ -1374,6 +106,7 @@
 //         deliveryDateRange: { start: null, end: null },
 //       });
 
+
 //       setLoading(false);
 //     } catch (err) {
 //       console.error(err);
@@ -1381,13 +114,16 @@
 //     }
 //   };
 
+
 //   const updateFilter = (filterType, values) => {
 //     setFilters((prev) => ({ ...prev, [filterType]: values }));
 //   };
 
+
 //   const updateDateRange = (rangeType, start, end) => {
 //     setFilters((prev) => ({ ...prev, [rangeType]: { start, end } }));
 //   };
+
 
 //   const sanitize = (selected, available) => {
 //     if (!Array.isArray(selected)) return [];
@@ -1396,6 +132,7 @@
 //     return selected.filter((v) => set.has(v));
 //   };
 
+
 //   const sameAsSet = (a = [], b = []) => {
 //     if (a.length !== b.length) return false;
 //     const sa = new Set(a);
@@ -1403,11 +140,13 @@
 //     return true;
 //   };
 
+
 //   useEffect(() => {
 //     if (internalUpdateRef.current) {
 //       internalUpdateRef.current = false;
 //       return;
 //     }
+
 
 //     // Step 1: filter using current filters
 //     const filtered = units.filter((u) => {
@@ -1420,7 +159,9 @@
 //       const okArea = filters.areas.length === 0 || filters.areas.includes(u.area_range);
 //       const okCity = filters.cities.length === 0 || filters.cities.includes(u.city);
 
+
 //       if (!(okProject && okType && okPlan && okStatus && okArea && okCity)) return false;
+
 
 //       // sales date range
 //       if (filters.salesDateRange.start || filters.salesDateRange.end) {
@@ -1431,6 +172,7 @@
 //         if (filters.salesDateRange.end && d > filters.salesDateRange.end) return false;
 //       }
 
+
 //       // delivery date range
 //       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
 //         if (!u.development_delivery_date) return false;
@@ -1440,10 +182,13 @@
 //         if (filters.deliveryDateRange.end && d > filters.deliveryDateRange.end) return false;
 //       }
 
+
 //       return true;
 //     });
 
+
 //     setFilteredUnits(filtered);
+
 
 //     // Step 2: compute available options from the filtered result
 //     const nextAvailable = {
@@ -1455,7 +200,9 @@
 //       cities: getUniqueValues(filtered, 'city'),
 //     };
 
+
 //     setAvailableOptions(nextAvailable);
+
 
 //     // Step 3: sanitize selected filters so unavailable items become unchecked+disabled
 //     const nextFilters = {
@@ -1468,6 +215,7 @@
 //       cities: sanitize(filters.cities, nextAvailable.cities),
 //     };
 
+
 //     const changed =
 //       !sameAsSet(nextFilters.projects, filters.projects) ||
 //       !sameAsSet(nextFilters.unitTypes, filters.unitTypes) ||
@@ -1476,11 +224,13 @@
 //       !sameAsSet(nextFilters.areas, filters.areas) ||
 //       !sameAsSet(nextFilters.cities, filters.cities);
 
+
 //     if (changed) {
 //       internalUpdateRef.current = true;
 //       setFilters(nextFilters);
 //     }
 //   }, [units, filters]);
+
 
 //   const handleGeneratePDF = async () => {
 //     setGeneratingPDF(true);
@@ -1494,6 +244,7 @@
 //     }
 //   };
 
+
 //   if (loading) {
 //     return (
 //       <div className="dashboard-loading">
@@ -1502,6 +253,7 @@
 //       </div>
 //     );
 //   }
+
 
 //   return (
 //     <>
@@ -1512,37 +264,126 @@
 //         </div>
 //       )}
 
+
 //       <div className="dashboard-container">
+//         {/* Tab Navigation - Always Visible */}
+//         <div className="dashboard-tabs">
+//           <button 
+//             className={`dashboard-tab ${currentView === 'home' ? 'active' : ''}`}
+//             onClick={() => setCurrentView('home')}
+//           >
+//             🏠 Home Page
+//           </button>
+//           <button 
+//             className={`dashboard-tab ${currentView === 'project-data' ? 'active' : ''}`}
+//             onClick={() => setCurrentView('project-data')}
+//           >
+//             📊 Project Data
+//           </button>
+//           <button 
+//             className={`dashboard-tab ${currentView === 'inv-status' ? 'active' : ''}`}
+//             onClick={() => setCurrentView('inv-status')}
+//           >
+//             📦 Inv Status
+//           </button>
+//           <button 
+//             className={`dashboard-tab ${currentView === 'sales-progress' ? 'active' : ''}`}
+//             onClick={() => setCurrentView('sales-progress')}
+//           >
+//             📈 Sales Progress
+//           </button>
+//           <button 
+//             className={`dashboard-tab ${currentView === 'delivery-plan' ? 'active' : ''}`}
+//             onClick={() => setCurrentView('delivery-plan')}
+//           >
+//             🚚 Delivery Plan
+//           </button>
+//         </div>
 
-//         <FilterSection
-//           filterOptions={allFilterOptions}
-//           availableOptions={availableOptions}
-//           filters={filters}
-//           onFilterChange={updateFilter}
-//         />
 
-//         <KPISection units={filteredUnits} />
+//         {/* Home Page View */}
+//         {currentView === 'home' && (
+//           <div className="home-view">
 
-//         <ChartsSection
-//           units={filteredUnits}
-//           allUnits={units}
-//           filters={filters}
-//           onDateRangeChange={updateDateRange}
-//           onFilterChange={updateFilter}
-//         />
 
-//         <UnitMetricsCharts units={filteredUnits} />
-//         <DataTable units={filteredUnits} />
+//             <FilterSection
+//               filterOptions={allFilterOptions}
+//               availableOptions={availableOptions}
+//               filters={filters}
+//               onFilterChange={updateFilter}
+//             />
+
+
+//             <KPISection units={filteredUnits} />
+
+
+//             <ChartsSection
+//               units={filteredUnits}
+//               allUnits={units}
+//               filters={filters}
+//               onDateRangeChange={updateDateRange}
+//               onFilterChange={updateFilter}
+//             />
+
+
+//             <UnitMetricsCharts units={filteredUnits} />
+            
+//             <DataTable units={filteredUnits} />
+//           </div>
+//         )}
+
+
+//         {/* Project Data View */}
+//           {currentView === 'project-data' && (
+//           <div className="project-data-view">
+//             <div className="pivot-section">
+//               <PivotTable units={filteredUnits} />
+//             </div>
+//           </div>
+//         )}
+
+
+//         {/* Inv Status View */}
+//         {currentView === 'inv-status' && (
+//           <div className="coming-soon-view">
+//             <div className="coming-soon-icon">📦</div>
+//             <h3>Inventory Status</h3>
+//             <p>Advanced inventory status analysis coming soon...</p>
+//           </div>
+//         )}
+
+
+//         {/* Sales Progress View */}
+//         {currentView === 'sales-progress' && (
+//           <div className="coming-soon-view">
+//             <div className="coming-soon-icon">📈</div>
+//             <h3>Sales Progress</h3>
+//             <p>Detailed sales progress tracking coming soon...</p>
+//           </div>
+//         )}
+
+
+//         {/* Delivery Plan View */}
+//         {currentView === 'delivery-plan' && (
+//           <div className="coming-soon-view">
+//             <div className="coming-soon-icon">🚚</div>
+//             <h3>Delivery Plan</h3>
+//             <p>Comprehensive delivery plan overview coming soon...</p>
+//           </div>
+//         )}
+
+
 //       </div>
 //     </>
 //   );
 // };
 
+
 // export default Dashboard;
 
 
 
-// import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect, useCallback } from 'react';
 // import { getCompanyUnits } from '../../../data/inventorymockData';
 // import { generatePDFReport } from '../Pdfgenerator';
 // import FilterSection from '../FilterSection/FilterSection';
@@ -1550,10 +391,11 @@
 // import ChartsSection from '../ChartsSection/ChartsSection';
 // import UnitMetricsCharts from '../UnitMetricsCharts/Unitmetricscharts';
 // import DataTable from '../DataTable/DataTable';
-// import './dashboard.css';
 // import PivotTable from '../PivotTable';
+// import InvStatusPivot from '../Invstatuspivot'
+// import './dashboard.css';
 
-// const Dashboard = ({ companyId, companyName }) => {
+// const Dashboard = ({ companyId, companyName, onViewChange }) => {
 //   const [units, setUnits] = useState([]);
 //   const [filteredUnits, setFilteredUnits] = useState([]);
 //   const [loading, setLoading] = useState(true);
@@ -1593,6 +435,31 @@
 //     cities: [],
 //   });
 
+//   // Get page title based on current view
+//   const getPageTitle = () => {
+//     switch(currentView) {
+//       case 'home':
+//         return 'Inventory Dashboard';
+//       case 'project-data':
+//         return 'Pivot Table: Units by Status';
+//       case 'inv-status':
+//         return 'Inventory Status Analysis';
+//       case 'sales-progress':
+//         return 'Sales Progress Tracking';
+//       case 'delivery-plan':
+//         return 'Delivery Plan Overview';
+//       default:
+//         return 'Inventory Dashboard';
+//     }
+//   };
+
+//   // Notify parent when view changes
+//   useEffect(() => {
+//     if (onViewChange) {
+//       onViewChange(currentView);
+//     }
+//   }, [currentView, onViewChange]);
+
 //   useEffect(() => {
 //     loadCompanyData();
 //     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1660,12 +527,7 @@
 //     return true;
 //   };
 
-//   useEffect(() => {
-//     if (internalUpdateRef.current) {
-//       internalUpdateRef.current = false;
-//       return;
-//     }
-
+//   const applyFilters = useCallback(() => {
 //     // Step 1: filter using current filters
 //     const filtered = units.filter((u) => {
 //       const okProject = filters.projects.length === 0 || filters.projects.includes(u.project);
@@ -1739,6 +601,14 @@
 //     }
 //   }, [units, filters]);
 
+//   useEffect(() => {
+//     if (internalUpdateRef.current) {
+//       internalUpdateRef.current = false;
+//       return;
+//     }
+//     applyFilters();
+//   }, [applyFilters]);
+
 //   const handleGeneratePDF = async () => {
 //     setGeneratingPDF(true);
 //     try {
@@ -1770,6 +640,11 @@
 //       )}
 
 //       <div className="dashboard-container">
+//         {/* Page Title Header */}
+//         {/* <div className="dashboard-page-header">
+//           <h1 className="page-title">{getPageTitle()}</h1>
+//         </div> */}
+
 //         {/* Tab Navigation - Always Visible */}
 //         <div className="dashboard-tabs">
 //           <button 
@@ -1807,6 +682,8 @@
 //         {/* Home Page View */}
 //         {currentView === 'home' && (
 //           <div className="home-view">
+//             {/* Add the dashboard header with quick stats and controls */}
+           
 
 //             <FilterSection
 //               filterOptions={allFilterOptions}
@@ -1832,13 +709,9 @@
 //         )}
 
 //         {/* Project Data View */}
-//           {currentView === 'project-data' && (
+//         {currentView === 'project-data' && (
 //           <div className="project-data-view">
 //             <div className="pivot-section">
-//               <div className="section-header">
-//                 <h2>Pivot Table: Units by Status</h2>
-//                 {/* <p className="section-subtitle">Hierarchical breakdown by City → Project → Type → Area</p> */}
-//               </div>
 //               <PivotTable units={filteredUnits} />
 //             </div>
 //           </div>
@@ -1846,10 +719,8 @@
 
 //         {/* Inv Status View */}
 //         {currentView === 'inv-status' && (
-//           <div className="coming-soon-view">
-//             <div className="coming-soon-icon">📦</div>
-//             <h3>Inventory Status</h3>
-//             <p>Advanced inventory status analysis coming soon...</p>
+//           <div className="inv-status-view">
+//             <InvStatusPivot units={filteredUnits} />
 //           </div>
 //         )}
 
@@ -1879,7 +750,9 @@
 // export default Dashboard;
 
 
-import React, { useState, useEffect } from 'react';
+
+
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { getCompanyUnits } from '../../../data/inventorymockData';
 import { generatePDFReport } from '../Pdfgenerator';
 import FilterSection from '../FilterSection/FilterSection';
@@ -1887,20 +760,20 @@ import KPISection from '../KpiSection/KpiSection';
 import ChartsSection from '../ChartsSection/ChartsSection';
 import UnitMetricsCharts from '../UnitMetricsCharts/Unitmetricscharts';
 import DataTable from '../DataTable/DataTable';
-import './dashboard.css';
 import PivotTable from '../PivotTable';
-
+import InvStatusPivot from '../Invstatuspivot'
+import './dashboard.css';
 
 const Dashboard = ({ companyId, companyName, onViewChange }) => {
   const [units, setUnits] = useState([]);
   const [filteredUnits, setFilteredUnits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generatingPDF, setGeneratingPDF] = useState(false);
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'project-data', 'inv-status', 'sales-progress', 'delivery-plan'
-
-
+  const [currentView, setCurrentView] = useState('home');
+  
+  // Mobile navigation tabs ref for scrolling
+  const tabsContainerRef = useRef(null);
   const internalUpdateRef = React.useRef(false);
-
 
   const [filters, setFilters] = useState({
     projects: [],
@@ -1913,7 +786,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     deliveryDateRange: { start: null, end: null },
   });
 
-
   // Available options for CURRENT filtered result (drives disabled)
   const [availableOptions, setAvailableOptions] = useState({
     projects: [],
@@ -1923,7 +795,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     areas: [],
     cities: [],
   });
-
 
   // Master lists (always visible)
   const [allFilterOptions, setAllFilterOptions] = useState({
@@ -1935,6 +806,61 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     cities: [],
   });
 
+  // Scroll to last tab on mobile when component mounts
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768 && tabsContainerRef.current) {
+        // Scroll to the end (right side) to show the last tabs
+        setTimeout(() => {
+          tabsContainerRef.current.scrollLeft = tabsContainerRef.current.scrollWidth;
+        }, 100);
+      }
+    };
+
+    // Initial scroll
+    handleResize();
+    
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Handle view change and scroll on mobile
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+    
+    // Scroll tabs container to show active tab on mobile
+    if (window.innerWidth <= 768 && tabsContainerRef.current) {
+      setTimeout(() => {
+        const activeTab = tabsContainerRef.current.querySelector('.dashboard-tab.active');
+        if (activeTab) {
+          activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        }
+      }, 50);
+    }
+  };
+
+  // Get page title based on current view
+  const getPageTitle = () => {
+    switch(currentView) {
+      case 'home':
+        return 'Inventory Dashboard';
+      case 'project-data':
+        return 'Pivot Table: Units by Status';
+      case 'inv-status':
+        return 'Inventory Status Analysis';
+      case 'sales-progress':
+        return 'Sales Progress Tracking';
+      case 'delivery-plan':
+        return 'Delivery Plan Overview';
+      default:
+        return 'Inventory Dashboard';
+    }
+  };
+
   // Notify parent when view changes
   useEffect(() => {
     if (onViewChange) {
@@ -1942,23 +868,19 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     }
   }, [currentView, onViewChange]);
 
-
   useEffect(() => {
     loadCompanyData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyId]);
 
-
   const uniq = (arr) => [...new Set(arr.filter(Boolean))];
   const getUniqueValues = (arr, field) => uniq(arr.map((u) => u[field]));
-
 
   const loadCompanyData = async () => {
     setLoading(true);
     try {
       const data = await getCompanyUnits(companyId);
       setUnits(data.units);
-
 
       const options = {
         projects: getUniqueValues(data.units, 'project'),
@@ -1969,10 +891,8 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         cities: getUniqueValues(data.units, 'city'),
       };
 
-
       setAllFilterOptions(options);
       setAvailableOptions(options);
-
 
       // default: select all
       setFilters({
@@ -1986,7 +906,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         deliveryDateRange: { start: null, end: null },
       });
 
-
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -1994,16 +913,13 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     }
   };
 
-
   const updateFilter = (filterType, values) => {
     setFilters((prev) => ({ ...prev, [filterType]: values }));
   };
 
-
   const updateDateRange = (rangeType, start, end) => {
     setFilters((prev) => ({ ...prev, [rangeType]: { start, end } }));
   };
-
 
   const sanitize = (selected, available) => {
     if (!Array.isArray(selected)) return [];
@@ -2012,7 +928,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     return selected.filter((v) => set.has(v));
   };
 
-
   const sameAsSet = (a = [], b = []) => {
     if (a.length !== b.length) return false;
     const sa = new Set(a);
@@ -2020,14 +935,7 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     return true;
   };
 
-
-  useEffect(() => {
-    if (internalUpdateRef.current) {
-      internalUpdateRef.current = false;
-      return;
-    }
-
-
+  const applyFilters = useCallback(() => {
     // Step 1: filter using current filters
     const filtered = units.filter((u) => {
       const okProject = filters.projects.length === 0 || filters.projects.includes(u.project);
@@ -2039,9 +947,7 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
       const okArea = filters.areas.length === 0 || filters.areas.includes(u.area_range);
       const okCity = filters.cities.length === 0 || filters.cities.includes(u.city);
 
-
       if (!(okProject && okType && okPlan && okStatus && okArea && okCity)) return false;
-
 
       // sales date range
       if (filters.salesDateRange.start || filters.salesDateRange.end) {
@@ -2052,7 +958,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         if (filters.salesDateRange.end && d > filters.salesDateRange.end) return false;
       }
 
-
       // delivery date range
       if (filters.deliveryDateRange.start || filters.deliveryDateRange.end) {
         if (!u.development_delivery_date) return false;
@@ -2062,13 +967,10 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         if (filters.deliveryDateRange.end && d > filters.deliveryDateRange.end) return false;
       }
 
-
       return true;
     });
 
-
     setFilteredUnits(filtered);
-
 
     // Step 2: compute available options from the filtered result
     const nextAvailable = {
@@ -2080,9 +982,7 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
       cities: getUniqueValues(filtered, 'city'),
     };
 
-
     setAvailableOptions(nextAvailable);
-
 
     // Step 3: sanitize selected filters so unavailable items become unchecked+disabled
     const nextFilters = {
@@ -2095,7 +995,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
       cities: sanitize(filters.cities, nextAvailable.cities),
     };
 
-
     const changed =
       !sameAsSet(nextFilters.projects, filters.projects) ||
       !sameAsSet(nextFilters.unitTypes, filters.unitTypes) ||
@@ -2104,13 +1003,19 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
       !sameAsSet(nextFilters.areas, filters.areas) ||
       !sameAsSet(nextFilters.cities, filters.cities);
 
-
     if (changed) {
       internalUpdateRef.current = true;
       setFilters(nextFilters);
     }
   }, [units, filters]);
 
+  useEffect(() => {
+    if (internalUpdateRef.current) {
+      internalUpdateRef.current = false;
+      return;
+    }
+    applyFilters();
+  }, [applyFilters]);
 
   const handleGeneratePDF = async () => {
     setGeneratingPDF(true);
@@ -2124,7 +1029,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
     }
   };
 
-
   if (loading) {
     return (
       <div className="dashboard-loading">
@@ -2133,7 +1037,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
       </div>
     );
   }
-
 
   return (
     <>
@@ -2144,48 +1047,51 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         </div>
       )}
 
-
       <div className="dashboard-container">
-        {/* Tab Navigation - Always Visible */}
-        <div className="dashboard-tabs">
-          <button 
-            className={`dashboard-tab ${currentView === 'home' ? 'active' : ''}`}
-            onClick={() => setCurrentView('home')}
-          >
-            🏠 Home Page
-          </button>
-          <button 
-            className={`dashboard-tab ${currentView === 'project-data' ? 'active' : ''}`}
-            onClick={() => setCurrentView('project-data')}
-          >
-            📊 Project Data
-          </button>
-          <button 
-            className={`dashboard-tab ${currentView === 'inv-status' ? 'active' : ''}`}
-            onClick={() => setCurrentView('inv-status')}
-          >
-            📦 Inv Status
-          </button>
-          <button 
-            className={`dashboard-tab ${currentView === 'sales-progress' ? 'active' : ''}`}
-            onClick={() => setCurrentView('sales-progress')}
-          >
-            📈 Sales Progress
-          </button>
-          <button 
-            className={`dashboard-tab ${currentView === 'delivery-plan' ? 'active' : ''}`}
-            onClick={() => setCurrentView('delivery-plan')}
-          >
-            🚚 Delivery Plan
-          </button>
-        </div>
+        {/* Page Title Header */}
+        {/* <div className="dashboard-page-header">
+          <h1 className="page-title">{getPageTitle()}</h1>
+        </div> */}
 
+        {/* Tab Navigation - Always Visible */}
+        <div className="dashboard-tabs-container">
+          <div className="dashboard-tabs" ref={tabsContainerRef}>
+            <button 
+              className={`dashboard-tab ${currentView === 'home' ? 'active' : ''}`}
+              onClick={() => handleViewChange('home')}
+            >
+              🏠 Home Page
+            </button>
+            <button 
+              className={`dashboard-tab ${currentView === 'project-data' ? 'active' : ''}`}
+              onClick={() => handleViewChange('project-data')}
+            >
+              📊 Project Data
+            </button>
+            <button 
+              className={`dashboard-tab ${currentView === 'inv-status' ? 'active' : ''}`}
+              onClick={() => handleViewChange('inv-status')}
+            >
+              📦 Inv Status
+            </button>
+            <button 
+              className={`dashboard-tab ${currentView === 'sales-progress' ? 'active' : ''}`}
+              onClick={() => handleViewChange('sales-progress')}
+            >
+              📈 Sales Progress
+            </button>
+            <button 
+              className={`dashboard-tab ${currentView === 'delivery-plan' ? 'active' : ''}`}
+              onClick={() => handleViewChange('delivery-plan')}
+            >
+              🚚 Delivery Plan
+            </button>
+          </div>
+        </div>
 
         {/* Home Page View */}
         {currentView === 'home' && (
           <div className="home-view">
-
-
             <FilterSection
               filterOptions={allFilterOptions}
               availableOptions={availableOptions}
@@ -2193,9 +1099,7 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
               onFilterChange={updateFilter}
             />
 
-
             <KPISection units={filteredUnits} />
-
 
             <ChartsSection
               units={filteredUnits}
@@ -2205,16 +1109,14 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
               onFilterChange={updateFilter}
             />
 
-
             <UnitMetricsCharts units={filteredUnits} />
             
             <DataTable units={filteredUnits} />
           </div>
         )}
 
-
         {/* Project Data View */}
-          {currentView === 'project-data' && (
+        {currentView === 'project-data' && (
           <div className="project-data-view">
             <div className="pivot-section">
               <PivotTable units={filteredUnits} />
@@ -2222,16 +1124,12 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
           </div>
         )}
 
-
         {/* Inv Status View */}
         {currentView === 'inv-status' && (
-          <div className="coming-soon-view">
-            <div className="coming-soon-icon">📦</div>
-            <h3>Inventory Status</h3>
-            <p>Advanced inventory status analysis coming soon...</p>
+          <div className="inv-status-view">
+            <InvStatusPivot units={filteredUnits} />
           </div>
         )}
-
 
         {/* Sales Progress View */}
         {currentView === 'sales-progress' && (
@@ -2242,7 +1140,6 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
           </div>
         )}
 
-
         {/* Delivery Plan View */}
         {currentView === 'delivery-plan' && (
           <div className="coming-soon-view">
@@ -2252,11 +1149,9 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
           </div>
         )}
 
-
       </div>
     </>
   );
 };
-
 
 export default Dashboard;
