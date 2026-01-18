@@ -1,4 +1,5 @@
 
+
 // // Mock data generator for inventory dashboard
 
 // const generateMockUnits = () => {
@@ -17,8 +18,199 @@
 //   const buildingTypes = ["Tower", "Villa", "Duplex", "Apartment"];
 //   const unitModels = ["Model A", "Model B", "Model C", "Model D", "Model E"];
 
+//   // ✅ Make "Blocked Development" NOT exist everywhere
+//   // Adjust these sets to match your real-life expectation.
+//  const blockedAllowedProjects = new Set(["Ocean View", "City Center"]);
+// blockedAllowedProjects.add("Palm Residences", "Green Hills");
+//   const blockedAllowedCities = new Set(["Cairo", "Giza"]); // only these cities can have blocked
+//   const blockedAllowedUnitTypes = new Set(["2 Bedroom", "3 Bedroom", "Penthouse"]); // optional restriction
+//   const blockedAllowedAreas = new Set(["125-150 sqm", "150-200 sqm", "200+ sqm"]); // optional restriction
+
 //   const units = [];
 //   const numberOfUnits = 500;
+
+//   for (let i = 0; i < numberOfUnits; i++) {
+//     const project = projects[Math.floor(Math.random() * projects.length)];
+//     const city = cities[Math.floor(Math.random() * cities.length)];
+//     const unitType = unitTypes[Math.floor(Math.random() * unitTypes.length)];
+//     const areaRange = areaRanges[Math.floor(Math.random() * areaRanges.length)];
+//     const paymentPlan = paymentPlans[Math.floor(Math.random() * paymentPlans.length)];
+//     const buildingType = buildingTypes[Math.floor(Math.random() * buildingTypes.length)];
+//     const unitModel = unitModels[Math.floor(Math.random() * unitModels.length)];
+
+//     // ✅ Pick status, but enforce restrictions for "Blocked Development"
+//     let status = statuses[Math.floor(Math.random() * statuses.length)];
+
+//     if (status === "Blocked Development") {
+//       const allowed =
+//         blockedAllowedProjects.has(project) &&
+//         blockedAllowedCities.has(city) &&
+//         blockedAllowedUnitTypes.has(unitType) &&
+//         blockedAllowedAreas.has(areaRange);
+
+//       if (!allowed) {
+//         // re-roll to a non-blocked status
+//         const nonBlocked = statuses.filter((s) => s !== "Blocked Development");
+//         status = nonBlocked[Math.floor(Math.random() * nonBlocked.length)];
+//       }
+//     }
+
+//     // Generate sellable area based on unit type
+//     let minArea, maxArea;
+//     switch (unitType) {
+//       case "Studio":
+//         minArea = 50;
+//         maxArea = 75;
+//         break;
+//       case "1 Bedroom":
+//         minArea = 75;
+//         maxArea = 100;
+//         break;
+//       case "2 Bedroom":
+//         minArea = 100;
+//         maxArea = 125;
+//         break;
+//       case "3 Bedroom":
+//         minArea = 125;
+//         maxArea = 150;
+//         break;
+//       case "Penthouse":
+//         minArea = 150;
+//         maxArea = 250;
+//         break;
+//       default:
+//         minArea = 50;
+//         maxArea = 100;
+//     }
+
+//     const sellableArea = Math.floor(Math.random() * (maxArea - minArea + 1)) + minArea;
+//     const psmBase = 15000 + Math.random() * 10000; // PSM between 15k and 25k
+//     const psm = Math.floor(psmBase);
+//     const interestFreePrice = Math.floor(sellableArea * psmBase);
+//     const salesValue = Math.floor(interestFreePrice * (1 + Math.random() * 0.2)); // 0-20% markup
+
+//     // Generate dates
+//     const hasReservation = ["Contracted", "Reserved", "Hold", "Partner"].includes(status);
+//     const reservationDate = hasReservation
+//       ? new Date(
+//           2020 + Math.floor(Math.random() * 5),
+//           Math.floor(Math.random() * 12),
+//           Math.floor(Math.random() * 28) + 1
+//         )
+//       : null;
+
+//     const contractDeliveryDate = new Date(
+//       2024 + Math.floor(Math.random() * 3),
+//       Math.floor(Math.random() * 12),
+//       Math.floor(Math.random() * 28) + 1
+//     );
+
+//     const gracePeriodMonths = Math.floor(Math.random() * 7); // 0-6 months
+
+//     const developmentDeliveryDate = new Date(contractDeliveryDate);
+//     developmentDeliveryDate.setMonth(
+//       developmentDeliveryDate.getMonth() + gracePeriodMonths + Math.floor(Math.random() * 6 - 3)
+//     ); // +/- 3 months variation
+
+//     units.push({
+//       id: i + 1,
+//       city,
+//       project,
+//       project_name: project,
+//       unit_type: unitType,
+//       area_range: areaRange,
+//       adj_status_2: status,
+//       status,
+//       sellable_area: sellableArea,
+//       psm,
+//       interest_free_unit_price: interestFreePrice,
+//       sales_value: salesValue,
+//       building_type: buildingType,
+//       grace_period_months: gracePeriodMonths,
+//       unit_code: `${project.replace(/\s/g, '')}_${String(i + 1).padStart(4, '0')}`,
+//       reservation_date: reservationDate ? reservationDate.toISOString().split('T')[0] : null,
+//       development_delivery_date: developmentDeliveryDate.toISOString().split('T')[0],
+//       contract_delivery_date: contractDeliveryDate.toISOString().split('T')[0],
+//       unit_model: unitModel,
+//       adj_contract_payment_plan: paymentPlan
+//     });
+//   }
+
+//   return { companies, units };
+// };
+
+// const mockData = generateMockUnits();
+
+// export const getCompanies = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(mockData.companies);
+//     }, 100);
+//   });
+// };
+
+// export const getCompanyUnits = (companyId) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         units: mockData.units,
+//         company: mockData.companies.find((c) => c.id === parseInt(companyId))
+//       });
+//     }, 300);
+//   });
+// };
+
+// export default mockData;
+
+
+
+
+
+
+// // Mock data generator for inventory dashboard
+
+// const generateCompanySpecificUnits = (companyId, companyName) => {
+//   // Company-specific configurations
+//   const companyConfigs = {
+//     1: { // Skyline Developments
+//       projects: ["Skyline Towers", "Azure Heights", "Crystal Plaza", "Diamond Residence", "Emerald Gardens"],
+//       cities: ["Cairo", "New Cairo", "6th October"],
+//       unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Penthouse", "Duplex"],
+//       numberOfUnits: 600,
+//       priceMultiplier: 1.2,
+//       areaMultiplier: 1.1
+//     },
+//     2: { // Urban Properties Ltd
+//       projects: ["Urban Oasis", "Metropolitan Plaza", "City Hub", "Downtown Suites", "Urban Vista"],
+//       cities: ["Alexandria", "New Alexandria", "Borg El Arab"],
+//       unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Loft"],
+//       numberOfUnits: 450,
+//       priceMultiplier: 1.0,
+//       areaMultiplier: 1.0
+//     },
+//     3: { // Metro Construction
+//       projects: ["Metro Park", "Central Station", "Transit Hub", "Metro Heights", "Railway Gardens"],
+//       cities: ["Giza", "Sheikh Zayed", "New Giza"],
+//       unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Penthouse"],
+//       numberOfUnits: 550,
+//       priceMultiplier: 0.9,
+//       areaMultiplier: 0.95
+//     }
+//   };
+
+//   const config = companyConfigs[companyId] || companyConfigs[1];
+  
+//   const projects = config.projects;
+//   const cities = config.cities;
+//   const unitTypes = config.unitTypes;
+//   const statuses = ["Available", "Unreleased", "Blocked Development", "Reserved", "Contracted", "Partner", "Hold"];
+//   const areaRanges = ["50-75 sqm", "75-100 sqm", "100-125 sqm", "125-150 sqm", "150-200 sqm", "200+ sqm"];
+//   const paymentPlans = ["cash", "01 yr", "02 yr", "03 yr", "04 yr", "05 yr", "06 yr", "07 yr"];
+//   const buildingTypes = ["Tower", "Villa", "Duplex", "Apartment"];
+//   const unitModels = ["Model A", "Model B", "Model C", "Model D", "Model E"];
+
+//   const units = [];
+//   const numberOfUnits = config.numberOfUnits;
 
 //   for (let i = 0; i < numberOfUnits; i++) {
 //     const project = projects[Math.floor(Math.random() * projects.length)];
@@ -58,8 +250,9 @@
 //         maxArea = 100;
 //     }
 
-//     const sellableArea = Math.floor(Math.random() * (maxArea - minArea + 1)) + minArea;
-//     const psmBase = 15000 + Math.random() * 10000; // PSM between 15k and 25k
+//     const baseArea = Math.floor(Math.random() * (maxArea - minArea + 1)) + minArea;
+//     const sellableArea = Math.floor(baseArea * config.areaMultiplier);
+//     const psmBase = (15000 + Math.random() * 10000) * config.priceMultiplier; // PSM between 15k and 25k, adjusted by company
 //     const psm = Math.floor(psmBase);
 //     const interestFreePrice = Math.floor(sellableArea * psmBase);
 //     const salesValue = Math.floor(interestFreePrice * (1 + Math.random() * 0.2)); // 0-20% markup
@@ -99,15 +292,26 @@
 //     });
 //   }
 
-//   return { companies, units };
+//   return units;
 // };
 
-// const mockData = generateMockUnits();
+// // Generate data for all companies
+// const companies = [
+//   { id: 1, name: "Skyline Developments" },
+//   { id: 2, name: "Urban Properties Ltd" },
+//   { id: 3, name: "Metro Construction" }
+// ];
+
+// // Pre-generate data for each company
+// const companyDataCache = {};
+// companies.forEach(company => {
+//   companyDataCache[company.id] = generateCompanySpecificUnits(company.id, company.name);
+// });
 
 // export const getCompanies = () => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => {
-//       resolve(mockData.companies);
+//       resolve(companies);
 //     }, 100);
 //   });
 // };
@@ -115,19 +319,22 @@
 // export const getCompanyUnits = (companyId) => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => {
+//       const id = parseInt(companyId);
+//       const units = companyDataCache[id] || companyDataCache[1];
+//       const company = companies.find(c => c.id === id);
+      
+//       console.log(`Loading data for company: ${company?.name} (ID: ${id})`);
+//       console.log(`Total units: ${units.length}`);
+      
 //       resolve({
-//         units: mockData.units,
-//         company: mockData.companies.find(c => c.id === parseInt(companyId))
+//         units: units,
+//         company: company
 //       });
 //     }, 300);
 //   });
 // };
 
-// export default mockData;
-
-
-
-
+// export default { companies, getCompanyUnits };
 
 
 
@@ -150,12 +357,10 @@ const generateMockUnits = () => {
   const unitModels = ["Model A", "Model B", "Model C", "Model D", "Model E"];
 
   // ✅ Make "Blocked Development" NOT exist everywhere
-  // Adjust these sets to match your real-life expectation.
- const blockedAllowedProjects = new Set(["Ocean View", "City Center"]);
-blockedAllowedProjects.add("Palm Residences", "Green Hills");
-  const blockedAllowedCities = new Set(["Cairo", "Giza"]); // only these cities can have blocked
-  const blockedAllowedUnitTypes = new Set(["2 Bedroom", "3 Bedroom", "Penthouse"]); // optional restriction
-  const blockedAllowedAreas = new Set(["125-150 sqm", "150-200 sqm", "200+ sqm"]); // optional restriction
+  const blockedAllowedProjects = new Set(["Ocean View", "City Center", "Palm Residences", "Green Hills"]);
+  const blockedAllowedCities = new Set(["Cairo", "Giza"]);
+  const blockedAllowedUnitTypes = new Set(["2 Bedroom", "3 Bedroom", "Penthouse"]);
+  const blockedAllowedAreas = new Set(["125-150 sqm", "150-200 sqm", "200+ sqm"]);
 
   const units = [];
   const numberOfUnits = 500;
@@ -270,12 +475,178 @@ blockedAllowedProjects.add("Palm Residences", "Green Hills");
   return { companies, units };
 };
 
-const mockData = generateMockUnits();
+// Company-specific data generator
+const generateCompanySpecificUnits = (companyId, companyName) => {
+  // Company-specific configurations
+  const companyConfigs = {
+    1: { // Mint
+      projects: ["Mint Tower", "Mint Gardens", "Mint Residences", "Mint Plaza", "Mint Oasis"],
+      cities: ["Cairo", "New Cairo", "6th October", "Maadi"],
+      unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Penthouse", "Duplex"],
+      numberOfUnits: 600,
+      priceMultiplier: 1.3, // Higher end
+      areaMultiplier: 1.15
+    },
+    2: { // Palmier Developments
+      projects: ["Palmier Views", "Palmier Heights", "Palmier Bay", "Palmier City", "Palmier Greens"],
+      cities: ["Alexandria", "North Coast", "New Alexandria", "Borg El Arab"],
+      unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Villa"],
+      numberOfUnits: 450,
+      priceMultiplier: 1.1, // Premium
+      areaMultiplier: 1.05
+    },
+    3: { // IGI Developments
+      projects: ["IGI Tower", "IGI Plaza", "IGI Residence", "IGI Hub", "IGI Gardens"],
+      cities: ["Giza", "Sheikh Zayed", "New Giza", "Haram"],
+      unitTypes: ["Studio", "1 Bedroom", "2 Bedroom", "3 Bedroom", "Penthouse"],
+      numberOfUnits: 550,
+      priceMultiplier: 1.0, // Standard
+      areaMultiplier: 1.0
+    }
+  };
+
+  const config = companyConfigs[companyId] || companyConfigs[1];
+  
+  const projects = config.projects;
+  const cities = config.cities;
+  const unitTypes = config.unitTypes;
+  const statuses = ["Available", "Unreleased", "Blocked Development", "Reserved", "Contracted", "Partner", "Hold"];
+  const areaRanges = ["50-75 sqm", "75-100 sqm", "100-125 sqm", "125-150 sqm", "150-200 sqm", "200+ sqm"];
+  const paymentPlans = ["cash", "01 yr", "02 yr", "03 yr", "04 yr", "05 yr", "06 yr", "07 yr"];
+  const buildingTypes = ["Tower", "Villa", "Duplex", "Apartment"];
+  const unitModels = ["Model A", "Model B", "Model C", "Model D", "Model E"];
+
+  const units = [];
+  const numberOfUnits = config.numberOfUnits;
+
+  for (let i = 0; i < numberOfUnits; i++) {
+    const project = projects[Math.floor(Math.random() * projects.length)];
+    const city = cities[Math.floor(Math.random() * cities.length)];
+    const unitType = unitTypes[Math.floor(Math.random() * unitTypes.length)];
+    const areaRange = areaRanges[Math.floor(Math.random() * areaRanges.length)];
+    const paymentPlan = paymentPlans[Math.floor(Math.random() * paymentPlans.length)];
+    const buildingType = buildingTypes[Math.floor(Math.random() * buildingTypes.length)];
+    const unitModel = unitModels[Math.floor(Math.random() * unitModels.length)];
+
+    // ✅ Pick status, but enforce restrictions for "Blocked Development" (similar logic as before)
+    let status = statuses[Math.floor(Math.random() * statuses.length)];
+
+    if (status === "Blocked Development") {
+      // Company-specific blocked development rules
+      const blockedAllowedProjects = new Set([projects[0], projects[1]]); // First two projects can have blocked
+      const blockedAllowedCities = new Set([cities[0], cities[1]]); // First two cities
+      const blockedAllowedUnitTypes = new Set(["2 Bedroom", "3 Bedroom", "Penthouse"]);
+      const blockedAllowedAreas = new Set(["125-150 sqm", "150-200 sqm", "200+ sqm"]);
+
+      const allowed =
+        blockedAllowedProjects.has(project) &&
+        blockedAllowedCities.has(city) &&
+        blockedAllowedUnitTypes.has(unitType) &&
+        blockedAllowedAreas.has(areaRange);
+
+      if (!allowed) {
+        // re-roll to a non-blocked status
+        const nonBlocked = statuses.filter((s) => s !== "Blocked Development");
+        status = nonBlocked[Math.floor(Math.random() * nonBlocked.length)];
+      }
+    }
+
+    // Generate sellable area based on unit type
+    let minArea, maxArea;
+    switch (unitType) {
+      case "Studio":
+        minArea = 50;
+        maxArea = 75;
+        break;
+      case "1 Bedroom":
+        minArea = 75;
+        maxArea = 100;
+        break;
+      case "2 Bedroom":
+        minArea = 100;
+        maxArea = 125;
+        break;
+      case "3 Bedroom":
+        minArea = 125;
+        maxArea = 150;
+        break;
+      case "Penthouse":
+        minArea = 150;
+        maxArea = 250;
+        break;
+      default:
+        minArea = 50;
+        maxArea = 100;
+    }
+
+    const baseArea = Math.floor(Math.random() * (maxArea - minArea + 1)) + minArea;
+    const sellableArea = Math.floor(baseArea * config.areaMultiplier);
+    const psmBase = (15000 + Math.random() * 10000) * config.priceMultiplier;
+    const psm = Math.floor(psmBase);
+    const interestFreePrice = Math.floor(sellableArea * psmBase);
+    const salesValue = Math.floor(interestFreePrice * (1 + Math.random() * 0.2));
+
+    // Generate dates
+    const hasReservation = ['Contracted', 'Reserved', 'Hold', 'Partner'].includes(status);
+    const reservationDate = hasReservation
+      ? new Date(2020 + Math.floor(Math.random() * 5), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
+      : null;
+
+    const contractDeliveryDate = new Date(2024 + Math.floor(Math.random() * 3), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+    const gracePeriodMonths = Math.floor(Math.random() * 7);
+    const developmentDeliveryDate = new Date(contractDeliveryDate);
+    developmentDeliveryDate.setMonth(developmentDeliveryDate.getMonth() + gracePeriodMonths + Math.floor(Math.random() * 6 - 3));
+
+    units.push({
+      id: i + 1,
+      city,
+      project,
+      project_name: project,
+      unit_type: unitType,
+      area_range: areaRange,
+      adj_status_2: status,
+      status,
+      sellable_area: sellableArea,
+      psm,
+      interest_free_unit_price: interestFreePrice,
+      sales_value: salesValue,
+      building_type: buildingType,
+      grace_period_months: gracePeriodMonths,
+      unit_code: `${project.replace(/\s/g, '')}_${String(i + 1).padStart(4, '0')}`,
+      reservation_date: reservationDate ? reservationDate.toISOString().split('T')[0] : null,
+      development_delivery_date: developmentDeliveryDate.toISOString().split('T')[0],
+      contract_delivery_date: contractDeliveryDate.toISOString().split('T')[0],
+      unit_model: unitModel,
+      adj_contract_payment_plan: paymentPlan,
+      // Add company-specific metadata
+      company_id: companyId,
+      company_name: companyName
+    });
+  }
+
+  return units;
+};
+
+// Keep the companies from the first code
+const companies = [
+  { id: 1, name: "Mint" },
+  { id: 2, name: "Palmier Developments" },
+  { id: 3, name: "IGI Developments" }
+];
+
+// Pre-generate company-specific data for each company
+const companyDataCache = {};
+companies.forEach(company => {
+  companyDataCache[company.id] = generateCompanySpecificUnits(company.id, company.name);
+});
+
+// For backward compatibility, also generate the generic data
+const genericData = generateMockUnits();
 
 export const getCompanies = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(mockData.companies);
+      resolve(companies);
     }, 100);
   });
 };
@@ -283,12 +654,37 @@ export const getCompanies = () => {
 export const getCompanyUnits = (companyId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
+      const id = parseInt(companyId);
+      
+      // Use company-specific data if available, otherwise use generic data
+      let units;
+      let company;
+      
+      if (companyDataCache[id]) {
+        units = companyDataCache[id];
+        company = companies.find(c => c.id === id);
+        console.log(`Loading company-specific data for: ${company?.name} (ID: ${id})`);
+      } else {
+        // Fallback to generic data
+        units = genericData.units;
+        company = companies.find(c => c.id === id) || companies[0];
+        console.log(`Loading generic data for company: ${company?.name} (ID: ${id})`);
+      }
+      
+      console.log(`Total units loaded: ${units.length}`);
+      
       resolve({
-        units: mockData.units,
-        company: mockData.companies.find((c) => c.id === parseInt(companyId))
+        units: units,
+        company: company
       });
     }, 300);
   });
+};
+
+// For backward compatibility
+const mockData = {
+  companies: companies,
+  units: genericData.units
 };
 
 export default mockData;

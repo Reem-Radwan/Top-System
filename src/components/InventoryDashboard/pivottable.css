@@ -7,6 +7,7 @@
   box-shadow: var(--shadow-md);
 }
 
+
 /* Controls Section */
 .pivot-controls {
   display: flex;
@@ -17,6 +18,7 @@
   gap: var(--space-md);
 }
 
+
 /* Category Toggle */
 .category-toggle {
   display: flex;
@@ -25,6 +27,7 @@
   padding: 4px;
   border-radius: var(--radius-md);
 }
+
 
 .category-btn {
   padding: var(--space-sm) var(--space-lg);
@@ -36,7 +39,9 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
+  user-select: none;
 }
+
 
 .category-btn.active {
   background: linear-gradient(135deg, #4A90E2, #357ABD);
@@ -44,15 +49,18 @@
   box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }
 
+
 .category-btn:hover:not(.active) {
   background: var(--color-bg-tertiary);
 }
+
 
 /* Expand Controls */
 .expand-controls {
   display: flex;
   gap: var(--space-sm);
 }
+
 
 .control-btn {
   padding: var(--space-sm) var(--space-md);
@@ -64,7 +72,9 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
+  user-select: none;
 }
+
 
 .control-btn:hover {
   background: var(--color-bg-secondary);
@@ -72,16 +82,24 @@
   color: var(--color-primary);
 }
 
+
+.control-btn:active {
+  transform: scale(0.98);
+}
+
+
 /* Dropdown Controls Wrapper */
 .dropdown-controls {
   display: flex;
   gap: var(--space-sm);
 }
 
+
 /* Row Toggle Dropdown */
 .row-toggle {
   position: relative;
 }
+
 
 .row-dropdown {
   display: block;
@@ -98,13 +116,16 @@
   z-index: 100;
 }
 
+
 .dropdown-section {
   margin-bottom: var(--space-sm);
 }
 
+
 .dropdown-section:last-child {
   margin-bottom: 0;
 }
+
 
 .dropdown-section h4 {
   margin: 0 0 var(--space-sm) 0;
@@ -117,6 +138,7 @@
   padding-bottom: var(--space-xs);
 }
 
+
 .row-dropdown label,
 .column-dropdown label {
   display: flex;
@@ -128,29 +150,36 @@
   color: var(--color-text-secondary);
   transition: background var(--transition-fast);
   border-radius: var(--radius-sm);
+  user-select: none;
 }
+
 
 .row-dropdown label:hover:not(:has(input:disabled)),
 .column-dropdown label:hover {
   background: var(--color-bg-secondary);
 }
 
+
 .row-dropdown label:has(input:disabled) {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 
 .row-dropdown input[type="checkbox"],
 .column-dropdown input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: var(--color-primary);
+  cursor: pointer;
 }
+
 
 /* Column Toggle Dropdown */
 .column-toggle {
   position: relative;
 }
+
 
 .column-dropdown {
   display: block;
@@ -169,6 +198,7 @@
   overflow-y: auto;
 }
 
+
 /* Pivot Table Scroll */
 .pivot-table-scroll {
   overflow-x: auto;
@@ -178,24 +208,29 @@
   border: 1px solid var(--color-border-light);
 }
 
+
 .pivot-table-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 
 .pivot-table-scroll::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
   border-radius: 4px;
 }
 
+
 .pivot-table-scroll::-webkit-scrollbar-thumb {
   background: var(--color-border-medium);
   border-radius: 4px;
 }
 
+
 .pivot-table-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
+
 
 /* Pivot Table */
 .pivot-table {
@@ -205,6 +240,7 @@
   font-size: 0.9rem;
 }
 
+
 /* Header Row */
 .header-row {
   background: linear-gradient(135deg, #4A90E2, #357ABD);
@@ -213,6 +249,7 @@
   top: 0;
   z-index: 10;
 }
+
 
 .header-row th {
   padding: var(--space-md);
@@ -224,13 +261,16 @@
   border-bottom: 2px solid #2E6BA8;
 }
 
+
 .group-header {
   position: sticky;
   left: 0;
   background: linear-gradient(135deg, #4A90E2, #357ABD);
   z-index: 11;
   min-width: 250px;
+  max-width: 250px;
 }
+
 
 /* Pivot Rows */
 .pivot-row {
@@ -238,9 +278,11 @@
   border-bottom: 1px solid var(--color-border-light);
 }
 
+
 .pivot-row:hover {
   background: rgba(74, 144, 226, 0.05);
 }
+
 
 /* Level-based styling */
 .pivot-row.level-0 {
@@ -248,36 +290,46 @@
   font-weight: 600;
 }
 
+
 .pivot-row.level-1 {
   background: rgba(74, 144, 226, 0.05);
   font-weight: 500;
 }
 
+
 .pivot-row.level-2 {
   background: var(--color-bg-primary);
 }
+
 
 .pivot-row.level-3 {
   background: var(--color-bg-secondary);
 }
 
+
 /* Group Column */
 .group-column {
   position: sticky;
   left: 0;
-  background: inherit;
+  background: #e3effd;
   z-index: 5;
   min-width: 250px;
+  max-width: 250px;
   padding: var(--space-md);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   border-right: 2px solid var(--color-border-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 
 .expand-btn {
   width: 24px;
   height: 24px;
+  min-width: 24px;
   border: none;
   background: var(--color-bg-secondary);
   color: var(--color-primary);
@@ -287,9 +339,11 @@
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
   flex-shrink: 0;
+  user-select: none;
 }
+
 
 .expand-btn:hover {
   background: var(--color-primary);
@@ -297,28 +351,46 @@
   transform: scale(1.1);
 }
 
+
+.expand-btn:active {
+  transform: scale(1.05);
+}
+
+
 /* Level Labels */
 .level-0-label {
   font-size: 1rem;
   font-weight: 700;
   color: var(--color-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .level-1-label {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .level-2-label {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .level-3-label {
   font-size: 0.85rem;
   color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 /* Metric Cells */
 .metric-cell {
@@ -329,6 +401,7 @@
   color: var(--color-text-secondary);
 }
 
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .pivot-controls {
@@ -336,92 +409,150 @@
     align-items: stretch;
   }
 
+
   .category-toggle,
   .expand-controls {
     width: 100%;
     justify-content: center;
   }
 
+  .dropdown-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+
   .pivot-table-scroll {
     max-height: 60vh;
   }
+
 
   .header-row th {
     font-size: 0.75rem;
     padding: var(--space-sm);
   }
 
+
   .metric-cell {
     font-size: 0.8rem;
     padding: var(--space-sm);
   }
 
+
   .group-column {
     min-width: 200px;
+    max-width: 200px;
+  }
+
+  .group-header {
+    min-width: 200px;
+    max-width: 200px;
   }
 }
+
 
 @media (max-width: 768px) {
   .pivot-table-container {
     padding: var(--space-md);
   }
 
+
   .pivot-controls {
     gap: var(--space-sm);
   }
+
 
   .category-btn {
     font-size: 0.8rem;
     padding: var(--space-sm);
   }
 
+
   .control-btn {
     font-size: 0.75rem;
     padding: 6px 12px;
   }
 
+
   .pivot-table-scroll {
     max-height: 50vh;
   }
 
+
   .group-column {
-    min-width: 150px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: var(--space-sm);
+    font-size: 0.75rem;
   }
+
+  .group-header {
+    min-width: 120px;
+    max-width: 120px;
+    font-size: 0.75rem;
+  }
+
+  .dropdown-controls {
+    justify-content: center;
+  }
+
+  .row-dropdown,
+  .column-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
 
   .level-0-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
+
   .level-1-label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
+
 
   .level-2-label,
   .level-3-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .expand-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    font-size: 0.65rem;
   }
 }
+
 
 /* Dark Mode Support */
 [data-theme="dark"] .header-row {
   background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
 }
 
+
 [data-theme="dark"] .group-header {
   background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
 }
+
 
 [data-theme="dark"] .pivot-row.level-0 {
   background: rgba(46, 107, 168, 0.15);
 }
 
+
 [data-theme="dark"] .pivot-row.level-1 {
   background: rgba(46, 107, 168, 0.08);
 }
 
+
 [data-theme="dark"] .pivot-row:hover {
   background: rgba(46, 107, 168, 0.12);
 }
+
 
 /* Print Styles */
 @media print {
@@ -429,11 +560,13 @@
     display: none;
   }
 
+
   .pivot-table-scroll {
     overflow: visible;
     max-height: none;
     border: none;
   }
+
 
   .expand-btn {
     display: none;

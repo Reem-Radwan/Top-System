@@ -274,6 +274,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  justify-content: center;
 }
 
 .dashboard-tabs::-webkit-scrollbar {
@@ -500,3 +501,4 @@
     transform: translateY(0);
   }
 }
+
