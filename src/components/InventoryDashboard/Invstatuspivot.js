@@ -1057,16 +1057,2111 @@
 
 
 
+// import React, { useState, useMemo, useEffect, useRef } from 'react';
+// import './invstatuspivot.css';
+
+// const InvStatusPivot = ({ units }) => {
+//   // State for expand/collapse
+//   const [expandedCities, setExpandedCities] = useState({});
+//   const [expandedProjects, setExpandedProjects] = useState({});
+//   const [expandedTypes, setExpandedTypes] = useState({});
+
+//   // Multi selected statuses (initially AVAILABLE only)
+//   const [selectedStatuses, setSelectedStatuses] = useState(['available']);
+
+//   // Column visibility
+//   const [visibleColumns, setVisibleColumns] = useState({
+//     percentage: true,
+//     noOfUnits: true,
+//     salesValue: true
+//   });
+
+//   // Row visibility
+//   const [visibleRows, setVisibleRows] = useState({
+//     cities: true,
+//     projects: true,
+//     unitTypes: true
+//   });
+
+//   // Dropdowns
+//   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
+//   const [showRowDropdown, setShowRowDropdown] = useState(false);
+//   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+//   // Mobile scroll indicators
+//   const [showLeftScroll, setShowLeftScroll] = useState(false);
+//   const [showRightScroll, setShowRightScroll] = useState(true);
+
+//   // Refs
+//   const columnDropdownRef = useRef(null);
+//   const rowDropdownRef = useRef(null);
+//   const statusDropdownRef = useRef(null);
+//   const pivotScrollRef = useRef(null);
+//   const statusTabsRef = useRef(null);
+
+//   // Status definitions
+//   const statuses = [
+//     { key: 'available',  label: '📦 AVAILABLE',          theme: 'blue' },
+//     { key: 'unreleased', label: '🔒 UNRELEASED',         theme: 'blue' },
+//     { key: 'blocked',    label: '🚫 BLOCKED DEVELOPMENT', theme: 'blue' },
+//     { key: 'reserved',   label: '⏳ RESERVED',           theme: 'blue' },
+//     { key: 'hold',       label: '⏸️ HOLD',              theme: 'blue' },
+//     { key: 'partner',    label: '🤝 PARTNER',            theme: 'blue' },
+//     { key: 'contracted', label: '✅ CONTRACTED',         theme: 'gray' }
+//   ];
+
+//   // Theme from first selected status
+//   const getCurrentStatusTheme = () => {
+//     const first = selectedStatuses[0];
+//     const currentStatus = statuses.find(s => s.key === first);
+//     return currentStatus?.theme || 'blue';
+//   };
+
+//   const getStatusKey = (unitStatus) => {
+//     const statusMap = {
+//       'Available': 'available',
+//       'Unreleased': 'unreleased',
+//       'Blocked Development': 'blocked',
+//       'Reserved': 'reserved',
+//       'Hold': 'hold',
+//       'Partner': 'partner',
+//       'Contracted': 'contracted'
+//     };
+//     return statusMap[unitStatus] || 'available';
+//   };
+
+//   // Outside click closes dropdowns
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (columnDropdownRef.current && !columnDropdownRef.current.contains(event.target)) {
+//         setShowColumnDropdown(false);
+//       }
+//       if (rowDropdownRef.current && !rowDropdownRef.current.contains(event.target)) {
+//         setShowRowDropdown(false);
+//       }
+//       if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+//         setShowStatusDropdown(false);
+//       }
+//     };
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   // Reset horizontal scroll
+//   useEffect(() => {
+//     if (pivotScrollRef.current) {
+//       pivotScrollRef.current.scrollLeft = 0;
+//     }
+//   }, []);
+
+//   // Update scroll indicators for status tabs
+//   useEffect(() => {
+//     const updateScrollIndicators = () => {
+//       const tabsContainer = statusTabsRef.current;
+//       if (tabsContainer) {
+//         const { scrollLeft, scrollWidth, clientWidth } = tabsContainer;
+//         setShowLeftScroll(scrollLeft > 0);
+//         setShowRightScroll(scrollLeft + clientWidth < scrollWidth - 10);
+//       }
+//     };
+
+//     const tabsContainer = statusTabsRef.current;
+//     if (tabsContainer) {
+//       tabsContainer.addEventListener('scroll', updateScrollIndicators);
+//       updateScrollIndicators();
+//       window.addEventListener('resize', updateScrollIndicators);
+
+//       return () => {
+//         tabsContainer.removeEventListener('scroll', updateScrollIndicators);
+//         window.removeEventListener('resize', updateScrollIndicators);
+//       };
+//     }
+//   }, []);
+
+//   const scrollTabs = (direction) => {
+//     const tabsContainer = statusTabsRef.current;
+//     if (tabsContainer) {
+//       const scrollAmount = 200;
+//       tabsContainer.scrollBy({
+//         left: direction === 'left' ? -scrollAmount : scrollAmount,
+//         behavior: 'smooth'
+//       });
+//     }
+//   };
+
+//   // Build hierarchical data
+//   const pivotData = useMemo(() => {
+//     const cityMap = {};
+
+//     units.forEach(unit => {
+//       const city = unit.city || 'Unknown';
+//       const project = unit.project || 'Unknown';
+//       const unitType = unit.unit_type || 'Unknown';
+//       const statusKey = getStatusKey(unit.status);
+
+//       if (!cityMap[city]) {
+//         cityMap[city] = {
+//           name: city,
+//           statusData: {},
+//           projects: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].totalUnits++;
+//       cityMap[city].statusData[statusKey].count++;
+//       cityMap[city].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project]) {
+//         cityMap[city].projects[project] = {
+//           name: project,
+//           statusData: {},
+//           unitTypes: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].totalUnits++;
+//       cityMap[city].projects[project].statusData[statusKey].count++;
+//       cityMap[city].projects[project].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project].unitTypes[unitType]) {
+//         cityMap[city].projects[project].unitTypes[unitType] = {
+//           name: unitType,
+//           statusData: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].unitTypes[unitType].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].unitTypes[unitType].totalUnits++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].count++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+//     });
+
+//     return Object.values(cityMap);
+//   }, [units]);
+
+//   const formatNumber = (num) =>
+//     num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+//   const calculatePercentage = (count, total) => {
+//     return total === 0 ? '0%' : `${((count / total) * 100).toFixed(2)}%`;
+//   };
+
+//   // Expand/collapse
+//   const toggleCity = (cityName) => {
+//     setExpandedCities(prev => ({
+//       ...prev,
+//       [cityName]: !prev[cityName]
+//     }));
+//   };
+
+//   const toggleProject = (cityName, projectName) => {
+//     const key = `${cityName}-${projectName}`;
+//     setExpandedProjects(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   const toggleType = (cityName, projectName, typeName) => {
+//     const key = `${cityName}-${projectName}-${typeName}`;
+//     setExpandedTypes(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   // Column / row toggles
+//   const toggleColumn = (columnKey) =>
+//     setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+
+//   const toggleRow = (rowKey) =>
+//     setVisibleRows(prev => ({ ...prev, [rowKey]: !prev[rowKey] }));
+
+//   const toggleColumnDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowColumnDropdown(prev => !prev);
+//     setShowRowDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   const toggleRowDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowRowDropdown(prev => !prev);
+//     setShowColumnDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   // Multi-status selection
+//   const toggleStatusSelection = (statusKey) => {
+//     setSelectedStatuses(prev => {
+//       if (prev.includes(statusKey)) {
+//         if (prev.length <= 1) return prev; // keep at least 1 selected
+//         return prev.filter(s => s !== statusKey);
+//       }
+//       return [...prev, statusKey];
+//     });
+//   };
+
+//   const expandAll = () => {
+//     const newCities = {};
+//     const newProjects = {};
+//     const newTypes = {};
+
+//     pivotData.forEach(city => {
+//       newCities[city.name] = true;
+//       Object.keys(city.projects).forEach(projectName => {
+//         const projectKey = `${city.name}-${projectName}`;
+//         newProjects[projectKey] = true;
+
+//         const project = city.projects[projectName];
+//         Object.keys(project.unitTypes).forEach(typeName => {
+//           const typeKey = `${city.name}-${projectName}-${typeName}`;
+//           newTypes[typeKey] = true;
+//         });
+//       });
+//     });
+
+//     setExpandedCities(newCities);
+//     setExpandedProjects(newProjects);
+//     setExpandedTypes(newTypes);
+//   };
+
+//   const collapseAll = () => {
+//     setExpandedCities({});
+//     setExpandedProjects({});
+//     setExpandedTypes({});
+//   };
+
+//   const isEverythingExpanded = () => {
+//     const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+
+//     let allProjectsExpanded = true;
+//     pivotData.forEach(city => {
+//       if (expandedCities[city.name]) {
+//         Object.keys(city.projects).forEach(projectName => {
+//           const projectKey = `${city.name}-${projectName}`;
+//           if (!expandedProjects[projectKey]) {
+//             allProjectsExpanded = false;
+//           }
+//         });
+//       }
+//     });
+
+//     let allTypesExpanded = true;
+//     pivotData.forEach(city => {
+//       if (expandedCities[city.name]) {
+//         Object.keys(city.projects).forEach(projectName => {
+//           const projectKey = `${city.name}-${projectName}`;
+//           if (expandedProjects[projectKey]) {
+//             const project = city.projects[projectName];
+//             Object.keys(project.unitTypes).forEach(typeName => {
+//               const typeKey = `${city.name}-${projectName}-${typeName}`;
+//               if (!expandedTypes[typeKey]) {
+//                 allTypesExpanded = false;
+//               }
+//             });
+//           }
+//         });
+//       }
+//     });
+
+//     return allCitiesExpanded && allProjectsExpanded && allTypesExpanded;
+//   };
+
+//   const isEverythingCollapsed = () => {
+//     const hasExpandedCities = Object.keys(expandedCities).some(key => expandedCities[key]);
+//     const hasExpandedProjects = Object.keys(expandedProjects).some(key => expandedProjects[key]);
+//     const hasExpandedTypes = Object.keys(expandedTypes).some(key => expandedTypes[key]);
+//     return !hasExpandedCities && !hasExpandedProjects && !hasExpandedTypes;
+//   };
+
+//   // Render row with all selected statuses side-by-side
+//   // const renderRow = (
+//   //   level,
+//   //   name,
+//   //   statusDataMap,
+//   //   totalUnits,
+//   //   expandable,
+//   //   expanded,
+//   //   onToggle,
+//   //   indent = 0
+//   // ) => {
+//   //   return (
+//   //     <tr className={`data-row level-${level}`}>
+//   //       <td
+//   //         className="group-column"
+//   //         style={{ paddingLeft: `${indent * 20 + 10}px` }}
+//   //       >
+//   //         {expandable && (
+//   //           <button
+//   //             className="expand-btn"
+//   //             onClick={(e) => {
+//   //               e.stopPropagation();
+//   //               e.preventDefault();
+//   //               onToggle();
+//   //             }}
+//   //           >
+//   //             {expanded ? '▼' : '▶'}
+//   //           </button>
+//   //         )}
+//   //         <span className={`level-${level}-label`}>{name}</span>
+//   //       </td>
+
+//   //       {selectedStatuses.map(statusKey => {
+//   //         const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+//   //         const percentage = calculatePercentage(data.count, totalUnits);
+
+//   //         return (
+//   //           <React.Fragment key={statusKey}>
+//   //             {visibleColumns.percentage && (
+//   //               <td className="metric-cell">{percentage}</td>
+//   //             )}
+//   //             {visibleColumns.noOfUnits && (
+//   //               <td className="metric-cell">{formatNumber(data.count)}</td>
+//   //             )}
+//   //             {visibleColumns.salesValue && (
+//   //               <td className="metric-cell">{formatNumber(data.value)}</td>
+//   //             )}
+//   //           </React.Fragment>
+//   //         );
+//   //       })}
+//   //     </tr>
+//   //   );
+//   // };
+//   const renderRow = (
+//   level,
+//   name,
+//   statusDataMap,
+//   totalUnits,
+//   expandable,
+//   expanded,
+//   onToggle,
+//   indent = 0
+// ) => {
+//   return (
+//     <tr className={`data-row level-${level}`}>
+//       <td
+//         className="group-column"
+//         style={{ paddingLeft: `${indent * 20 + 10}px` }}
+//       >
+//         {expandable && (
+//           <button
+//             className="expand-btn"
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               e.preventDefault();
+//               onToggle();
+//             }}
+//           >
+//             {expanded ? '▼' : '▶'}
+//           </button>
+//         )}
+//         <span className={`level-${level}-label`}>{name}</span>
+//       </td>
+
+//       {selectedStatuses.map(statusKey => {
+//         const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+//         const percentage = calculatePercentage(data.count, totalUnits);
+
+//         return (
+//           <React.Fragment key={statusKey}>
+//             {visibleColumns.percentage && (
+//               <td className="metric-cell">{percentage}</td>
+//             )}
+//             {visibleColumns.noOfUnits && (
+//               <td className="metric-cell">{formatNumber(data.count)}</td>
+//             )}
+//             {visibleColumns.salesValue && (
+//               <td className="metric-cell status-group-end">
+//                 {formatNumber(data.value)}
+//               </td>
+//             )}
+//           </React.Fragment>
+//         );
+//       })}
+//     </tr>
+//   );
+// };
+
+
+//   const currentTheme = getCurrentStatusTheme();
+
+//   return (
+//     <div className={`pivot-table-container theme-${currentTheme}`}>
+//       {/* Status Tabs as quick presets (optional) */}
+//       <div className="status-tabs-container centered-tabs">
+//         {showLeftScroll && (
+//           <button
+//             className="scroll-btn scroll-left"
+//             onClick={() => scrollTabs('left')}
+//             aria-label="Scroll tabs left"
+//           >
+//             ◀
+//           </button>
+//         )}
+
+//         <div className="status-tabs-wrapper" ref={statusTabsRef}>
+//           <div className="category-toggle">
+//             {statuses.map(status => (
+//               <button
+//                 key={status.key}
+//                 className={`category-btn ${
+//                   selectedStatuses.length === 1 &&
+//                   selectedStatuses[0] === status.key
+//                     ? 'active'
+//                     : ''
+//                 }`}
+//                 onClick={() => setSelectedStatuses([status.key])}
+//               >
+//                 {status.label}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+
+//         {showRightScroll && (
+//           <button
+//             className="scroll-btn scroll-right"
+//             onClick={() => scrollTabs('right')}
+//             aria-label="Scroll tabs right"
+//           >
+//             ▶
+//           </button>
+//         )}
+//       </div>
+
+//       {/* Controls */}
+//       <div className="pivot-controls right-aligned-controls">
+//         <div className="controls-group">
+//           {/* Expand / Collapse */}
+//           {isEverythingExpanded() && !isEverythingCollapsed() ? (
+//             <button className="control-btn" onClick={collapseAll}>
+//               ▶ Collapse All
+//             </button>
+//           ) : (
+//             <button className="control-btn" onClick={expandAll}>
+//               ▼ Expand All
+//             </button>
+//           )}
+
+//           {/* Status multi-select */}
+//           <div className="status-multi-toggle" ref={statusDropdownRef}>
+//             <button
+//               className="control-btn"
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 setShowStatusDropdown(prev => !prev);
+//                 setShowColumnDropdown(false);
+//                 setShowRowDropdown(false);
+//               }}
+//             >
+//               ⚙️ Status {showStatusDropdown ? '▲' : '▼'}
+//             </button>
+//             {showStatusDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Statuses</h4>
+//                   {statuses.map(s => {
+//                     const checked = selectedStatuses.includes(s.key);
+//                     const disableUncheck =
+//                       checked && selectedStatuses.length <= 1;
+//                     return (
+//                       <label key={s.key}>
+//                         <input
+//                           type="checkbox"
+//                           checked={checked}
+//                           disabled={disableUncheck}
+//                           onChange={() => toggleStatusSelection(s.key)}
+//                         />
+//                         {s.label}
+//                       </label>
+//                     );
+//                   })}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Rows/Fields dropdown */}
+//           <div className="row-toggle" ref={rowDropdownRef}>
+//             <button className="control-btn" onClick={toggleRowDropdown}>
+//               📋 Rows/Fields {showRowDropdown ? '▲' : '▼'}
+//             </button>
+//             {showRowDropdown && (
+//               <div className="row-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Hierarchy Levels</h4>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.cities}
+//                       onChange={() => toggleRow('cities')}
+//                     />
+//                     📍 Cities
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.projects}
+//                       onChange={() => toggleRow('projects')}
+//                       disabled={!visibleRows.cities}
+//                     />
+//                     📁 Projects
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.unitTypes}
+//                       onChange={() => toggleRow('unitTypes')}
+//                       disabled={!visibleRows.projects}
+//                     />
+//                     🏠 Unit Types
+//                   </label>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Columns dropdown */}
+//           <div className="column-toggle" ref={columnDropdownRef}>
+//             <button className="control-btn" onClick={toggleColumnDropdown}>
+//               ⚙️ Columns {showColumnDropdown ? '▲' : '▼'}
+//             </button>
+//             {showColumnDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Data Fields</h4>
+//                   {Object.keys(visibleColumns).map(key => (
+//                     <label key={key}>
+//                       <input
+//                         type="checkbox"
+//                         checked={visibleColumns[key]}
+//                         onChange={() => toggleColumn(key)}
+//                       />
+//                       {key === 'percentage'
+//                         ? '%'
+//                         : key === 'noOfUnits'
+//                         ? 'No. of Units'
+//                         : key === 'salesValue'
+//                         ? 'Sales Value'
+//                         : key}
+//                     </label>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Pivot Table */}
+//       <div className="pivot-table-scroll" ref={pivotScrollRef}>
+//         <table
+//   className={
+//     `pivot-table ${
+//       selectedStatuses.length === 1 ? 'single-status-layout' : ''
+//     }`
+//   }
+// >
+
+//           {/* <thead>
+//             <tr className="header-row">
+//               <th className="group-header"></th>
+//               {selectedStatuses.map(statusKey => {
+//                 const status = statuses.find(s => s.key === statusKey);
+//                 const label = status ? status.label : statusKey;
+//                 return (
+//                   <React.Fragment key={statusKey}>
+//                     {visibleColumns.percentage && <th>{label} %</th>}
+//                     {visibleColumns.noOfUnits && <th>{label} UNITS</th>}
+//                     {visibleColumns.salesValue && <th>{label} TOTAL SALES</th>}
+//                   </React.Fragment>
+//                 );
+//               })}
+//             </tr>
+//           </thead> */}
+//           <thead>
+//             <tr className="header-row">
+//               <th className="group-header"></th>
+//               {selectedStatuses.map(statusKey => {
+//                 const status = statuses.find(s => s.key === statusKey);
+//                 const label = status ? status.label : statusKey;
+//                 return (
+//                   <React.Fragment key={statusKey}>
+//                     {visibleColumns.percentage && <th>{label} %</th>}
+//                     {visibleColumns.noOfUnits && <th>{label} UNITS</th>}
+//                     {visibleColumns.salesValue && (
+//                       <th className="status-group-end">{label} TOTAL SALES</th>
+//                     )}
+//                   </React.Fragment>
+//                 );
+//               })}
+//             </tr>
+//           </thead>
+
+//           <tbody>
+//             {visibleRows.cities &&
+//               pivotData.map(city => {
+//                 const isCityExpanded = expandedCities[city.name];
+//                 const cityHasExpandable = visibleRows.projects;
+
+//                 return (
+//                   <React.Fragment key={city.name}>
+//                     {/* City Row */}
+//                     {renderRow(
+//                       0,
+//                       `📍 ${city.name}`,
+//                       city.statusData,
+//                       city.totalUnits,
+//                       cityHasExpandable,
+//                       isCityExpanded,
+//                       () => toggleCity(city.name),
+//                       0
+//                     )}
+
+//                     {/* Projects */}
+//                     {visibleRows.projects &&
+//                       isCityExpanded &&
+//                       Object.values(city.projects).map(project => {
+//                         const projectKey = `${city.name}-${project.name}`;
+//                         const isProjectExpanded = expandedProjects[projectKey];
+//                         const projectHasExpandable = visibleRows.unitTypes;
+
+//                         return (
+//                           <React.Fragment key={projectKey}>
+//                             {/* Project Row */}
+//                             {renderRow(
+//                               1,
+//                               `📁 ${project.name}`,
+//                               project.statusData,
+//                               project.totalUnits,
+//                               projectHasExpandable,
+//                               isProjectExpanded,
+//                               () =>
+//                                 toggleProject(city.name, project.name),
+//                               1
+//                             )}
+
+//                             {/* Unit Types */}
+//                             {visibleRows.unitTypes &&
+//                               isProjectExpanded &&
+//                               Object.values(project.unitTypes).map(unitType => {
+//                                 const typeKey = `${city.name}-${project.name}-${unitType.name}`;
+
+//                                 return (
+//                                   <React.Fragment key={typeKey}>
+//                                     {renderRow(
+//                                       2,
+//                                       `🏠 ${unitType.name}`,
+//                                       unitType.statusData,
+//                                       unitType.totalUnits,
+//                                       false,
+//                                       false,
+//                                       () =>
+//                                         toggleType(
+//                                           city.name,
+//                                           project.name,
+//                                           unitType.name
+//                                         ),
+//                                       2
+//                                     )}
+//                                   </React.Fragment>
+//                                 );
+//                               })}
+//                           </React.Fragment>
+//                         );
+//                       })}
+//                   </React.Fragment>
+//                 );
+//               })}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default InvStatusPivot;
+
+
+
+
+// import React, { useState, useMemo, useEffect, useRef } from 'react';
+// import './invstatuspivot.css';
+
+// const InvStatusPivot = ({ units }) => {
+//   // State for expand/collapse - Initially expand all cities and projects
+//   const [expandedCities, setExpandedCities] = useState({});
+//   const [expandedProjects, setExpandedProjects] = useState({});
+//   const [expandedTypes, setExpandedTypes] = useState({});
+
+//   // Multi selected statuses (initially AVAILABLE only)
+//   const [selectedStatuses, setSelectedStatuses] = useState(['available']);
+
+//   // Column visibility
+//   const [visibleColumns, setVisibleColumns] = useState({
+//     percentage: true,
+//     noOfUnits: true,
+//     salesValue: true
+//   });
+
+//   // Row visibility
+//   const [visibleRows, setVisibleRows] = useState({
+//     cities: true,
+//     projects: true,
+//     unitTypes: true
+//   });
+
+//   // Dropdowns
+//   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
+//   const [showRowDropdown, setShowRowDropdown] = useState(false);
+//   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+//   // Refs
+//   const columnDropdownRef = useRef(null);
+//   const rowDropdownRef = useRef(null);
+//   const statusDropdownRef = useRef(null);
+//   const pivotScrollRef = useRef(null);
+//   const statusTabsRef = useRef(null);
+
+//   // Status definitions
+//   const statuses = [
+//     { key: 'available',  label: '📦 AVAILABLE',          theme: 'blue' },
+//     { key: 'unreleased', label: '🔒 UNRELEASED',         theme: 'blue' },
+//     { key: 'blocked',    label: '🚫 BLOCKED DEVELOPMENT', theme: 'blue' },
+//     { key: 'reserved',   label: '⏳ RESERVED',           theme: 'blue' },
+//     { key: 'hold',       label: '⏸️ HOLD',              theme: 'blue' },
+//     { key: 'partner',    label: '🤝 PARTNER',            theme: 'blue' },
+//     { key: 'contracted', label: '✅ CONTRACTED',         theme: 'gray' }
+//   ];
+
+//   // Theme from first selected status
+//   const getCurrentStatusTheme = () => {
+//     const first = selectedStatuses[0];
+//     const currentStatus = statuses.find(s => s.key === first);
+//     return currentStatus?.theme || 'blue';
+//   };
+
+//   const getStatusKey = (unitStatus) => {
+//     const statusMap = {
+//       'Available': 'available',
+//       'Unreleased': 'unreleased',
+//       'Blocked Development': 'blocked',
+//       'Reserved': 'reserved',
+//       'Hold': 'hold',
+//       'Partner': 'partner',
+//       'Contracted': 'contracted'
+//     };
+//     return statusMap[unitStatus] || 'available';
+//   };
+
+//   // Outside click closes dropdowns
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (columnDropdownRef.current && !columnDropdownRef.current.contains(event.target)) {
+//         setShowColumnDropdown(false);
+//       }
+//       if (rowDropdownRef.current && !rowDropdownRef.current.contains(event.target)) {
+//         setShowRowDropdown(false);
+//       }
+//       if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+//         setShowStatusDropdown(false);
+//       }
+//     };
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   // Initialize expanded states on component mount
+//   useEffect(() => {
+//     // Expand all cities and projects initially
+//     if (units && units.length > 0) {
+//       const cityMap = {};
+//       const projectMap = {};
+      
+//       // Build unique cities and projects
+//       units.forEach(unit => {
+//         const city = unit.city || 'Unknown';
+//         const project = unit.project || 'Unknown';
+        
+//         // Expand all cities
+//         cityMap[city] = true;
+        
+//         // Expand all projects
+//         const projectKey = `${city}-${project}`;
+//         projectMap[projectKey] = true;
+//       });
+      
+//       setExpandedCities(cityMap);
+//       setExpandedProjects(projectMap);
+//       // Keep unit types collapsed by default
+//       setExpandedTypes({});
+//     }
+//   }, [units]);
+
+//   // Build hierarchical data
+//   const pivotData = useMemo(() => {
+//     const cityMap = {};
+
+//     units.forEach(unit => {
+//       const city = unit.city || 'Unknown';
+//       const project = unit.project || 'Unknown';
+//       const unitType = unit.unit_type || 'Unknown';
+//       const statusKey = getStatusKey(unit.status);
+
+//       if (!cityMap[city]) {
+//         cityMap[city] = {
+//           name: city,
+//           statusData: {},
+//           projects: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].totalUnits++;
+//       cityMap[city].statusData[statusKey].count++;
+//       cityMap[city].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project]) {
+//         cityMap[city].projects[project] = {
+//           name: project,
+//           statusData: {},
+//           unitTypes: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].totalUnits++;
+//       cityMap[city].projects[project].statusData[statusKey].count++;
+//       cityMap[city].projects[project].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project].unitTypes[unitType]) {
+//         cityMap[city].projects[project].unitTypes[unitType] = {
+//           name: unitType,
+//           statusData: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].unitTypes[unitType].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].unitTypes[unitType].totalUnits++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].count++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+//     });
+
+//     return Object.values(cityMap);
+//   }, [units]);
+
+//   const formatNumber = (num) =>
+//     num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+//   const calculatePercentage = (count, total) => {
+//     return total === 0 ? '0%' : `${((count / total) * 100).toFixed(2)}%`;
+//   };
+
+//   // Expand/collapse
+//   const toggleCity = (cityName) => {
+//     setExpandedCities(prev => ({
+//       ...prev,
+//       [cityName]: !prev[cityName]
+//     }));
+//   };
+
+//   const toggleProject = (cityName, projectName) => {
+//     const key = `${cityName}-${projectName}`;
+//     setExpandedProjects(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   const toggleType = (cityName, projectName, typeName) => {
+//     const key = `${cityName}-${projectName}-${typeName}`;
+//     setExpandedTypes(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   // Column / row toggles
+//   const toggleColumn = (columnKey) =>
+//     setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+
+//   const toggleRow = (rowKey) =>
+//     setVisibleRows(prev => ({ ...prev, [rowKey]: !prev[rowKey] }));
+
+//   const toggleColumnDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowColumnDropdown(prev => !prev);
+//     setShowRowDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   const toggleRowDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowRowDropdown(prev => !prev);
+//     setShowColumnDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   // Multi-status selection
+//   const toggleStatusSelection = (statusKey) => {
+//     setSelectedStatuses(prev => {
+//       if (prev.includes(statusKey)) {
+//         if (prev.length <= 1) return prev; // keep at least 1 selected
+//         return prev.filter(s => s !== statusKey);
+//       }
+//       return [...prev, statusKey];
+//     });
+//   };
+
+//   // Expand only cities and projects (not unit types)
+//   const expandAll = () => {
+//     const newCities = {};
+//     const newProjects = {};
+
+//     pivotData.forEach(city => {
+//       newCities[city.name] = true;
+//       Object.keys(city.projects).forEach(projectName => {
+//         const projectKey = `${city.name}-${projectName}`;
+//         newProjects[projectKey] = true;
+//       });
+//     });
+
+//     setExpandedCities(newCities);
+//     setExpandedProjects(newProjects);
+//     // Keep unit types collapsed
+//     setExpandedTypes({});
+//   };
+
+//   const collapseAll = () => {
+//     setExpandedCities({});
+//     setExpandedProjects({});
+//     setExpandedTypes({});
+//   };
+
+//   const isEverythingExpanded = () => {
+//     const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+
+//     let allProjectsExpanded = true;
+//     pivotData.forEach(city => {
+//       if (expandedCities[city.name]) {
+//         Object.keys(city.projects).forEach(projectName => {
+//           const projectKey = `${city.name}-${projectName}`;
+//           if (!expandedProjects[projectKey]) {
+//             allProjectsExpanded = false;
+//           }
+//         });
+//       }
+//     });
+
+//     return allCitiesExpanded && allProjectsExpanded;
+//   };
+
+//   const isEverythingCollapsed = () => {
+//     const hasExpandedCities = Object.keys(expandedCities).some(key => expandedCities[key]);
+//     const hasExpandedProjects = Object.keys(expandedProjects).some(key => expandedProjects[key]);
+//     const hasExpandedTypes = Object.keys(expandedTypes).some(key => expandedTypes[key]);
+//     return !hasExpandedCities && !hasExpandedProjects && !hasExpandedTypes;
+//   };
+
+//   const renderRow = (
+//     level,
+//     name,
+//     statusDataMap,
+//     totalUnits,
+//     expandable,
+//     expanded,
+//     onToggle,
+//     indent = 0
+//   ) => {
+//     return (
+//       <tr className={`data-row level-${level}`}>
+//         <td
+//           className="group-column"
+//           style={{ paddingLeft: `${indent * 20 + 10}px` }}
+//         >
+//           {expandable && (
+//             <button
+//               className="expand-btn"
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 e.preventDefault();
+//                 onToggle();
+//               }}
+//             >
+//               {expanded ? '▼' : '▶'}
+//             </button>
+//           )}
+//           <span className={`level-${level}-label`}>{name}</span>
+//         </td>
+
+//         {selectedStatuses.map(statusKey => {
+//           const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+//           const percentage = calculatePercentage(data.count, totalUnits);
+
+//           return (
+//             <React.Fragment key={statusKey}>
+//               {visibleColumns.percentage && (
+//                 <td className="metric-cell">{percentage}</td>
+//               )}
+//               {visibleColumns.noOfUnits && (
+//                 <td className="metric-cell">{formatNumber(data.count)}</td>
+//               )}
+//               {visibleColumns.salesValue && (
+//                 <td className="metric-cell status-group-end">
+//                   {formatNumber(data.value)}
+//                 </td>
+//               )}
+//             </React.Fragment>
+//           );
+//         })}
+//       </tr>
+//     );
+//   };
+
+//   const currentTheme = getCurrentStatusTheme();
+
+//   return (
+//     <div className={`pivot-table-container theme-${currentTheme}`}>
+//       {/* Status Tabs */}
+//       <div className="status-tabs-container">
+//         <div className="status-tabs-wrapper mobile-scrollable" ref={statusTabsRef}>
+//           <div className="category-toggle centered-buttons">
+//             {statuses.map(status => (
+//               <button
+//                 key={status.key}
+//                 className={`category-btn ${
+//                   selectedStatuses.length === 1 &&
+//                   selectedStatuses[0] === status.key
+//                     ? 'active'
+//                     : ''
+//                 }`}
+//                 onClick={() => setSelectedStatuses([status.key])}
+//               >
+//                 {status.label}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Controls */}
+//       <div className="pivot-controls right-aligned-controls">
+//         <div className="controls-group">
+//           {/* Expand / Collapse */}
+//           {isEverythingExpanded() && !isEverythingCollapsed() ? (
+//             <button className="control-btn" onClick={collapseAll}>
+//               ▶ Collapse All
+//             </button>
+//           ) : (
+//             <button className="control-btn" onClick={expandAll}>
+//               ▼ Expand All
+//             </button>
+//           )}
+
+//           {/* Status multi-select */}
+//           <div className="status-multi-toggle" ref={statusDropdownRef}>
+//             <button
+//               className="control-btn"
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 setShowStatusDropdown(prev => !prev);
+//                 setShowColumnDropdown(false);
+//                 setShowRowDropdown(false);
+//               }}
+//             >
+//               ⚙️ Status {showStatusDropdown ? '▲' : '▼'}
+//             </button>
+//             {showStatusDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Statuses</h4>
+//                   {statuses.map(s => {
+//                     const checked = selectedStatuses.includes(s.key);
+//                     const disableUncheck =
+//                       checked && selectedStatuses.length <= 1;
+//                     return (
+//                       <label key={s.key}>
+//                         <input
+//                           type="checkbox"
+//                           checked={checked}
+//                           disabled={disableUncheck}
+//                           onChange={() => toggleStatusSelection(s.key)}
+//                         />
+//                         {s.label}
+//                       </label>
+//                     );
+//                   })}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Rows/Fields dropdown */}
+//           <div className="row-toggle" ref={rowDropdownRef}>
+//             <button className="control-btn" onClick={toggleRowDropdown}>
+//               📋 Rows/Fields {showRowDropdown ? '▲' : '▼'}
+//             </button>
+//             {showRowDropdown && (
+//               <div className="row-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Hierarchy Levels</h4>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.cities}
+//                       onChange={() => toggleRow('cities')}
+//                     />
+//                     📍 Cities
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.projects}
+//                       onChange={() => toggleRow('projects')}
+//                       disabled={!visibleRows.cities}
+//                     />
+//                     📁 Projects
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.unitTypes}
+//                       onChange={() => toggleRow('unitTypes')}
+//                       disabled={!visibleRows.projects}
+//                     />
+//                     🏠 Unit Types
+//                   </label>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Columns dropdown */}
+//           <div className="column-toggle" ref={columnDropdownRef}>
+//             <button className="control-btn" onClick={toggleColumnDropdown}>
+//               ⚙️ Columns {showColumnDropdown ? '▲' : '▼'}
+//             </button>
+//             {showColumnDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Data Fields</h4>
+//                   {Object.keys(visibleColumns).map(key => (
+//                     <label key={key}>
+//                       <input
+//                         type="checkbox"
+//                         checked={visibleColumns[key]}
+//                         onChange={() => toggleColumn(key)}
+//                       />
+//                       {key === 'percentage'
+//                         ? '%'
+//                         : key === 'noOfUnits'
+//                         ? 'No. of Units'
+//                         : key === 'salesValue'
+//                         ? 'Sales Value'
+//                         : key}
+//                     </label>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Pivot Table */}
+//       <div className="pivot-table-scroll" ref={pivotScrollRef}>
+//         <table
+//           className={
+//             `pivot-table ${
+//               selectedStatuses.length === 1 ? 'single-status-layout' : ''
+//             }`
+//           }
+//         >
+//           <thead>
+//             <tr className="header-row">
+//               <th className="group-header"></th>
+//               {selectedStatuses.map(statusKey => {
+//                 const status = statuses.find(s => s.key === statusKey);
+//                 const label = status ? status.label : statusKey;
+//                 return (
+//                   <React.Fragment key={statusKey}>
+//                     {visibleColumns.percentage && <th> %</th>}
+//                     {visibleColumns.noOfUnits && <th>UNITS</th>}
+//                     {visibleColumns.salesValue && (
+//                       <th className="status-group-end"> TOTAL SALES</th>
+//                     )}
+//                   </React.Fragment>
+//                 );
+//               })}
+//             </tr>
+//           </thead>
+
+//           <tbody>
+//             {visibleRows.cities &&
+//               pivotData.map(city => {
+//                 const isCityExpanded = expandedCities[city.name];
+//                 const cityHasExpandable = visibleRows.projects;
+
+//                 return (
+//                   <React.Fragment key={city.name}>
+//                     {/* City Row */}
+//                     {renderRow(
+//                       0,
+//                       `📍 ${city.name}`,
+//                       city.statusData,
+//                       city.totalUnits,
+//                       cityHasExpandable,
+//                       isCityExpanded,
+//                       () => toggleCity(city.name),
+//                       0
+//                     )}
+
+//                     {/* Projects */}
+//                     {visibleRows.projects &&
+//                       isCityExpanded &&
+//                       Object.values(city.projects).map(project => {
+//                         const projectKey = `${city.name}-${project.name}`;
+//                         const isProjectExpanded = expandedProjects[projectKey];
+//                         const projectHasExpandable = visibleRows.unitTypes;
+
+//                         return (
+//                           <React.Fragment key={projectKey}>
+//                             {/* Project Row */}
+//                             {renderRow(
+//                               1,
+//                               `📁 ${project.name}`,
+//                               project.statusData,
+//                               project.totalUnits,
+//                               projectHasExpandable,
+//                               isProjectExpanded,
+//                               () =>
+//                                 toggleProject(city.name, project.name),
+//                               1
+//                             )}
+
+//                             {/* Unit Types */}
+//                             {visibleRows.unitTypes &&
+//                               isProjectExpanded &&
+//                               Object.values(project.unitTypes).map(unitType => {
+//                                 const typeKey = `${city.name}-${project.name}-${unitType.name}`;
+
+//                                 return (
+//                                   <React.Fragment key={typeKey}>
+//                                     {renderRow(
+//                                       2,
+//                                       `🏠 ${unitType.name}`,
+//                                       unitType.statusData,
+//                                       unitType.totalUnits,
+//                                       false,
+//                                       false,
+//                                       () =>
+//                                         toggleType(
+//                                           city.name,
+//                                           project.name,
+//                                           unitType.name
+//                                         ),
+//                                       2
+//                                     )}
+//                                   </React.Fragment>
+//                                 );
+//                               })}
+//                           </React.Fragment>
+//                         );
+//                       })}
+//                   </React.Fragment>
+//                 );
+//               })}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default InvStatusPivot;
+
+
+
+
+// import React, { useState, useMemo, useEffect, useRef } from 'react';
+// import './invstatuspivot.css';
+
+// const InvStatusPivot = ({ units }) => {
+//   // State for expand/collapse - Initialize all cities and projects as expanded
+//   const [expandedCities, setExpandedCities] = useState({});
+//   const [expandedProjects, setExpandedProjects] = useState({});
+//   const [expandedTypes, setExpandedTypes] = useState({});
+
+//   // Multi selected statuses
+//   const [selectedStatuses, setSelectedStatuses] = useState(['available']);
+
+//   // Column visibility
+//   const [visibleColumns, setVisibleColumns] = useState({
+//     percentage: true,
+//     noOfUnits: true,
+//     salesValue: true
+//   });
+
+//   // Row visibility
+//   const [visibleRows, setVisibleRows] = useState({
+//     cities: true,
+//     projects: true,
+//     unitTypes: true
+//   });
+
+//   // Dropdowns
+//   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
+//   const [showRowDropdown, setShowRowDropdown] = useState(false);
+//   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+//   // Refs
+//   const columnDropdownRef = useRef(null);
+//   const rowDropdownRef = useRef(null);
+//   const statusDropdownRef = useRef(null);
+//   const pivotScrollRef = useRef(null);
+
+//   // Status definitions
+//   const statuses = [
+//     { key: 'available',  label: '📦 AVAILABLE',          theme: 'blue' },
+//     { key: 'unreleased', label: '🔒 UNRELEASED',         theme: 'blue' },
+//     { key: 'blocked',    label: '🚫 BLOCKED DEVELOPMENT', theme: 'blue' },
+//     { key: 'reserved',   label: '⏳ RESERVED',           theme: 'blue' },
+//     { key: 'hold',       label: '⏸️ HOLD',              theme: 'blue' },
+//     { key: 'partner',    label: '🤝 PARTNER',            theme: 'blue' },
+//     { key: 'contracted', label: '✅ CONTRACTED',         theme: 'gray' }
+//   ];
+
+//   // Theme from first selected status
+//   const getCurrentStatusTheme = () => {
+//     const first = selectedStatuses[0];
+//     const currentStatus = statuses.find(s => s.key === first);
+//     return currentStatus?.theme || 'blue';
+//   };
+
+//   const getStatusKey = (unitStatus) => {
+//     const statusMap = {
+//       'Available': 'available',
+//       'Unreleased': 'unreleased',
+//       'Blocked Development': 'blocked',
+//       'Reserved': 'reserved',
+//       'Hold': 'hold',
+//       'Partner': 'partner',
+//       'Contracted': 'contracted'
+//     };
+//     return statusMap[unitStatus] || 'available';
+//   };
+
+//   // Build hierarchical data
+//   const pivotData = useMemo(() => {
+//     const cityMap = {};
+
+//     units.forEach(unit => {
+//       const city = unit.city || 'Unknown';
+//       const project = unit.project || 'Unknown';
+//       const unitType = unit.unit_type || 'Unknown';
+//       const statusKey = getStatusKey(unit.status);
+
+//       if (!cityMap[city]) {
+//         cityMap[city] = {
+//           name: city,
+//           statusData: {},
+//           projects: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].totalUnits++;
+//       cityMap[city].statusData[statusKey].count++;
+//       cityMap[city].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project]) {
+//         cityMap[city].projects[project] = {
+//           name: project,
+//           statusData: {},
+//           unitTypes: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].totalUnits++;
+//       cityMap[city].projects[project].statusData[statusKey].count++;
+//       cityMap[city].projects[project].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+
+//       if (!cityMap[city].projects[project].unitTypes[unitType]) {
+//         cityMap[city].projects[project].unitTypes[unitType] = {
+//           name: unitType,
+//           statusData: {},
+//           totalUnits: 0
+//         };
+//         statuses.forEach(s => {
+//           cityMap[city].projects[project].unitTypes[unitType].statusData[s.key] = { count: 0, value: 0 };
+//         });
+//       }
+
+//       cityMap[city].projects[project].unitTypes[unitType].totalUnits++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].count++;
+//       cityMap[city].projects[project].unitTypes[unitType].statusData[statusKey].value += parseFloat(unit.sales_value) || 0;
+//     });
+
+//     return Object.values(cityMap);
+//   }, [units]);
+
+//   // Outside click closes dropdowns
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (columnDropdownRef.current && !columnDropdownRef.current.contains(event.target)) {
+//         setShowColumnDropdown(false);
+//       }
+//       if (rowDropdownRef.current && !rowDropdownRef.current.contains(event.target)) {
+//         setShowRowDropdown(false);
+//       }
+//       if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+//         setShowStatusDropdown(false);
+//       }
+//     };
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   // Initialize expanded states when pivotData is available
+//   useEffect(() => {
+//     if (pivotData.length > 0) {
+//       collapseToProjectsOnly();
+//     }
+//   }, [pivotData]);
+
+//   const formatNumber = (num) =>
+//     num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+//   const calculatePercentage = (count, total) => {
+//     return total === 0 ? '0%' : `${((count / total) * 100).toFixed(2)}%`;
+//   };
+
+//   // Expand/collapse
+//   const toggleCity = (cityName) => {
+//     setExpandedCities(prev => ({
+//       ...prev,
+//       [cityName]: !prev[cityName]
+//     }));
+//   };
+
+//   const toggleProject = (cityName, projectName) => {
+//     const key = `${cityName}-${projectName}`;
+//     setExpandedProjects(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   const toggleType = (cityName, projectName, typeName) => {
+//     const key = `${cityName}-${projectName}-${typeName}`;
+//     setExpandedTypes(prev => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   // Column / row toggles
+//   const toggleColumn = (columnKey) =>
+//     setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+
+//   const toggleRow = (rowKey) =>
+//     setVisibleRows(prev => ({ ...prev, [rowKey]: !prev[rowKey] }));
+
+//   const toggleColumnDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowColumnDropdown(prev => !prev);
+//     setShowRowDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   const toggleRowDropdown = (e) => {
+//     e.stopPropagation();
+//     setShowRowDropdown(prev => !prev);
+//     setShowColumnDropdown(false);
+//     setShowStatusDropdown(false);
+//   };
+
+//   // Multi-status selection
+//   const toggleStatusSelection = (statusKey) => {
+//     setSelectedStatuses(prev => {
+//       if (prev.includes(statusKey)) {
+//         if (prev.length <= 1) return prev;
+//         return prev.filter(s => s !== statusKey);
+//       }
+//       return [...prev, statusKey];
+//     });
+//   };
+
+//   // Expand all (cities, projects, and types)
+//   const expandAll = () => {
+//     const newExpandedCities = {};
+//     const newExpandedProjects = {};
+//     const newExpandedTypes = {};
+
+//     pivotData.forEach(city => {
+//       newExpandedCities[city.name] = true;
+//       Object.keys(city.projects).forEach(projectName => {
+//         const projectKey = `${city.name}-${projectName}`;
+//         newExpandedProjects[projectKey] = true;
+
+//         const project = city.projects[projectName];
+//         Object.keys(project.unitTypes).forEach(typeName => {
+//           const typeKey = `${city.name}-${projectName}-${typeName}`;
+//           newExpandedTypes[typeKey] = true;
+//         });
+//       });
+//     });
+
+//     setExpandedCities(newExpandedCities);
+//     setExpandedProjects(newExpandedProjects);
+//     setExpandedTypes(newExpandedTypes);
+//   };
+
+//   // Collapse all projects and types, but keep cities expanded
+//   const collapseAll = () => {
+//     // Collapse all cities, projects, and types (show only cities)
+//     setExpandedCities({});
+//     setExpandedProjects({});
+//     setExpandedTypes({});
+//   };
+
+//   // Collapse to show cities and projects only (default state)
+//   const collapseToProjectsOnly = () => {
+//     // Expand all cities, collapse all projects and types
+//     const newExpandedCities = {};
+//     pivotData.forEach(city => {
+//       newExpandedCities[city.name] = true;
+//     });
+//     setExpandedCities(newExpandedCities);
+//     setExpandedProjects({});
+//     setExpandedTypes({});
+//   };
+
+//   // Check if everything is expanded
+//   const isEverythingExpanded = useMemo(() => {
+//     // Check if all cities are expanded
+//     const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+    
+//     // Check if all projects are expanded (for expanded cities)
+//     let allProjectsExpanded = true;
+//     pivotData.forEach(city => {
+//       if (expandedCities[city.name]) {
+//         Object.keys(city.projects).forEach(projectName => {
+//           const projectKey = `${city.name}-${projectName}`;
+//           if (!expandedProjects[projectKey]) {
+//             allProjectsExpanded = false;
+//           }
+//         });
+//       }
+//     });
+    
+//     // Check if all types are expanded (for expanded projects)
+//     let allTypesExpanded = true;
+//     pivotData.forEach(city => {
+//       if (expandedCities[city.name]) {
+//         Object.keys(city.projects).forEach(projectName => {
+//           const projectKey = `${city.name}-${projectName}`;
+//           if (expandedProjects[projectKey]) {
+//             const project = city.projects[projectName];
+//             Object.keys(project.unitTypes).forEach(typeName => {
+//               const typeKey = `${city.name}-${projectName}-${typeName}`;
+//               if (!expandedTypes[typeKey]) {
+//                 allTypesExpanded = false;
+//               }
+//             });
+//           }
+//         });
+//       }
+//     });
+    
+//     return allCitiesExpanded && allProjectsExpanded && allTypesExpanded;
+//   }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
+
+//   // Check if we're at the collapsed state (only cities visible)
+//   const isEverythingCollapsed = useMemo(() => {
+//     // Check if all cities are collapsed
+//     const allCitiesCollapsed = pivotData.every(
+//       (city) => !expandedCities[city.name],
+//     );
+
+//     // Check if all projects are collapsed
+//     const allProjectsCollapsed = Object.keys(expandedProjects).length === 0;
+
+//     // Check if all types are collapsed
+//     const allTypesCollapsed = Object.keys(expandedTypes).length === 0;
+
+//     return allCitiesCollapsed && allProjectsCollapsed && allTypesCollapsed;
+//   }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
+
+//   // Check if we're at the default state (cities expanded, projects collapsed)
+//   const isDefaultState = useMemo(() => {
+//     // Check if all cities are expanded
+//     const allCitiesExpanded = pivotData.every(
+//       (city) => expandedCities[city.name],
+//     );
+
+//     // Check if all projects are collapsed
+//     const allProjectsCollapsed = Object.keys(expandedProjects).length === 0;
+
+//     // Check if all types are collapsed
+//     const allTypesCollapsed = Object.keys(expandedTypes).length === 0;
+
+//     return allCitiesExpanded && allProjectsCollapsed && allTypesCollapsed;
+//   }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
+
+//   // const renderRow = (
+//   //   level,
+//   //   name,
+//   //   statusDataMap,
+//   //   totalUnits,
+//   //   expandable,
+//   //   expanded,
+//   //   onToggle,
+//   //   indent = 0
+//   // ) => {
+//   //   return (
+//   //     <tr className={`data-row level-${level}`}>
+//   //       <td
+//   //         className="group-column"
+//   //         style={{ paddingLeft: `${indent * 20 + 10}px` }}
+//   //       >
+//   //         {expandable && (
+//   //           <button
+//   //             className="expand-btn"
+//   //             onClick={(e) => {
+//   //               e.stopPropagation();
+//   //               e.preventDefault();
+//   //               onToggle();
+//   //             }}
+//   //           >
+//   //             {expanded ? '▼' : '▶'}
+//   //           </button>
+//   //         )}
+//   //         <span className={`level-${level}-label`}>{name}</span>
+//   //       </td>
+
+//   //       {selectedStatuses.map(statusKey => {
+//   //         const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+//   //         const percentage = calculatePercentage(data.count, totalUnits);
+
+//   //         return (
+//   //           <React.Fragment key={statusKey}>
+//   //             {visibleColumns.percentage && (
+//   //               <td className="metric-cell">{percentage}</td>
+//   //             )}
+//   //             {visibleColumns.noOfUnits && (
+//   //               <td className="metric-cell">{formatNumber(data.count)}</td>
+//   //             )}
+//   //             {visibleColumns.salesValue && (
+//   //               <td className="metric-cell">
+//   //                 {formatNumber(data.value)}
+//   //               </td>
+//   //             )}
+//   //           </React.Fragment>
+//   //         );
+//   //       })}
+//   //     </tr>
+//   //   );
+//   // };
+// const renderRow = (
+//   level,
+//   name,
+//   statusDataMap,
+//   totalUnits,
+//   expandable,
+//   expanded,
+//   onToggle,
+//   indent = 0
+// ) => {
+//   return (
+//     <tr className={`data-row level-${level}`}>
+//       <td
+//         className="group-column"
+//         style={{ paddingLeft: `${indent * 20 + 10}px` }}
+//       >
+//         {expandable && (
+//           <button
+//             className="expand-btn"
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               e.preventDefault();
+//               onToggle();
+//             }}
+//           >
+//             {expanded ? '▼' : '▶'}
+//           </button>
+//         )}
+//         <span className={`level-${level}-label`}>{name}</span>
+//       </td>
+
+//       {selectedStatuses.map((statusKey, index) => {
+//         const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+//         const percentage = calculatePercentage(data.count, totalUnits);
+        
+//         // Check if this is the last column in each status group
+//         const isLastColumnInGroup = visibleColumns.salesValue;
+        
+//         // Check if this is the last status group
+//         const isLastStatusGroup = index === selectedStatuses.length - 1;
+
+//         return (
+//           <React.Fragment key={statusKey}>
+//             {visibleColumns.percentage && (
+//               <td className={`metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'status-group-separator' : ''}`}>
+//                 {percentage}
+//               </td>
+//             )}
+//             {visibleColumns.noOfUnits && (
+//               <td className={`metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'status-group-separator' : ''}`}>
+//                 {formatNumber(data.count)}
+//               </td>
+//             )}
+//             {visibleColumns.salesValue && (
+//               <td className={`metric-cell ${isLastStatusGroup ? 'status-group-end' : 'status-group-separator'}`}>
+//                 {formatNumber(data.value)}
+//               </td>
+//             )}
+//           </React.Fragment>
+//         );
+//       })}
+//     </tr>
+//   );
+// };
+//   const currentTheme = getCurrentStatusTheme();
+
+//   return (
+//     <div className={`pivot-table-container theme-${currentTheme}`}>
+//       {/* Status Tabs */}
+//       <div className="status-tabs-container">
+//         <div className="status-tabs-wrapper">
+//           <div className="category-toggle">
+//             {statuses.map(status => (
+//               <button
+//                 key={status.key}
+//                 className={`category-btn ${
+//                   selectedStatuses.length === 1 &&
+//                   selectedStatuses[0] === status.key
+//                     ? 'active'
+//                     : ''
+//                 }`}
+//                 onClick={() => setSelectedStatuses([status.key])}
+//               >
+//                 {status.label}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Controls - Aligned to right */}
+//       <div className="pivot-controls right-aligned-controls">
+//         <div className="controls-group">
+//           {/* Expand / Collapse Buttons */}
+//           {isEverythingCollapsed ? (
+//             <button className="control-btn" onClick={collapseToProjectsOnly}>
+//               ▼ Show Projects
+//             </button>
+//           ) : isDefaultState ? (
+//             <button className="control-btn" onClick={expandAll}>
+//               ▼ Expand All
+//             </button>
+//           ) : isEverythingExpanded ? (
+//             <button className="control-btn" onClick={collapseAll}>
+//               ◀ Collapse All
+//             </button>
+//           ) : (
+//             <button className="control-btn" onClick={collapseAll}>
+//               ◀ Collapse All
+//             </button>
+//           )}
+
+//           {/* Status multi-select */}
+//           <div className="status-multi-toggle" ref={statusDropdownRef}>
+//             <button
+//               className="control-btn"
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 setShowStatusDropdown(prev => !prev);
+//                 setShowColumnDropdown(false);
+//                 setShowRowDropdown(false);
+//               }}
+//             >
+//               ⚙️ Status {showStatusDropdown ? '▲' : '▼'}
+//             </button>
+//             {showStatusDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Statuses</h4>
+//                   {statuses.map(s => {
+//                     const checked = selectedStatuses.includes(s.key);
+//                     const disableUncheck =
+//                       checked && selectedStatuses.length <= 1;
+//                     return (
+//                       <label key={s.key}>
+//                         <input
+//                           type="checkbox"
+//                           checked={checked}
+//                           disabled={disableUncheck}
+//                           onChange={() => toggleStatusSelection(s.key)}
+//                         />
+//                         {s.label}
+//                       </label>
+//                     );
+//                   })}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Rows/Fields dropdown */}
+//           <div className="row-toggle" ref={rowDropdownRef}>
+//             <button className="control-btn" onClick={toggleRowDropdown}>
+//               📋 Rows/Fields {showRowDropdown ? '▲' : '▼'}
+//             </button>
+//             {showRowDropdown && (
+//               <div className="row-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Hierarchy Levels</h4>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.cities}
+//                       onChange={() => toggleRow('cities')}
+//                     />
+//                     📍 Cities
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.projects}
+//                       onChange={() => toggleRow('projects')}
+//                       disabled={!visibleRows.cities}
+//                     />
+//                     📁 Projects
+//                   </label>
+//                   <label>
+//                     <input
+//                       type="checkbox"
+//                       checked={visibleRows.unitTypes}
+//                       onChange={() => toggleRow('unitTypes')}
+//                       disabled={!visibleRows.projects}
+//                     />
+//                     🏠 Unit Types
+//                   </label>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Columns dropdown */}
+//           <div className="column-toggle" ref={columnDropdownRef}>
+//             <button className="control-btn" onClick={toggleColumnDropdown}>
+//               ⚙️ Columns {showColumnDropdown ? '▲' : '▼'}
+//             </button>
+//             {showColumnDropdown && (
+//               <div className="column-dropdown">
+//                 <div className="dropdown-section">
+//                   <h4>Data Fields</h4>
+//                   {Object.keys(visibleColumns).map(key => (
+//                     <label key={key}>
+//                       <input
+//                         type="checkbox"
+//                         checked={visibleColumns[key]}
+//                         onChange={() => toggleColumn(key)}
+//                       />
+//                       {key === 'percentage'
+//                         ? '%'
+//                         : key === 'noOfUnits'
+//                         ? 'No. of Units'
+//                         : key === 'salesValue'
+//                         ? 'Sales Value'
+//                         : key}
+//                     </label>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Pivot Table */}
+//       <div className="pivot-table-scroll" ref={pivotScrollRef}>
+//         <table className="pivot-table">
+//           <thead>
+//             <tr className="header-row">
+//               <th className="group-header"></th>
+//               {selectedStatuses.map(statusKey => {
+//                 const status = statuses.find(s => s.key === statusKey);
+//                 const label = status ? status.label : statusKey;
+                
+//                 // For multiple statuses, show group header
+//                 if (selectedStatuses.length > 1) {
+//                   const columnCount = 
+//                     (visibleColumns.percentage ? 1 : 0) +
+//                     (visibleColumns.noOfUnits ? 1 : 0) +
+//                     (visibleColumns.salesValue ? 1 : 0);
+                  
+//                   return (
+//                     <th 
+//                       key={statusKey} 
+//                       colSpan={columnCount}
+//                       className="status-group-header"
+//                     >
+//                       {label}
+//                     </th>
+//                   );
+//                 }
+                
+//                 // Single status layout
+//                 return (
+//                   <React.Fragment key={statusKey}>
+//                     {visibleColumns.percentage && <th>%</th>}
+//                     {visibleColumns.noOfUnits && <th>UNITS</th>}
+//                     {visibleColumns.salesValue && <th>TOTAL SALES</th>}
+//                   </React.Fragment>
+//                 );
+//               })}
+//             </tr>
+            
+//             {/* Sub-header row for multiple statuses */}
+//             {selectedStatuses.length > 1 && (
+//               <tr className="sub-header-row">
+//                 <th className="group-header"></th>
+//                 {selectedStatuses.map(statusKey => (
+//                   <React.Fragment key={statusKey}>
+//                     {visibleColumns.percentage && <th>%</th>}
+//                     {visibleColumns.noOfUnits && <th>UNITS</th>}
+//                     {visibleColumns.salesValue && <th>TOTAL SALES</th>}
+//                   </React.Fragment>
+//                 ))}
+//               </tr>
+//             )}
+//           </thead>
+
+//           <tbody>
+//             {visibleRows.cities &&
+//               pivotData.map(city => {
+//                 const isCityExpanded = expandedCities[city.name];
+//                 const cityHasExpandable = visibleRows.projects;
+
+//                 return (
+//                   <React.Fragment key={city.name}>
+//                     {/* City Row */}
+//                     {renderRow(
+//                       0,
+//                       `📍 ${city.name}`,
+//                       city.statusData,
+//                       city.totalUnits,
+//                       cityHasExpandable,
+//                       isCityExpanded,
+//                       () => toggleCity(city.name),
+//                       0
+//                     )}
+
+//                     {/* Projects */}
+//                     {visibleRows.projects &&
+//                       isCityExpanded &&
+//                       Object.values(city.projects).map(project => {
+//                         const projectKey = `${city.name}-${project.name}`;
+//                         const isProjectExpanded = expandedProjects[projectKey];
+//                         const projectHasExpandable = visibleRows.unitTypes;
+
+//                         return (
+//                           <React.Fragment key={projectKey}>
+//                             {/* Project Row */}
+//                             {renderRow(
+//                               1,
+//                               `📁 ${project.name}`,
+//                               project.statusData,
+//                               project.totalUnits,
+//                               projectHasExpandable,
+//                               isProjectExpanded,
+//                               () => toggleProject(city.name, project.name),
+//                               1
+//                             )}
+
+//                             {/* Unit Types */}
+//                             {visibleRows.unitTypes &&
+//                               isProjectExpanded &&
+//                               Object.values(project.unitTypes).map(unitType => {
+//                                 const typeKey = `${city.name}-${project.name}-${unitType.name}`;
+//                                 const isTypeExpanded = expandedTypes[typeKey];
+
+//                                 return (
+//                                   <React.Fragment key={typeKey}>
+//                                     {renderRow(
+//                                       2,
+//                                       `🏠 ${unitType.name}`,
+//                                       unitType.statusData,
+//                                       unitType.totalUnits,
+//                                       false,
+//                                       isTypeExpanded,
+//                                       () =>
+//                                         toggleType(
+//                                           city.name,
+//                                           project.name,
+//                                           unitType.name
+//                                         ),
+//                                       2
+//                                     )}
+//                                   </React.Fragment>
+//                                 );
+//                               })}
+//                           </React.Fragment>
+//                         );
+//                       })}
+//                   </React.Fragment>
+//                 );
+//               })}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default InvStatusPivot;
+
+
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './invstatuspivot.css';
 
 const InvStatusPivot = ({ units }) => {
-  // State for expand/collapse
+  // State for expand/collapse - Initialize all cities and projects as expanded
   const [expandedCities, setExpandedCities] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
   const [expandedTypes, setExpandedTypes] = useState({});
 
-  // Multi selected statuses (initially AVAILABLE only)
+  // Multi selected statuses
   const [selectedStatuses, setSelectedStatuses] = useState(['available']);
 
   // Column visibility
@@ -1088,26 +3183,21 @@ const InvStatusPivot = ({ units }) => {
   const [showRowDropdown, setShowRowDropdown] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
 
-  // Mobile scroll indicators
-  const [showLeftScroll, setShowLeftScroll] = useState(false);
-  const [showRightScroll, setShowRightScroll] = useState(true);
-
   // Refs
   const columnDropdownRef = useRef(null);
   const rowDropdownRef = useRef(null);
   const statusDropdownRef = useRef(null);
   const pivotScrollRef = useRef(null);
-  const statusTabsRef = useRef(null);
 
   // Status definitions
   const statuses = [
-    { key: 'available',  label: '📦 AVAILABLE',          theme: 'blue' },
-    { key: 'unreleased', label: '🔒 UNRELEASED',         theme: 'blue' },
+    { key: 'available',  label: '📦 AVAILABLE',           theme: 'blue' },
+    { key: 'unreleased', label: '🔒 UNRELEASED',          theme: 'blue' },
     { key: 'blocked',    label: '🚫 BLOCKED DEVELOPMENT', theme: 'blue' },
-    { key: 'reserved',   label: '⏳ RESERVED',           theme: 'blue' },
-    { key: 'hold',       label: '⏸️ HOLD',              theme: 'blue' },
-    { key: 'partner',    label: '🤝 PARTNER',            theme: 'blue' },
-    { key: 'contracted', label: '✅ CONTRACTED',         theme: 'gray' }
+    { key: 'reserved',   label: '⏳ RESERVED',            theme: 'blue' },
+    { key: 'hold',       label: '⏸️ HOLD',               theme: 'blue' },
+    { key: 'partner',    label: '🤝 PARTNER',             theme: 'blue' },
+    { key: 'contracted', label: '✅ CONTRACTED',          theme: 'gray' }
   ];
 
   // Theme from first selected status
@@ -1128,65 +3218,6 @@ const InvStatusPivot = ({ units }) => {
       'Contracted': 'contracted'
     };
     return statusMap[unitStatus] || 'available';
-  };
-
-  // Outside click closes dropdowns
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (columnDropdownRef.current && !columnDropdownRef.current.contains(event.target)) {
-        setShowColumnDropdown(false);
-      }
-      if (rowDropdownRef.current && !rowDropdownRef.current.contains(event.target)) {
-        setShowRowDropdown(false);
-      }
-      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
-        setShowStatusDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Reset horizontal scroll
-  useEffect(() => {
-    if (pivotScrollRef.current) {
-      pivotScrollRef.current.scrollLeft = 0;
-    }
-  }, []);
-
-  // Update scroll indicators for status tabs
-  useEffect(() => {
-    const updateScrollIndicators = () => {
-      const tabsContainer = statusTabsRef.current;
-      if (tabsContainer) {
-        const { scrollLeft, scrollWidth, clientWidth } = tabsContainer;
-        setShowLeftScroll(scrollLeft > 0);
-        setShowRightScroll(scrollLeft + clientWidth < scrollWidth - 10);
-      }
-    };
-
-    const tabsContainer = statusTabsRef.current;
-    if (tabsContainer) {
-      tabsContainer.addEventListener('scroll', updateScrollIndicators);
-      updateScrollIndicators();
-      window.addEventListener('resize', updateScrollIndicators);
-
-      return () => {
-        tabsContainer.removeEventListener('scroll', updateScrollIndicators);
-        window.removeEventListener('resize', updateScrollIndicators);
-      };
-    }
-  }, []);
-
-  const scrollTabs = (direction) => {
-    const tabsContainer = statusTabsRef.current;
-    if (tabsContainer) {
-      const scrollAmount = 200;
-      tabsContainer.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
   };
 
   // Build hierarchical data
@@ -1250,6 +3281,30 @@ const InvStatusPivot = ({ units }) => {
     return Object.values(cityMap);
   }, [units]);
 
+  // Outside click closes dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (columnDropdownRef.current && !columnDropdownRef.current.contains(event.target)) {
+        setShowColumnDropdown(false);
+      }
+      if (rowDropdownRef.current && !rowDropdownRef.current.contains(event.target)) {
+        setShowRowDropdown(false);
+      }
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target)) {
+        setShowStatusDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Initialize expanded states when pivotData is available
+  useEffect(() => {
+    if (pivotData.length > 0) {
+      collapseToProjectsOnly();
+    }
+  }, [pivotData]);
+
   const formatNumber = (num) =>
     num.toLocaleString('en-US', { maximumFractionDigits: 0 });
 
@@ -1306,46 +3361,60 @@ const InvStatusPivot = ({ units }) => {
   const toggleStatusSelection = (statusKey) => {
     setSelectedStatuses(prev => {
       if (prev.includes(statusKey)) {
-        if (prev.length <= 1) return prev; // keep at least 1 selected
+        if (prev.length <= 1) return prev;
         return prev.filter(s => s !== statusKey);
       }
       return [...prev, statusKey];
     });
   };
 
+  // Expand all (cities, projects, and types)
   const expandAll = () => {
-    const newCities = {};
-    const newProjects = {};
-    const newTypes = {};
+    const newExpandedCities = {};
+    const newExpandedProjects = {};
+    const newExpandedTypes = {};
 
     pivotData.forEach(city => {
-      newCities[city.name] = true;
+      newExpandedCities[city.name] = true;
       Object.keys(city.projects).forEach(projectName => {
         const projectKey = `${city.name}-${projectName}`;
-        newProjects[projectKey] = true;
+        newExpandedProjects[projectKey] = true;
 
         const project = city.projects[projectName];
         Object.keys(project.unitTypes).forEach(typeName => {
           const typeKey = `${city.name}-${projectName}-${typeName}`;
-          newTypes[typeKey] = true;
+          newExpandedTypes[typeKey] = true;
         });
       });
     });
 
-    setExpandedCities(newCities);
-    setExpandedProjects(newProjects);
-    setExpandedTypes(newTypes);
+    setExpandedCities(newExpandedCities);
+    setExpandedProjects(newExpandedProjects);
+    setExpandedTypes(newExpandedTypes);
   };
 
+  // Collapse all projects and types, but keep cities expanded
   const collapseAll = () => {
     setExpandedCities({});
     setExpandedProjects({});
     setExpandedTypes({});
   };
 
-  const isEverythingExpanded = () => {
-    const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+  // Collapse to show cities and projects only (default state)
+  const collapseToProjectsOnly = () => {
+    const newExpandedCities = {};
+    pivotData.forEach(city => {
+      newExpandedCities[city.name] = true;
+    });
+    setExpandedCities(newExpandedCities);
+    setExpandedProjects({});
+    setExpandedTypes({});
+  };
 
+  // Check if everything is expanded
+  const isEverythingExpanded = useMemo(() => {
+    const allCitiesExpanded = pivotData.every(city => expandedCities[city.name]);
+    
     let allProjectsExpanded = true;
     pivotData.forEach(city => {
       if (expandedCities[city.name]) {
@@ -1357,7 +3426,7 @@ const InvStatusPivot = ({ units }) => {
         });
       }
     });
-
+    
     let allTypesExpanded = true;
     pivotData.forEach(city => {
       if (expandedCities[city.name]) {
@@ -1375,183 +3444,143 @@ const InvStatusPivot = ({ units }) => {
         });
       }
     });
-
+    
     return allCitiesExpanded && allProjectsExpanded && allTypesExpanded;
-  };
+  }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
 
-  const isEverythingCollapsed = () => {
-    const hasExpandedCities = Object.keys(expandedCities).some(key => expandedCities[key]);
-    const hasExpandedProjects = Object.keys(expandedProjects).some(key => expandedProjects[key]);
-    const hasExpandedTypes = Object.keys(expandedTypes).some(key => expandedTypes[key]);
-    return !hasExpandedCities && !hasExpandedProjects && !hasExpandedTypes;
-  };
+  // Check if we're at the collapsed state (only cities visible)
+  const isEverythingCollapsed = useMemo(() => {
+    const allCitiesCollapsed = pivotData.every(
+      (city) => !expandedCities[city.name],
+    );
 
-  // Render row with all selected statuses side-by-side
-  // const renderRow = (
-  //   level,
-  //   name,
-  //   statusDataMap,
-  //   totalUnits,
-  //   expandable,
-  //   expanded,
-  //   onToggle,
-  //   indent = 0
-  // ) => {
-  //   return (
-  //     <tr className={`data-row level-${level}`}>
-  //       <td
-  //         className="group-column"
-  //         style={{ paddingLeft: `${indent * 20 + 10}px` }}
-  //       >
-  //         {expandable && (
-  //           <button
-  //             className="expand-btn"
-  //             onClick={(e) => {
-  //               e.stopPropagation();
-  //               e.preventDefault();
-  //               onToggle();
-  //             }}
-  //           >
-  //             {expanded ? '▼' : '▶'}
-  //           </button>
-  //         )}
-  //         <span className={`level-${level}-label`}>{name}</span>
-  //       </td>
+    const allProjectsCollapsed = Object.keys(expandedProjects).length === 0;
+    const allTypesCollapsed = Object.keys(expandedTypes).length === 0;
 
-  //       {selectedStatuses.map(statusKey => {
-  //         const data = statusDataMap[statusKey] || { count: 0, value: 0 };
-  //         const percentage = calculatePercentage(data.count, totalUnits);
+    return allCitiesCollapsed && allProjectsCollapsed && allTypesCollapsed;
+  }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
 
-  //         return (
-  //           <React.Fragment key={statusKey}>
-  //             {visibleColumns.percentage && (
-  //               <td className="metric-cell">{percentage}</td>
-  //             )}
-  //             {visibleColumns.noOfUnits && (
-  //               <td className="metric-cell">{formatNumber(data.count)}</td>
-  //             )}
-  //             {visibleColumns.salesValue && (
-  //               <td className="metric-cell">{formatNumber(data.value)}</td>
-  //             )}
-  //           </React.Fragment>
-  //         );
-  //       })}
-  //     </tr>
-  //   );
-  // };
+  // Check if we're at the default state (cities expanded, projects collapsed)
+  const isDefaultState = useMemo(() => {
+    const allCitiesExpanded = pivotData.every(
+      (city) => expandedCities[city.name],
+    );
+
+    const allProjectsCollapsed = Object.keys(expandedProjects).length === 0;
+    const allTypesCollapsed = Object.keys(expandedTypes).length === 0;
+
+    return allCitiesExpanded && allProjectsCollapsed && allTypesCollapsed;
+  }, [pivotData, expandedCities, expandedProjects, expandedTypes]);
+
   const renderRow = (
-  level,
-  name,
-  statusDataMap,
-  totalUnits,
-  expandable,
-  expanded,
-  onToggle,
-  indent = 0
-) => {
-  return (
-    <tr className={`data-row level-${level}`}>
-      <td
-        className="group-column"
-        style={{ paddingLeft: `${indent * 20 + 10}px` }}
-      >
-        {expandable && (
-          <button
-            className="expand-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onToggle();
-            }}
-          >
-            {expanded ? '▼' : '▶'}
-          </button>
-        )}
-        <span className={`level-${level}-label`}>{name}</span>
-      </td>
+    level,
+    name,
+    statusDataMap,
+    totalUnits,
+    expandable,
+    expanded,
+    onToggle,
+    indent = 0
+  ) => {
+    return (
+      <tr className={`data-row level-${level}`}>
+        <td
+          className="group-column"
+          style={{ paddingLeft: `${indent * 20 + 10}px` }}
+        >
+          {expandable && (
+            <button
+              className="expand-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onToggle();
+              }}
+            >
+              {expanded ? '▼' : '▶'}
+            </button>
+          )}
+          <span className={`level-${level}-label`}>{name}</span>
+        </td>
 
-      {selectedStatuses.map(statusKey => {
-        const data = statusDataMap[statusKey] || { count: 0, value: 0 };
-        const percentage = calculatePercentage(data.count, totalUnits);
+        {selectedStatuses.map((statusKey, index) => {
+          const data = statusDataMap[statusKey] || { count: 0, value: 0 };
+          const percentage = calculatePercentage(data.count, totalUnits);
+          
+          const isLastColumnInGroup = visibleColumns.salesValue;
+          const isLastStatusGroup = index === selectedStatuses.length - 1;
 
-        return (
-          <React.Fragment key={statusKey}>
-            {visibleColumns.percentage && (
-              <td className="metric-cell">{percentage}</td>
-            )}
-            {visibleColumns.noOfUnits && (
-              <td className="metric-cell">{formatNumber(data.count)}</td>
-            )}
-            {visibleColumns.salesValue && (
-              <td className="metric-cell status-group-end">
-                {formatNumber(data.value)}
-              </td>
-            )}
-          </React.Fragment>
-        );
-      })}
-    </tr>
-  );
-};
-
+          return (
+            <React.Fragment key={statusKey}>
+              {visibleColumns.percentage && (
+                <td className={`metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'status-group-separator' : ''}`}>
+                  {percentage}
+                </td>
+              )}
+              {visibleColumns.noOfUnits && (
+                <td className={`metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'status-group-separator' : ''}`}>
+                  {formatNumber(data.count)}
+                </td>
+              )}
+              {visibleColumns.salesValue && (
+                <td className={`metric-cell ${isLastStatusGroup ? 'status-group-end' : 'status-group-separator'}`}>
+                  {formatNumber(data.value)}
+                </td>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </tr>
+    );
+  };
 
   const currentTheme = getCurrentStatusTheme();
 
   return (
     <div className={`pivot-table-container theme-${currentTheme}`}>
-      {/* Status Tabs as quick presets (optional) */}
-      <div className="status-tabs-container centered-tabs">
-        {showLeftScroll && (
-          <button
-            className="scroll-btn scroll-left"
-            onClick={() => scrollTabs('left')}
-            aria-label="Scroll tabs left"
-          >
-            ◀
-          </button>
-        )}
-
-        <div className="status-tabs-wrapper" ref={statusTabsRef}>
-          <div className="category-toggle">
-            {statuses.map(status => (
-              <button
-                key={status.key}
-                className={`category-btn ${
-                  selectedStatuses.length === 1 &&
-                  selectedStatuses[0] === status.key
-                    ? 'active'
-                    : ''
-                }`}
-                onClick={() => setSelectedStatuses([status.key])}
-              >
-                {status.label}
-              </button>
-            ))}
+      {/* Status Tabs - Fixed for Mobile */}
+      <div className="status-tabs-container">
+        <div className="status-tabs-wrapper">
+          <div className="status-tabs-scroller">
+            <div className="category-toggle">
+              {statuses.map(status => (
+                <button
+                  key={status.key}
+                  className={`category-btn ${
+                    selectedStatuses.length === 1 &&
+                    selectedStatuses[0] === status.key
+                      ? 'active'
+                      : ''
+                  }`}
+                  onClick={() => setSelectedStatuses([status.key])}
+                >
+                  {status.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-
-        {showRightScroll && (
-          <button
-            className="scroll-btn scroll-right"
-            onClick={() => scrollTabs('right')}
-            aria-label="Scroll tabs right"
-          >
-            ▶
-          </button>
-        )}
       </div>
 
-      {/* Controls */}
+      {/* Controls - Aligned to right */}
       <div className="pivot-controls right-aligned-controls">
         <div className="controls-group">
-          {/* Expand / Collapse */}
-          {isEverythingExpanded() && !isEverythingCollapsed() ? (
-            <button className="control-btn" onClick={collapseAll}>
-              ▶ Collapse All
+          {/* Expand / Collapse Buttons */}
+          {isEverythingCollapsed ? (
+            <button className="control-btn" onClick={collapseToProjectsOnly}>
+              ▼ Show Projects
             </button>
-          ) : (
+          ) : isDefaultState ? (
             <button className="control-btn" onClick={expandAll}>
               ▼ Expand All
+            </button>
+          ) : isEverythingExpanded ? (
+            <button className="control-btn" onClick={collapseAll}>
+              ◀ Collapse All
+            </button>
+          ) : (
+            <button className="control-btn" onClick={collapseAll}>
+              ◀ Collapse All
             </button>
           )}
 
@@ -1665,121 +3694,132 @@ const InvStatusPivot = ({ units }) => {
         </div>
       </div>
 
-      {/* Pivot Table */}
+      {/* Pivot Table - Fixed lines and mobile */}
       <div className="pivot-table-scroll" ref={pivotScrollRef}>
-        <table className="y">
-          {/* <thead>
-            <tr className="header-row">
-              <th className="group-header"></th>
-              {selectedStatuses.map(statusKey => {
-                const status = statuses.find(s => s.key === statusKey);
-                const label = status ? status.label : statusKey;
-                return (
-                  <React.Fragment key={statusKey}>
-                    {visibleColumns.percentage && <th>{label} %</th>}
-                    {visibleColumns.noOfUnits && <th>{label} UNITS</th>}
-                    {visibleColumns.salesValue && <th>{label} TOTAL SALES</th>}
-                  </React.Fragment>
-                );
-              })}
-            </tr>
-          </thead> */}
-          <thead>
-            <tr className="header-row">
-              <th className="group-header"></th>
-              {selectedStatuses.map(statusKey => {
-                const status = statuses.find(s => s.key === statusKey);
-                const label = status ? status.label : statusKey;
-                return (
-                  <React.Fragment key={statusKey}>
-                    {visibleColumns.percentage && <th>{label} %</th>}
-                    {visibleColumns.noOfUnits && <th>{label} UNITS</th>}
-                    {visibleColumns.salesValue && (
-                      <th className="status-group-end">{label} TOTAL SALES</th>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </tr>
-          </thead>
+        <div className="table-wrapper">
+          <table className="pivot-table">
+            <thead>
+              <tr className="header-row">
+                <th className="group-header"></th>
+                {selectedStatuses.map(statusKey => {
+                  const status = statuses.find(s => s.key === statusKey);
+                  const label = status ? status.label : statusKey;
+                  
+                  if (selectedStatuses.length > 1) {
+                    const columnCount = 
+                      (visibleColumns.percentage ? 1 : 0) +
+                      (visibleColumns.noOfUnits ? 1 : 0) +
+                      (visibleColumns.salesValue ? 1 : 0);
+                    
+                    return (
+                      <th 
+                        key={statusKey} 
+                        colSpan={columnCount}
+                        className="status-group-header"
+                      >
+                        {label}
+                      </th>
+                    );
+                  }
+                  
+                  return (
+                    <React.Fragment key={statusKey}>
+                      {visibleColumns.percentage && <th className="metric-header">%</th>}
+                      {visibleColumns.noOfUnits && <th className="metric-header">UNITS</th>}
+                      {visibleColumns.salesValue && <th className="metric-header">TOTAL SALES</th>}
+                    </React.Fragment>
+                  );
+                })}
+              </tr>
+              
+              {selectedStatuses.length > 1 && (
+                <tr className="sub-header-row">
+                  <th className="group-header"></th>
+                  {selectedStatuses.map(statusKey => (
+                    <React.Fragment key={statusKey}>
+                      {visibleColumns.percentage && <th className="metric-header">%</th>}
+                      {visibleColumns.noOfUnits && <th className="metric-header">UNITS</th>}
+                      {visibleColumns.salesValue && <th className="metric-header">TOTAL SALES</th>}
+                    </React.Fragment>
+                  ))}
+                </tr>
+              )}
+            </thead>
 
-          <tbody>
-            {visibleRows.cities &&
-              pivotData.map(city => {
-                const isCityExpanded = expandedCities[city.name];
-                const cityHasExpandable = visibleRows.projects;
+            <tbody>
+              {visibleRows.cities &&
+                pivotData.map(city => {
+                  const isCityExpanded = expandedCities[city.name];
+                  const cityHasExpandable = visibleRows.projects;
 
-                return (
-                  <React.Fragment key={city.name}>
-                    {/* City Row */}
-                    {renderRow(
-                      0,
-                      `📍 ${city.name}`,
-                      city.statusData,
-                      city.totalUnits,
-                      cityHasExpandable,
-                      isCityExpanded,
-                      () => toggleCity(city.name),
-                      0
-                    )}
+                  return (
+                    <React.Fragment key={city.name}>
+                      {renderRow(
+                        0,
+                        `📍 ${city.name}`,
+                        city.statusData,
+                        city.totalUnits,
+                        cityHasExpandable,
+                        isCityExpanded,
+                        () => toggleCity(city.name),
+                        0
+                      )}
 
-                    {/* Projects */}
-                    {visibleRows.projects &&
-                      isCityExpanded &&
-                      Object.values(city.projects).map(project => {
-                        const projectKey = `${city.name}-${project.name}`;
-                        const isProjectExpanded = expandedProjects[projectKey];
-                        const projectHasExpandable = visibleRows.unitTypes;
+                      {visibleRows.projects &&
+                        isCityExpanded &&
+                        Object.values(city.projects).map(project => {
+                          const projectKey = `${city.name}-${project.name}`;
+                          const isProjectExpanded = expandedProjects[projectKey];
+                          const projectHasExpandable = visibleRows.unitTypes;
 
-                        return (
-                          <React.Fragment key={projectKey}>
-                            {/* Project Row */}
-                            {renderRow(
-                              1,
-                              `📁 ${project.name}`,
-                              project.statusData,
-                              project.totalUnits,
-                              projectHasExpandable,
-                              isProjectExpanded,
-                              () =>
-                                toggleProject(city.name, project.name),
-                              1
-                            )}
+                          return (
+                            <React.Fragment key={projectKey}>
+                              {renderRow(
+                                1,
+                                `📁 ${project.name}`,
+                                project.statusData,
+                                project.totalUnits,
+                                projectHasExpandable,
+                                isProjectExpanded,
+                                () => toggleProject(city.name, project.name),
+                                1
+                              )}
 
-                            {/* Unit Types */}
-                            {visibleRows.unitTypes &&
-                              isProjectExpanded &&
-                              Object.values(project.unitTypes).map(unitType => {
-                                const typeKey = `${city.name}-${project.name}-${unitType.name}`;
+                              {visibleRows.unitTypes &&
+                                isProjectExpanded &&
+                                Object.values(project.unitTypes).map(unitType => {
+                                  const typeKey = `${city.name}-${project.name}-${unitType.name}`;
+                                  const isTypeExpanded = expandedTypes[typeKey];
 
-                                return (
-                                  <React.Fragment key={typeKey}>
-                                    {renderRow(
-                                      2,
-                                      `🏠 ${unitType.name}`,
-                                      unitType.statusData,
-                                      unitType.totalUnits,
-                                      false,
-                                      false,
-                                      () =>
-                                        toggleType(
-                                          city.name,
-                                          project.name,
-                                          unitType.name
-                                        ),
-                                      2
-                                    )}
-                                  </React.Fragment>
-                                );
-                              })}
-                          </React.Fragment>
-                        );
-                      })}
-                  </React.Fragment>
-                );
-              })}
-          </tbody>
-        </table>
+                                  return (
+                                    <React.Fragment key={typeKey}>
+                                      {renderRow(
+                                        2,
+                                        `🏠 ${unitType.name}`,
+                                        unitType.statusData,
+                                        unitType.totalUnits,
+                                        false,
+                                        isTypeExpanded,
+                                        () =>
+                                          toggleType(
+                                            city.name,
+                                            project.name,
+                                            unitType.name
+                                          ),
+                                        2
+                                      )}
+                                    </React.Fragment>
+                                  );
+                                })}
+                            </React.Fragment>
+                          );
+                        })}
+                    </React.Fragment>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-/* Inv Status Pivot Table Container */
+Inv Status Pivot Table Container
 .pivot-table-container {
   width: 100%;
   background: var(--color-bg-primary);
@@ -26,17 +26,18 @@
   --pivot-primary: #757575;
 }
 
-/* Status Tabs Container with Mobile Navigation */
+/* ===== DESKTOP STATUS TABS ===== */
 .status-tabs-container {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
   margin-bottom: var(--space-lg);
   position: relative;
+  width: 100%;
 }
 
 .status-tabs-wrapper {
-  flex: 1;
+  width: 100%;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -46,36 +47,15 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-.scroll-btn {
-  display: none; /* Hidden by default, shown only on mobile */
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-light);
-  color: var(--color-text-secondary);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  z-index: 2;
-  flex-shrink: 0;
-  transition: all var(--transition-fast);
-}
-
-.scroll-btn:hover {
-  background: var(--pivot-primary);
-  color: white;
-  border-color: var(--pivot-primary);
-}
-
-/* Category Toggle - Updated for mobile */
+/* Category Toggle - Centered buttons with mobile responsiveness */
 .category-toggle {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   background: var(--color-bg-secondary);
-  padding: 10px 80px;
+  padding: 10px 20px;
   border-radius: var(--radius-md);
-  flex-wrap: nowrap;
   min-width: min-content;
+  margin: 0 auto;
 }
 
 .category-btn {
@@ -104,22 +84,270 @@
   background: var(--color-bg-tertiary);
 }
 
-/* Controls Section */
+/* ===== MOBILE RESPONSIVE STATUS TABS ===== */
+
+/* Mobile Scrollable Status Tabs Container */
+.status-tabs-container.mobile-scrollable {
+  display: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: var(--space-lg);
+  padding: 8px 0 12px;
+  scroll-snap-type: x mandatory;
+  position: relative;
+}
+
+.status-tabs-container.mobile-scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fade gradients to indicate scroll */
+.status-tabs-container.mobile-scrollable::before,
+.status-tabs-container.mobile-scrollable::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  pointer-events: none;
+  z-index: 2;
+  display: none;
+}
+
+.status-tabs-container.mobile-scrollable::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-bg-primary), transparent);
+}
+
+.status-tabs-container.mobile-scrollable::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-bg-primary), transparent);
+}
+
+/* Mobile category toggle */
+.mobile-category-toggle {
+  display: inline-flex;
+  gap: 6px;
+  padding: 8px 16px;
+  min-width: min-content;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+/* Mobile status button */
+.mobile-status-btn {
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  min-width: 120px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobile-status-btn.active {
+  background: linear-gradient(135deg, var(--pivot-accent-start), var(--pivot-accent-end));
+  color: white;
+  box-shadow: 0 4px 12px rgba(var(--pivot-accent-rgb), 0.3);
+  transform: translateY(-2px);
+}
+
+.mobile-status-btn .status-emoji {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.mobile-status-btn .status-text {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile Bottom Tab Bar */
+.mobile-tab-bar {
+  display: none;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-primary);
+  border-top: 1px solid var(--color-border-light);
+  padding: 10px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.mobile-tab-bar.active {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mobile-tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 70px;
+  flex: 1;
+}
+
+.mobile-tab-item.active {
+  background: rgba(var(--pivot-accent-rgb), 0.1);
+  color: var(--pivot-primary);
+}
+
+.mobile-tab-item .tab-emoji {
+  font-size: 1.3rem;
+}
+
+.mobile-tab-item .tab-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Mobile Dropdown Select */
+.mobile-status-select {
+  display: none;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: var(--space-md);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+/* Mobile Design Selector */
+.mobile-design-selector {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+}
+
+.mobile-design-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.mobile-design-btn.active {
+  background: var(--pivot-primary);
+  color: white;
+  border-color: var(--pivot-primary);
+}
+
+/* Scroll indicators */
+.mobile-scroll-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.scroll-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border-light);
+  transition: all var(--transition-fast);
+}
+
+.scroll-dot.active {
+  background: var(--pivot-primary);
+  transform: scale(1.2);
+}
+
+/* Swipe hint */
+.swipe-hint {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0.8;
+}
+
+/* Compact view for many statuses */
+.compact-status-btn {
+  padding: 8px 12px !important;
+  min-width: 80px !important;
+}
+
+.compact-status-btn .status-emoji {
+  font-size: 1rem !important;
+}
+
+.compact-status-btn .status-text {
+  font-size: 0.65rem !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== CONTROLS SECTION ===== */
 .pivot-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: var(--space-lg);
   flex-wrap: wrap;
   gap: var(--space-md);
+  width: 100%;
 }
 
-/* Expand & Control Buttons */
-.expand-controls {
+.right-aligned-controls {
+  justify-content: flex-end;
+}
+
+.controls-group {
   display: flex;
   gap: var(--space-sm);
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
+/* Control buttons */
 .control-btn {
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-border-light);
@@ -131,6 +359,8 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .control-btn:hover {
@@ -149,7 +379,7 @@
   gap: var(--space-sm);
 }
 
-.row-toggle, .column-toggle {
+.row-toggle, .column-toggle, .status-multi-toggle {
   position: relative;
 }
 
@@ -223,7 +453,7 @@
   cursor: pointer;
 }
 
-/* Pivot Table Scroll */
+/* ===== PIVOT TABLE ===== */
 .pivot-table-scroll {
   overflow-x: auto;
   overflow-y: auto;
@@ -288,6 +518,26 @@
   min-width: 250px;
   width: 250px;
   text-align: left !important;
+}
+
+/* Status group header */
+.status-group-header {
+  text-align: center !important;
+  border-right: 2px solid var(--pivot-accent-border);
+  border-left: 2px solid var(--pivot-accent-border);
+}
+
+/* Sub-header row */
+.sub-header-row {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sub-header-row th {
+  padding: var(--space-sm);
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--pivot-accent-border);
 }
 
 /* Pivot Rows */
@@ -395,22 +645,46 @@
   min-width: 120px;
 }
 
-/* Responsive Design */
+/* Border between status groups */
+.status-group-separator {
+  border-right: 2px solid #bab9b9;
+}
+
+/* Remove right border for the last status group */
+.status-group-end {
+  border-right: none !important;
+}
+
+/* Status group border corrections */
+.status-group-header:first-child {
+  border-left: none !important;
+}
+
+.status-group-header:last-child {
+  border-right: none !important;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (1024px and below) */
 @media (max-width: 1024px) {
   .pivot-controls {
     flex-direction: column;
     align-items: stretch;
   }
 
+  .controls-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm);
+  }
+
   .category-toggle {
     width: 100%;
     overflow-x: auto;
-  }
-
-  .expand-controls,
-  .dropdown-controls {
-    width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 8px 16px;
   }
 
   .pivot-table-scroll {
@@ -436,47 +710,69 @@
   }
 }
 
+/* Mobile (768px and below) */
 @media (max-width: 768px) {
+  /* Show mobile-specific styles */
+  .status-tabs-container.mobile-scrollable,
+  .mobile-status-select,
+  .mobile-design-selector {
+    display: flex;
+  }
+  
+  /* Hide desktop tabs on mobile */
+  .status-tabs-container:not(.mobile-scrollable) {
+    display: none;
+  }
+  
+  /* Container adjustments */
   .pivot-table-container {
     padding: var(--space-md);
   }
 
-  /* Show scroll buttons on mobile */
-  .scroll-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .status-tabs-container {
+  /* Status tabs adjustments */
+  .mobile-category-toggle {
+    padding: 6px 12px;
     gap: 4px;
   }
 
-  .status-tabs-wrapper {
-    overflow-x: scroll;
-    scroll-behavior: smooth;
+  .mobile-status-btn {
+    padding: 8px 12px;
+    min-width: 100px;
   }
 
-  .category-toggle {
-    padding: 3px;
-    gap: 3px;
+  .mobile-status-btn .status-text {
+    font-size: 0.7rem;
+  }
+  
+  /* Show fade gradients when scrollable */
+  .status-tabs-container.mobile-scrollable::before,
+  .status-tabs-container.mobile-scrollable::after {
+    display: block;
   }
 
-  .category-btn {
-    font-size: 0.75rem;
-    padding: 6px 10px;
-    min-height: 32px;
-  }
-
+  /* Controls adjustments */
   .pivot-controls {
-    gap: var(--space-sm);
+    justify-content: center;
+    margin-bottom: var(--space-md);
+  }
+
+  .controls-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
   }
 
   .control-btn {
     font-size: 0.75rem;
-    padding: 6px 12px;
+    padding: 8px 12px;
+    min-width: max-content;
+    flex: 0 1 auto;
+    text-align: center;
   }
 
+  /* Table adjustments */
   .pivot-table-scroll {
     max-height: 50vh;
   }
@@ -527,20 +823,52 @@
     transform: translateX(-50%);
     min-width: 200px;
   }
+  
+  /* Bottom tab bar activation */
+  @media (max-height: 600px) {
+    .mobile-tab-bar {
+      display: flex;
+    }
+    
+    .status-tabs-container.mobile-scrollable {
+      display: none;
+    }
+  }
 }
 
+/* Small Mobile (480px and below) */
 @media (max-width: 480px) {
-  .category-btn {
+  /* Status tabs */
+  .mobile-category-toggle {
+    padding: 5px 8px;
+    gap: 3px;
+  }
+
+  .mobile-status-btn {
     font-size: 0.7rem;
-    padding: 4px 8px;
-    min-height: 30px;
+    padding: 6px 10px;
+    min-width: 90px;
+  }
+
+  .mobile-status-btn .status-text {
+    font-size: 0.65rem;
+  }
+
+  /* Controls grid */
+  .controls-group {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
 
   .control-btn {
     font-size: 0.7rem;
-    padding: 4px 8px;
+    padding: 6px 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
+  /* Table adjustments */
   .group-column,
   .group-header {
     min-width: 140px;
@@ -551,11 +879,13 @@
   .header-row th {
     min-width: 70px;
     font-size: 0.65rem;
+    padding: 6px 3px;
   }
 
   .metric-cell {
     min-width: 70px;
     font-size: 0.7rem;
+    padding: 6px 3px;
   }
 
   .level-0-label {
@@ -569,6 +899,77 @@
   .level-2-label {
     font-size: 0.65rem;
   }
+  
+  /* Button adjustments for last odd button */
+  .control-btn:nth-last-child(1):nth-child(odd) {
+    grid-column: span 2;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+/* Very Small Screens (360px and below) */
+@media (max-width: 360px) {
+  .controls-group {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .control-btn {
+    width: 100%;
+  }
+
+  .control-btn:nth-last-child(1):nth-child(odd) {
+    grid-column: span 1;
+    max-width: none;
+  }
+
+  .mobile-category-toggle {
+    gap: 2px;
+  }
+
+  .mobile-status-btn {
+    font-size: 0.6rem;
+    padding: 4px 6px;
+    min-width: 85px;
+  }
+}
+
+/* Touch-friendly improvements for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-status-btn,
+  .mobile-tab-item,
+  .category-btn,
+  .control-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .mobile-status-btn {
+    padding: 12px 16px;
+  }
+
+  .expand-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ===== ADDITIONAL STYLES ===== */
+
+/* Single status layout */
+.pivot-table.single-status-layout {
+  table-layout: fixed;
+}
+
+.pivot-table.single-status-layout .header-row th:not(.group-header),
+.pivot-table.single-status-layout .metric-cell {
+  width: calc((100% - 250px) / 3);
+}
+
+.pivot-table.single-status-layout .header-row th:not(.group-header),
+.pivot-table.single-status-layout .metric-cell {
+  min-width: 160px;
 }
 
 /* Dark Mode Support */
@@ -599,149 +1000,256 @@
   .expand-btn {
     display: none;
   }
+  
+  /* Hide mobile-specific elements */
+  .mobile-tab-bar,
+  .mobile-design-selector,
+  .mobile-scroll-indicator,
+  .swipe-hint {
+    display: none !important;
+  }
 }
 
+/* Mobile Status Tabs Fix */
+.status-tabs-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
 
-/* New CSS for row control group */
-.row-control-group {
+.status-tabs-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.status-tabs-scroller .category-toggle {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-wrap: nowrap;
+  min-width: max-content;
+  gap: 4px;
 }
 
-.row-toggle {
-  position: relative;
-}
-
-.row-toggle .row-control-group {
-  display: flex;
-}
-
-/* Adjust existing styles if needed */
-.pivot-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.dropdown-controls {
-  display: flex;
-  gap: 20px;
-}
-
-.control-btn {
-  padding: 8px 16px;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.control-btn:hover {
-  background: #e0e0e0;
-}
-
-
-/* Center the status tabs */
-.centered-tabs {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  margin: 0 auto;
-  max-width: fit-content;
-}
-
-/* Adjust status tabs wrapper */
-.status-tabs-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-/* Right aligned controls */
-.right-aligned-controls {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.controls-group {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Dropdown positioning */
-.row-toggle,
-.column-toggle {
-  position: relative;
-}
-
-.row-dropdown,
-.column-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 15px;
-  min-width: 200px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  margin-top: 5px;
-}
-
-.column-dropdown {
-  right: 0;
-}
-
-/* Make sure the category toggle (status tabs) is centered */
-.category-toggle {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-/* Adjust status tabs container for centering */
-.status-tabs-container {
-  position: relative;
-  margin: 20px auto;
-  max-width: 90%;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .controls-group {
-    flex-wrap: wrap;
-    justify-content: flex-end;
+  .status-tabs-container {
+    padding: 8px;
   }
   
-  .status-tabs-container {
-    max-width: 100%;
+  .category-btn {
+    white-space: nowrap;
+    font-size: 12px;
+    padding: 6px 10px;
+    min-height: 36px;
   }
 }
 
-/* existing styles ... */
+/* Table Lines & Mobile Fix */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-/* Status multi-select container (reuses dropdown styles) */
-.status-multi-toggle {
+.pivot-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 600px; /* Ensures horizontal scroll on mobile */
+}
+
+.pivot-table th,
+.pivot-table td {
+  border: 1px solid #e0e0e0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.pivot-table th:last-child,
+.pivot-table td:last-child {
+  border-right: 1px solid #e0e0e0;
+}
+
+.data-row:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.data-row:hover {
+  background-color: #f0f8ff;
+}
+
+.metric-header {
+  border-left: 2px solid #333;
+  border-right: 1px solid #e0e0e0 !important;
+}
+
+@media (max-width: 768px) {
+  .pivot-table-scroll {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 0 8px;
+  }
+  
+  .pivot-table th,
+  .pivot-table td {
+    font-size: 12px;
+    padding: 8px 4px;
+    min-height: 40px;
+  }
+}
+/* SHOW STATUS TABS ON MOBILE */
+@media (max-width: 768px) {
+  .status-tabs-container {
+    display: block !important;
+    padding: 8px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .status-tabs-scroller {
+    overflow-x: auto;
+    padding: 4px 0;
+    scrollbar-width: thin;
+  }
+  
+  .status-tabs-scroller::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .category-toggle {
+    display: flex;
+    gap: 4px;
+    min-width: max-content;
+  }
+  
+  .category-btn {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 20px;
+    min-height: 36px;
+    flex-shrink: 0;
+  }
+}
+
+
+/* NO TABLE LINES - ONLY STATUS SEPARATORS */
+.pivot-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  background: white;
+}
+
+/* REMOVE ALL BORDERS FROM CELLS */
+.pivot-table th,
+.pivot-table td {
+  border: none !important;
+  padding: 12px 8px;
+}
+
+/* ONLY STATUS SEPARATOR LINES (when multiple statuses selected) */
+.status-group-separator {
+  border-right: 2px solid #e0e0e0 !important;
+}
+
+.status-group-end {
+  border-right: none !important;
+}
+
+/* Header subtle separation */
+.metric-header {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+/* Row hover effect instead of lines */
+.data-row {
+  transition: background-color 0.2s;
+}
+
+.data-row:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.data-row:hover {
+  background-color: #f0f9ff;
+}
+
+/* Mobile table improvements */
+@media (max-width: 768px) {
+  .pivot-table th,
+  .pivot-table td {
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+  
+  .table-wrapper {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}
+
+
+
+
+
+
+
+/* VERTICAL LINE BETWEEN STATUS GROUPS (2+ statuses selected) */
+.status-group-separator {
   position: relative;
 }
 
-/* everything else remains as you have it */
-
-
-/* vertical separator after each status group */
-.status-group-end:not(:last-child) {
-  border-right: 2px solid #bab9b9;
+.status-group-separator::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: #d1d5db;
+  z-index: 10;
 }
 
-/* optional: remove double border with next group */
- .status-group-end + td,
- .status-group-end + th {
-  border-left: none;
+/* Header status group separator */
+.status-group-header {
+  position: relative;
+}
+
+.status-group-header:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background:  #d1d5db;
+  z-index: 10;
+}
+
+/* Sub-header separator for multiple statuses */
+.sub-header-row th:not(:last-child) {
+  position: relative;
+}
+
+/* .sub-header-row th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e5e7eb;
+  z-index: 10;
+} */
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .status-group-separator::after,
+  .status-group-header:not(:last-child)::after {
+    width: 1px;
+    background: #d1d5db;
+  }
 }
