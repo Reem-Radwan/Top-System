@@ -1,4 +1,7 @@
-Inv Status Pivot Table Container
+/* ===================================
+   PIVOT TABLE CONTAINER & THEMES
+   =================================== */
+
 .pivot-table-container {
   width: 100%;
   background: var(--color-bg-primary);
@@ -26,7 +29,10 @@ Inv Status Pivot Table Container
   --pivot-primary: #757575;
 }
 
-/* ===== DESKTOP STATUS TABS ===== */
+/* ===================================
+   STATUS TABS (DESKTOP)
+   =================================== */
+
 .status-tabs-container {
   display: flex;
   justify-content: center;
@@ -39,15 +45,29 @@ Inv Status Pivot Table Container
 .status-tabs-wrapper {
   width: 100%;
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .status-tabs-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-/* Category Toggle - Centered buttons with mobile responsiveness */
+.status-tabs-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  display: flex;
+  justify-content: center;
+}
+
+.status-tabs-scroller::-webkit-scrollbar {
+  display: none;
+}
+
 .category-toggle {
   display: flex;
   gap: 8px;
@@ -56,6 +76,8 @@ Inv Status Pivot Table Container
   border-radius: var(--radius-md);
   min-width: min-content;
   margin: 0 auto;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 .category-btn {
@@ -84,247 +106,10 @@ Inv Status Pivot Table Container
   background: var(--color-bg-tertiary);
 }
 
-/* ===== MOBILE RESPONSIVE STATUS TABS ===== */
+/* ===================================
+   CONTROLS SECTION
+   =================================== */
 
-/* Mobile Scrollable Status Tabs Container */
-.status-tabs-container.mobile-scrollable {
-  display: none;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  margin-bottom: var(--space-lg);
-  padding: 8px 0 12px;
-  scroll-snap-type: x mandatory;
-  position: relative;
-}
-
-.status-tabs-container.mobile-scrollable::-webkit-scrollbar {
-  display: none;
-}
-
-/* Fade gradients to indicate scroll */
-.status-tabs-container.mobile-scrollable::before,
-.status-tabs-container.mobile-scrollable::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 30px;
-  pointer-events: none;
-  z-index: 2;
-  display: none;
-}
-
-.status-tabs-container.mobile-scrollable::before {
-  left: 0;
-  background: linear-gradient(to right, var(--color-bg-primary), transparent);
-}
-
-.status-tabs-container.mobile-scrollable::after {
-  right: 0;
-  background: linear-gradient(to left, var(--color-bg-primary), transparent);
-}
-
-/* Mobile category toggle */
-.mobile-category-toggle {
-  display: inline-flex;
-  gap: 6px;
-  padding: 8px 16px;
-  min-width: min-content;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-lg);
-}
-
-/* Mobile status button */
-.mobile-status-btn {
-  padding: 10px 16px;
-  border: none;
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-weight: 600;
-  font-size: 0.85rem;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  min-width: 120px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.mobile-status-btn.active {
-  background: linear-gradient(135deg, var(--pivot-accent-start), var(--pivot-accent-end));
-  color: white;
-  box-shadow: 0 4px 12px rgba(var(--pivot-accent-rgb), 0.3);
-  transform: translateY(-2px);
-}
-
-.mobile-status-btn .status-emoji {
-  font-size: 1.2rem;
-  margin-bottom: 2px;
-}
-
-.mobile-status-btn .status-text {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Mobile Bottom Tab Bar */
-.mobile-tab-bar {
-  display: none;
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--color-bg-primary);
-  border-top: 1px solid var(--color-border-light);
-  padding: 10px;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-}
-
-.mobile-tab-bar.active {
-  display: flex;
-  justify-content: space-around;
-}
-
-.mobile-tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 8px;
-  border: none;
-  background: transparent;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  min-width: 70px;
-  flex: 1;
-}
-
-.mobile-tab-item.active {
-  background: rgba(var(--pivot-accent-rgb), 0.1);
-  color: var(--pivot-primary);
-}
-
-.mobile-tab-item .tab-emoji {
-  font-size: 1.3rem;
-}
-
-.mobile-tab-item .tab-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-/* Mobile Dropdown Select */
-.mobile-status-select {
-  display: none;
-  width: 100%;
-  padding: 12px;
-  border: 2px solid var(--color-border-medium);
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-align: center;
-  margin-bottom: var(--space-md);
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-}
-
-/* Mobile Design Selector */
-.mobile-design-selector {
-  display: none;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: var(--space-md);
-}
-
-.mobile-design-btn {
-  padding: 8px 12px;
-  border: 1px solid var(--color-border-light);
-  background: var(--color-bg-secondary);
-  color: var(--color-text-secondary);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all var(--transition-fast);
-}
-
-.mobile-design-btn.active {
-  background: var(--pivot-primary);
-  color: white;
-  border-color: var(--pivot-primary);
-}
-
-/* Scroll indicators */
-.mobile-scroll-indicator {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 8px;
-  margin-bottom: 16px;
-}
-
-.scroll-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-border-light);
-  transition: all var(--transition-fast);
-}
-
-.scroll-dot.active {
-  background: var(--pivot-primary);
-  transform: scale(1.2);
-}
-
-/* Swipe hint */
-.swipe-hint {
-  text-align: center;
-  color: var(--color-text-secondary);
-  font-size: 0.75rem;
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  opacity: 0.8;
-}
-
-/* Compact view for many statuses */
-.compact-status-btn {
-  padding: 8px 12px !important;
-  min-width: 80px !important;
-}
-
-.compact-status-btn .status-emoji {
-  font-size: 1rem !important;
-}
-
-.compact-status-btn .status-text {
-  font-size: 0.65rem !important;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ===== CONTROLS SECTION ===== */
 .pivot-controls {
   display: flex;
   justify-content: flex-end;
@@ -339,7 +124,8 @@ Inv Status Pivot Table Container
   justify-content: flex-end;
 }
 
-.controls-group {
+.controls-group,
+.controls-right-group {
   display: flex;
   gap: var(--space-sm);
   justify-content: flex-end;
@@ -347,7 +133,6 @@ Inv Status Pivot Table Container
   flex-wrap: wrap;
 }
 
-/* Control buttons */
 .control-btn {
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-border-light);
@@ -373,17 +158,18 @@ Inv Status Pivot Table Container
   transform: scale(0.98);
 }
 
-/* Dropdown Controls */
-.dropdown-controls {
-  display: flex;
-  gap: var(--space-sm);
-}
+/* ===================================
+   DROPDOWN CONTROLS
+   =================================== */
 
-.row-toggle, .column-toggle, .status-multi-toggle {
+.row-toggle,
+.column-toggle,
+.status-multi-toggle {
   position: relative;
 }
 
-.row-dropdown, .column-dropdown {
+.row-dropdown,
+.column-dropdown {
   display: block;
   position: absolute;
   top: 100%;
@@ -422,7 +208,8 @@ Inv Status Pivot Table Container
   padding-bottom: var(--space-xs);
 }
 
-.row-dropdown label, .column-dropdown label {
+.row-dropdown label,
+.column-dropdown label {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -453,44 +240,88 @@ Inv Status Pivot Table Container
   cursor: pointer;
 }
 
-/* ===== PIVOT TABLE ===== */
-.pivot-table-scroll {
+/* ===================================
+   PIVOT TABLE SCROLL CONTAINER
+   =================================== */
+
+.pivot-table-scroll,
+.pivot-table-scroll-container {
   overflow-x: auto;
   overflow-y: auto;
   max-height: 70vh;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-light);
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
-.pivot-table-scroll::-webkit-scrollbar {
+.pivot-table-scroll::-webkit-scrollbar,
+.pivot-table-scroll-container::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.pivot-table-scroll::-webkit-scrollbar-track {
+.pivot-table-scroll::-webkit-scrollbar-track,
+.pivot-table-scroll-container::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
   border-radius: 4px;
 }
 
-.pivot-table-scroll::-webkit-scrollbar-thumb {
+.pivot-table-scroll::-webkit-scrollbar-thumb,
+.pivot-table-scroll-container::-webkit-scrollbar-thumb {
   background: var(--color-border-medium);
   border-radius: 4px;
 }
 
-.pivot-table-scroll::-webkit-scrollbar-thumb:hover {
+.pivot-table-scroll::-webkit-scrollbar-thumb:hover,
+.pivot-table-scroll-container::-webkit-scrollbar-thumb:hover {
   background: var(--pivot-primary);
 }
 
-/* Pivot Table */
+/* ===================================
+   TABLE WRAPPER & STRUCTURE
+   =================================== */
+
+.table-wrapper {
+  min-width: 100%;
+  width: max-content;
+  overflow-x: visible;
+}
+
 .pivot-table {
   width: 100%;
-  border-collapse: separate;
+  min-width: 100%;
+  border-collapse: collapse;
   border-spacing: 0;
   font-size: 0.9rem;
   table-layout: auto;
+  background: var(--color-bg-primary);
 }
 
-/* Header Row */
+/* Full width layout for single status */
+.pivot-table.single-status-layout {
+  table-layout: auto;
+  width: 100%;
+  min-width: 100%;
+}
+
+.pivot-table.single-status-layout .group-header,
+.pivot-table.single-status-layout .group-column {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.pivot-table.single-status-layout .metric-header,
+.pivot-table.single-status-layout .metric-cell {
+  min-width: 180px;
+  width: auto;
+}
+
+/* ===================================
+   TABLE HEADERS
+   =================================== */
+
 .header-row {
   background: linear-gradient(135deg, var(--pivot-accent-start), var(--pivot-accent-end));
   color: white;
@@ -506,7 +337,7 @@ Inv Status Pivot Table Container
   font-size: 0.85rem;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  border-bottom: 2px solid var(--pivot-accent-border);
+  border: none;
   min-width: 120px;
 }
 
@@ -520,14 +351,22 @@ Inv Status Pivot Table Container
   text-align: left !important;
 }
 
-/* Status group header */
 .status-group-header {
   text-align: center !important;
-  border-right: 2px solid var(--pivot-accent-border);
-  border-left: 2px solid var(--pivot-accent-border);
+  position: relative;
 }
 
-/* Sub-header row */
+.status-group-header:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--color-border-light);
+  z-index: 10;
+}
+
 .sub-header-row {
   background: rgba(255, 255, 255, 0.15);
 }
@@ -537,20 +376,32 @@ Inv Status Pivot Table Container
   text-align: center;
   font-weight: 600;
   font-size: 0.75rem;
-  border-bottom: 1px solid var(--pivot-accent-border);
+  border: none;
 }
 
-/* Pivot Rows */
+.metric-header {
+  border-bottom: 2px solid var(--color-border-light);
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+/* ===================================
+   TABLE ROWS
+   =================================== */
+
 .data-row {
-  transition: background var(--transition-fast);
-  border-bottom: 1px solid var(--color-border-light);
+  transition: background-color 0.2s;
+  border: none;
+}
+
+.data-row:nth-child(even) {
+  background-color: var(--color-bg-secondary);
 }
 
 .data-row:hover {
-  background: rgba(var(--pivot-accent-rgb), 0.05);
+  background-color: rgba(var(--pivot-accent-rgb), 0.05);
 }
 
-/* Level-based styling */
 .data-row.level-0 {
   background: rgba(var(--pivot-accent-rgb), 0.1);
   font-weight: 600;
@@ -565,7 +416,10 @@ Inv Status Pivot Table Container
   background: var(--color-bg-primary);
 }
 
-/* Group Column */
+/* ===================================
+   GROUP COLUMN (STICKY LEFT)
+   =================================== */
+
 .group-column {
   position: sticky;
   left: 0;
@@ -581,8 +435,9 @@ Inv Status Pivot Table Container
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-top: none;
+  border-bottom: none;
 }
-
 .expand-btn {
   width: 24px;
   height: 24px;
@@ -611,7 +466,10 @@ Inv Status Pivot Table Container
   transform: scale(1.05);
 }
 
-/* Level Labels */
+/* ===================================
+   LEVEL LABELS
+   =================================== */
+
 .level-0-label {
   font-size: 1rem;
   font-weight: 700;
@@ -635,7 +493,10 @@ Inv Status Pivot Table Container
   text-overflow: ellipsis;
 }
 
-/* Metric Cells */
+/* ===================================
+   METRIC CELLS
+   =================================== */
+
 .metric-cell {
   padding: var(--space-md);
   text-align: center;
@@ -643,30 +504,188 @@ Inv Status Pivot Table Container
   white-space: nowrap;
   color: var(--color-text-secondary);
   min-width: 120px;
+  width: auto;
+  border: none;
 }
 
-/* Border between status groups */
+/* Ensure columns don't collapse */
+.pivot-table th:not(.group-header),
+.pivot-table td:not(.group-column) {
+  min-width: 120px;
+}
+
+/* Status group separators (only when multiple statuses) */
 .status-group-separator {
-  border-right: 2px solid #bab9b9;
+  position: relative;
 }
 
-/* Remove right border for the last status group */
+.status-group-separator::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--color-border-light);
+  z-index: 10;
+}
+
 .status-group-end {
   border-right: none !important;
 }
 
-/* Status group border corrections */
-.status-group-header:first-child {
-  border-left: none !important;
+/* ===================================
+   DARK MODE SUPPORT
+   =================================== */
+
+[data-theme="dark"] .pivot-table-container {
+  background: var(--color-bg-primary);
+  box-shadow: var(--shadow-md);
 }
 
-.status-group-header:last-child {
-  border-right: none !important;
+[data-theme="dark"] .status-tabs-container {
+  background: var(--color-bg-secondary) !important;
+  border-bottom-color: var(--color-border-light);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+[data-theme="dark"] .category-toggle {
+  background: var(--color-bg-secondary);
+}
 
-/* Tablet (1024px and below) */
+[data-theme="dark"] .category-btn {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .category-btn:hover:not(.active) {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .control-btn {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-light);
+}
+
+[data-theme="dark"] .control-btn:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--pivot-primary);
+  color: var(--pivot-primary);
+}
+
+[data-theme="dark"] .row-dropdown,
+[data-theme="dark"] .column-dropdown {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .dropdown-section h4 {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-border-light);
+}
+
+[data-theme="dark"] .row-dropdown label,
+[data-theme="dark"] .column-dropdown label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .row-dropdown label:hover:not(:has(input:disabled)),
+[data-theme="dark"] .column-dropdown label:hover {
+  background: var(--color-bg-secondary);
+}
+
+[data-theme="dark"] .pivot-table-scroll,
+[data-theme="dark"] .pivot-table-scroll-container {
+  border-color: var(--color-border-light);
+  background: var(--color-bg-primary);
+}
+
+[data-theme="dark"] .pivot-table {
+  background: var(--color-bg-primary);
+}
+
+[data-theme="dark"] .header-row {
+  background: linear-gradient(135deg, var(--pivot-accent-start), var(--pivot-accent-end));
+}
+
+[data-theme="dark"] .sub-header-row {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .group-column {
+  background: #69a7ed !important;
+  border-right-color: var(--color-border-light);
+}
+
+/* Dark Mode - Different group column colors based on theme */
+[data-theme="dark"] .pivot-table-container.theme-blue .group-column {
+  background-color: #69a7ed !important;
+}
+
+[data-theme="dark"] .pivot-table-container.theme-gray .group-column {
+  background-color: #6e6e6e !important;
+}
+
+[data-theme="dark"] .data-row:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .data-row:hover {
+  background-color: rgba(var(--pivot-accent-rgb), 0.12);
+}
+
+[data-theme="dark"] .data-row.level-0 {
+  background: rgba(var(--pivot-accent-rgb), 0.15);
+}
+
+[data-theme="dark"] .data-row.level-1 {
+  background: rgba(var(--pivot-accent-rgb), 0.08);
+}
+
+[data-theme="dark"] .data-row.level-2 {
+  background: var(--color-bg-primary);
+}
+
+[data-theme="dark"] .metric-cell {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .metric-header {
+  border-bottom-color: var(--color-border-medium);
+}
+
+[data-theme="dark"] .level-0-label {
+  color: var(--pivot-primary);
+}
+
+[data-theme="dark"] .level-1-label {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .level-2-label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .expand-btn {
+  background: var(--color-bg-secondary);
+  color: var(--pivot-primary);
+}
+
+[data-theme="dark"] .expand-btn:hover {
+  background: var(--pivot-primary);
+  color: white;
+}
+
+[data-theme="dark"] .status-group-separator::after,
+[data-theme="dark"] .status-group-header:not(:last-child)::after {
+  background: var(--color-border-medium);
+}
+
+/* ===================================
+   RESPONSIVE - TABLET (1024px)
+   =================================== */
+
 @media (max-width: 1024px) {
   .pivot-controls {
     flex-direction: column;
@@ -687,7 +706,8 @@ Inv Status Pivot Table Container
     padding: 8px 16px;
   }
 
-  .pivot-table-scroll {
+  .pivot-table-scroll,
+  .pivot-table-scroll-container {
     max-height: 60vh;
   }
 
@@ -710,58 +730,85 @@ Inv Status Pivot Table Container
   }
 }
 
-/* Mobile (768px and below) */
+/* ===================================
+   RESPONSIVE - MOBILE (768px)
+   =================================== */
+
 @media (max-width: 768px) {
-  /* Show mobile-specific styles */
-  .status-tabs-container.mobile-scrollable,
-  .mobile-status-select,
-  .mobile-design-selector {
-    display: flex;
+  /* Show status tabs on mobile */
+  .status-tabs-container {
+    display: block !important;
+    padding: 8px;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-md);
   }
-  
-  /* Hide desktop tabs on mobile */
-  .status-tabs-container:not(.mobile-scrollable) {
+
+  [data-theme="dark"] .status-tabs-container {
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .status-tabs-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .status-tabs-wrapper::-webkit-scrollbar {
     display: none;
   }
-  
+
+  .status-tabs-scroller {
+    overflow-x: auto;
+    padding: 4px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    display: block;
+  }
+
+  .status-tabs-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-toggle {
+    display: flex;
+    gap: 6px;
+    min-width: max-content;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .category-btn {
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 20px;
+    min-height: 36px;
+    flex-shrink: 0;
+  }
+
   /* Container adjustments */
   .pivot-table-container {
     padding: var(--space-md);
   }
 
-  /* Status tabs adjustments */
-  .mobile-category-toggle {
-    padding: 6px 12px;
-    gap: 4px;
-  }
-
-  .mobile-status-btn {
-    padding: 8px 12px;
-    min-width: 100px;
-  }
-
-  .mobile-status-btn .status-text {
-    font-size: 0.7rem;
-  }
-  
-  /* Show fade gradients when scrollable */
-  .status-tabs-container.mobile-scrollable::before,
-  .status-tabs-container.mobile-scrollable::after {
-    display: block;
-  }
-
-  /* Controls adjustments */
+  /* Controls adjustments - Move to right on mobile */
   .pivot-controls {
-    justify-content: center;
+    justify-content: flex-end;
     margin-bottom: var(--space-md);
   }
 
-  .controls-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 8px;
-    width: 100%;
-    justify-content: center;
+  .controls-group,
+  .controls-right-group {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
 
   .control-btn {
@@ -772,15 +819,32 @@ Inv Status Pivot Table Container
     text-align: center;
   }
 
-  /* Table adjustments */
-  .pivot-table-scroll {
+  /* Table scroll adjustments */
+  .pivot-table-scroll,
+  .pivot-table-scroll-container {
     max-height: 50vh;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    margin: 0 8px;
   }
 
+  .table-wrapper {
+    min-width: 800px;
+  }
+
+  .pivot-table th,
+  .pivot-table td {
+    font-size: 12px;
+    padding: 8px 4px;
+    min-height: 40px;
+  }
+
+  /* Updated to match PivotTable mobile column width - 170px */
   .group-column,
   .group-header {
     min-width: 170px;
     width: 170px;
+    max-width: 170px;
     padding: var(--space-sm);
     font-size: 0.75rem;
   }
@@ -823,39 +887,32 @@ Inv Status Pivot Table Container
     transform: translateX(-50%);
     min-width: 200px;
   }
-  
-  /* Bottom tab bar activation */
-  @media (max-height: 600px) {
-    .mobile-tab-bar {
-      display: flex;
-    }
-    
-    .status-tabs-container.mobile-scrollable {
-      display: none;
-    }
+
+  .status-group-separator::after,
+  .status-group-header:not(:last-child)::after {
+    width: 1px;
+    background: var(--color-border-light);
+  }
+
+  [data-theme="dark"] .status-group-separator::after,
+  [data-theme="dark"] .status-group-header:not(:last-child)::after {
+    background: var(--color-border-medium);
   }
 }
 
-/* Small Mobile (480px and below) */
-@media (max-width: 480px) {
-  /* Status tabs */
-  .mobile-category-toggle {
-    padding: 5px 8px;
-    gap: 3px;
-  }
+/* ===================================
+   RESPONSIVE - SMALL MOBILE (480px)
+   =================================== */
 
-  .mobile-status-btn {
+@media (max-width: 480px) {
+  .category-btn {
     font-size: 0.7rem;
     padding: 6px 10px;
     min-width: 90px;
   }
 
-  .mobile-status-btn .status-text {
-    font-size: 0.65rem;
-  }
-
-  /* Controls grid */
-  .controls-group {
+  .controls-group,
+  .controls-right-group {
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
@@ -868,11 +925,18 @@ Inv Status Pivot Table Container
     white-space: nowrap;
   }
 
-  /* Table adjustments */
+  .control-btn:nth-last-child(1):nth-child(odd) {
+    grid-column: span 2;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  /* Keep readable width on very small screens - don't go too small */
   .group-column,
   .group-header {
     min-width: 140px;
     width: 140px;
+    max-width: 140px;
     padding: 6px 8px;
   }
 
@@ -899,18 +963,28 @@ Inv Status Pivot Table Container
   .level-2-label {
     font-size: 0.65rem;
   }
-  
-  /* Button adjustments for last odd button */
-  .control-btn:nth-last-child(1):nth-child(odd) {
-    grid-column: span 2;
-    max-width: 200px;
-    margin: 0 auto;
+
+  .expand-btn {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    max-width: 18px;
+    min-height: 18px;
+    max-height: 18px;
+    font-size: 0.6rem;
+    padding: 0;
+    background: transparent;
+    border: none;
   }
 }
 
-/* Very Small Screens (360px and below) */
+/* ===================================
+   RESPONSIVE - VERY SMALL (360px)
+   =================================== */
+
 @media (max-width: 360px) {
-  .controls-group {
+  .controls-group,
+  .controls-right-group {
     grid-template-columns: 1fr;
     gap: 6px;
   }
@@ -924,29 +998,22 @@ Inv Status Pivot Table Container
     max-width: none;
   }
 
-  .mobile-category-toggle {
-    gap: 2px;
-  }
-
-  .mobile-status-btn {
+  .category-btn {
     font-size: 0.6rem;
     padding: 4px 6px;
     min-width: 85px;
   }
 }
 
-/* Touch-friendly improvements for touch devices */
+/* ===================================
+   TOUCH DEVICE IMPROVEMENTS
+   =================================== */
+
 @media (hover: none) and (pointer: coarse) {
-  .mobile-status-btn,
-  .mobile-tab-item,
   .category-btn,
   .control-btn {
     min-height: 44px;
     min-width: 44px;
-  }
-
-  .mobile-status-btn {
-    padding: 12px 16px;
   }
 
   .expand-btn {
@@ -955,43 +1022,18 @@ Inv Status Pivot Table Container
   }
 }
 
-/* ===== ADDITIONAL STYLES ===== */
+/* ===================================
+   PRINT STYLES
+   =================================== */
 
-/* Single status layout */
-.pivot-table.single-status-layout {
-  table-layout: fixed;
-}
-
-.pivot-table.single-status-layout .header-row th:not(.group-header),
-.pivot-table.single-status-layout .metric-cell {
-  width: calc((100% - 250px) / 3);
-}
-
-.pivot-table.single-status-layout .header-row th:not(.group-header),
-.pivot-table.single-status-layout .metric-cell {
-  min-width: 160px;
-}
-
-/* Dark Mode Support */
-[data-theme="dark"] .data-row.level-0 {
-  background: rgba(var(--pivot-accent-rgb), 0.15);
-}
-
-[data-theme="dark"] .data-row.level-1 {
-  background: rgba(var(--pivot-accent-rgb), 0.08);
-}
-
-[data-theme="dark"] .data-row:hover {
-  background: rgba(var(--pivot-accent-rgb), 0.12);
-}
-
-/* Print Styles */
 @media print {
-  .pivot-controls {
+  .pivot-controls,
+  .status-tabs-container {
     display: none;
   }
 
-  .pivot-table-scroll {
+  .pivot-table-scroll,
+  .pivot-table-scroll-container {
     overflow: visible;
     max-height: none;
     border: none;
@@ -1000,195 +1042,6 @@ Inv Status Pivot Table Container
   .expand-btn {
     display: none;
   }
-  
-  /* Hide mobile-specific elements */
-  .mobile-tab-bar,
-  .mobile-design-selector,
-  .mobile-scroll-indicator,
-  .swipe-hint {
-    display: none !important;
-  }
-}
-
-/* Mobile Status Tabs Fix */
-.status-tabs-scroller {
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scroll-behavior: smooth;
-}
-
-.status-tabs-scroller::-webkit-scrollbar {
-  display: none;
-}
-
-.status-tabs-scroller .category-toggle {
-  display: flex;
-  flex-wrap: nowrap;
-  min-width: max-content;
-  gap: 4px;
-}
-
-@media (max-width: 768px) {
-  .status-tabs-container {
-    padding: 8px;
-  }
-  
-  .category-btn {
-    white-space: nowrap;
-    font-size: 12px;
-    padding: 6px 10px;
-    min-height: 36px;
-  }
-}
-
-/* Table Lines & Mobile Fix */
-.table-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.pivot-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  min-width: 600px; /* Ensures horizontal scroll on mobile */
-}
-
-.pivot-table th,
-.pivot-table td {
-  border: 1px solid #e0e0e0;
-  border-right: none;
-  border-bottom: none;
-}
-
-.pivot-table th:last-child,
-.pivot-table td:last-child {
-  border-right: 1px solid #e0e0e0;
-}
-
-.data-row:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.data-row:hover {
-  background-color: #f0f8ff;
-}
-
-.metric-header {
-  border-left: 2px solid #333;
-  border-right: 1px solid #e0e0e0 !important;
-}
-
-@media (max-width: 768px) {
-  .pivot-table-scroll {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 0 8px;
-  }
-  
-  .pivot-table th,
-  .pivot-table td {
-    font-size: 12px;
-    padding: 8px 4px;
-    min-height: 40px;
-  }
-}
-/* SHOW STATUS TABS ON MOBILE */
-@media (max-width: 768px) {
-  .status-tabs-container {
-    display: block !important;
-    padding: 8px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .status-tabs-scroller {
-    overflow-x: auto;
-    padding: 4px 0;
-    scrollbar-width: thin;
-  }
-  
-  .status-tabs-scroller::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .category-toggle {
-    display: flex;
-    gap: 4px;
-    min-width: max-content;
-  }
-  
-  .category-btn {
-    white-space: nowrap;
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 20px;
-    min-height: 36px;
-    flex-shrink: 0;
-  }
-}
-
-
-/* NO TABLE LINES - ONLY STATUS SEPARATORS */
-.pivot-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  background: white;
-}
-
-/* REMOVE ALL BORDERS FROM CELLS */
-.pivot-table th,
-.pivot-table td {
-  border: none !important;
-  padding: 12px 8px;
-}
-
-/* ONLY STATUS SEPARATOR LINES (when multiple statuses selected) */
-.status-group-separator {
-  border-right: 2px solid #e0e0e0 !important;
-}
-
-.status-group-end {
-  border-right: none !important;
-}
-
-/* Header subtle separation */
-.metric-header {
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 12px;
-  font-weight: 600;
-}
-
-/* Row hover effect instead of lines */
-.data-row {
-  transition: background-color 0.2s;
-}
-
-.data-row:nth-child(even) {
-  background-color: #f9fafb;
-}
-
-.data-row:hover {
-  background-color: #f0f9ff;
-}
-
-/* Mobile table improvements */
-@media (max-width: 768px) {
-  .pivot-table th,
-  .pivot-table td {
-    padding: 10px 6px;
-    font-size: 13px;
-  }
-  
-  .table-wrapper {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    overflow: hidden;
-  }
 }
 
 
@@ -1197,59 +1050,45 @@ Inv Status Pivot Table Container
 
 
 
-/* VERTICAL LINE BETWEEN STATUS GROUPS (2+ statuses selected) */
-.status-group-separator {
-  position: relative;
-}
 
-.status-group-separator::after {
-  content: '';
-  position: absolute;
-  right: -1px;
-  top: 0;
-  bottom: 0;
-  width: 1.5px;
-  background: #d1d5db;
-  z-index: 10;
-}
 
-/* Header status group separator */
-.status-group-header {
-  position: relative;
-}
 
-.status-group-header:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: -1px;
-  top: 0;
-  bottom: 0;
-  width: 1.5px;
-  background:  #d1d5db;
-  z-index: 10;
-}
 
-/* Sub-header separator for multiple statuses */
-.sub-header-row th:not(:last-child) {
-  position: relative;
-}
 
-/* .sub-header-row th:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: -1px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: #e5e7eb;
-  z-index: 10;
-} */
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .status-group-separator::after,
-  .status-group-header:not(:last-child)::after {
-    width: 1px;
-    background: #d1d5db;
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
