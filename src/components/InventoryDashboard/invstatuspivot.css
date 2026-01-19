@@ -305,12 +305,12 @@
   min-width: 100%;
 }
 
-.pivot-table.single-status-layout .group-header,
+/* .pivot-table.single-status-layout .group-header,
 .pivot-table.single-status-layout .group-column {
-  width: 250px;
-  min-width: 250px;
-  max-width: 250px;
-}
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+} */
 
 .pivot-table.single-status-layout .metric-header,
 .pivot-table.single-status-layout .metric-cell {
@@ -435,8 +435,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  border-top: none;
-  border-bottom: none;
 }
 .expand-btn {
   width: 24px;
@@ -509,10 +507,10 @@
 }
 
 /* Ensure columns don't collapse */
-.pivot-table th:not(.group-header),
+/* .pivot-table th:not(.group-header),
 .pivot-table td:not(.group-column) {
   min-width: 120px;
-}
+} */
 
 /* Status group separators (only when multiple statuses) */
 .status-group-separator {
@@ -842,9 +840,8 @@
   /* Updated to match PivotTable mobile column width - 170px */
   .group-column,
   .group-header {
-    min-width: 170px;
-    width: 170px;
-    max-width: 170px;
+      min-width: 150px;
+    width: 150px;
     padding: var(--space-sm);
     font-size: 0.75rem;
   }
@@ -865,7 +862,12 @@
     width: 20px;
     height: 20px;
     min-width: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    max-height: 20px;
     font-size: 0.65rem;
+    padding: 0;
+    flex-shrink: 0;
   }
 
   .header-row th {
@@ -973,8 +975,11 @@
     max-height: 18px;
     font-size: 0.6rem;
     padding: 0;
-    background: transparent;
-    border: none;
+  }
+  .pivot-table.single-status-layout .group-column {
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
   }
 }
 
@@ -1003,6 +1008,7 @@
     padding: 4px 6px;
     min-width: 85px;
   }
+  
 }
 
 /* ===================================
@@ -1016,10 +1022,10 @@
     min-width: 44px;
   }
 
-  .expand-btn {
+  /* .expand-btn {
     min-width: 44px;
     min-height: 44px;
-  }
+  } */
 }
 
 /* ===================================
