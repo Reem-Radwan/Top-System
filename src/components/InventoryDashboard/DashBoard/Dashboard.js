@@ -9,7 +9,7 @@ import DataTable from '../DataTable/DataTable';
 import PivotTable from '../PivotTable';
 import InvStatusPivot from '../Invstatuspivot'
 import './dashboard.css';
-import SalesProgressPivot from '../SalesProgressPivot'
+import SalesProgressPivot from '../SalesProgressPivot/SalesProgressPivot'
 import DeliveryPlanPivot from '../DeliveryPlanPivot';
 
 const Dashboard = ({ companyId, companyName, onViewChange }) => {

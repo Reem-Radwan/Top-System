@@ -1,11 +1,13 @@
-/* Delivery Plan Container */
+/* Sales Progress Container */
 .delivery-plan-container {
   width: 100%;
-  background: var(--color-bg-primary);
+  /* background: var(--color-bg-primary); */
   padding: var(--space-lg);
 }
 
-/* Year Tabs (Default Mode) */
+
+
+/* Year Tabs */
 .year-tabs {
   display: flex;
   gap: var(--space-sm);
@@ -39,7 +41,7 @@
   background: var(--color-bg-tertiary);
 }
 
-/* Period Selector Container (Comparison Mode) */
+/* Period Selector (Comparison Mode) */
 .period-selector-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -242,7 +244,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Controls */
 .delivery-plan-controls {
   display: flex;
   justify-content: flex-end;
@@ -250,6 +251,11 @@
   margin-bottom: var(--space-lg);
   gap: var(--space-md);
   flex-wrap: wrap;
+}
+
+.expand-controls {
+  display: flex;
+  gap: var(--space-sm);
 }
 
 .dropdown-controls {
@@ -288,6 +294,18 @@
   border-color: transparent;
 }
 
+.years-analysis-btn {
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: white;
+  border-color: transparent;
+}
+
+.years-analysis-btn:hover {
+  background: linear-gradient(135deg, #1e7e34, #155724);
+  color: white;
+  border-color: transparent;
+}
+
 .reset-btn {
   background: var(--color-danger, #dc3545);
   color: white;
@@ -300,7 +318,6 @@
   border-color: transparent;
 }
 
-/* Dropdowns */
 .row-toggle,
 .column-toggle {
   position: relative;
@@ -363,7 +380,6 @@
   accent-color: var(--color-primary);
 }
 
-/* Table Scroll */
 .delivery-plan-scroll {
   overflow-x: auto;
   overflow-y: auto;
@@ -391,7 +407,6 @@
   background: var(--color-primary);
 }
 
-/* Table */
 .delivery-plan-table {
   width: 100%;
   border-collapse: separate;
@@ -415,11 +430,14 @@
   font-weight: 700;
   font-size: 0.9rem;
   text-align: left;
-  border-right: 2px solid rgba(255, 255, 255, 0.2);
+  /* border-right: 2px solid rgba(255, 255, 255, 0.2); */
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 13;
+  width: 200px;
   min-width: 200px;
+  max-width: 200px;
 }
+
 
 .month-header {
   padding: var(--space-md);
@@ -464,12 +482,12 @@
 }
 
 .data-row.level-0 {
-  background: rgb(233, 243, 254);
+  background: rgb(236, 245, 255);
   font-weight: 600;
 }
 
 .data-row.level-1 {
-  background: rgb(233, 243, 254);
+  background: rgb(236, 245, 255);
   font-weight: 500;
 }
 
@@ -489,7 +507,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  /* border-right: 2px solid var(--color-border-light); */
+  border-right: 1px solid rgb(220, 221, 221);
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -509,7 +527,6 @@
   border-radius: 2px;
 }
 
-/* Expand Button */
 .expand-btn {
   width: 20px;
   height: 20px;
@@ -557,53 +574,48 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   color: var(--color-text-secondary);
-  /* border-right: 1px solid rgb(169, 168, 168); */
+  border-right: 1px solid var(--color-border-light);
   font-size: 0.85rem;
-}
-
-.metrica-cell {
-  padding: var(--space-sm) var(--space-md);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  color: var(--color-text-secondary);
-
-  font-size: 0.85rem;
+  /* min-width: 90px;
+  max-width: 140px; */
 }
 
 
 
-/* Month Separator - CLEAR VISIBLE LINE between different periods */
+/* Month Separator - Simple CLEAR LINE between ALL months */
 .month-separator {
-  border-left: 4px solid #4A90E2 !important;
-  box-shadow: -2px 0 4px rgba(74, 144, 226, 0.3);
+  border-left: 2px solid #4A90E2 !important;
   position: relative;
 }
 
-.month-separator::before {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(135deg, #4A90E2, #357ABD);
-  box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
-
+/* Simple Separator - THIN LINE between every 2 months/periods */
+.simple-separator {
+  border-left: 1px solid var(--color-border-medium, #ddd) !important;
 }
 
-.month-separator::after {
-  content: '';
-  position: absolute;
-  left: -6px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: rgba(74, 144, 226, 0.2);
-  border-left: 4px solid #31373e !important;
+/* Fix column width when only 1 month displayed */
+.delivery-plan-table {
+  table-layout: auto;
 }
 
-/* Responsive - Tablet */
+.month-header {
+  min-width: 140px;
+  max-width: 220px;
+}
+
+.sub-header {
+  min-width: 90px;
+  max-width: 140px;
+  white-space: nowrap;
+}
+
+/* Dash cells (no progress) */
+.metric-cell:has-text("-") {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
   .delivery-plan-controls {
     justify-content: center;
@@ -618,10 +630,6 @@
     justify-content: center;
   }
 
-  .period-selector-container {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-
   .group-cell {
     min-width: 180px;
     max-width: 250px;
@@ -632,7 +640,6 @@
   }
 }
 
-/* Responsive - Mobile */
 @media (max-width: 768px) {
   .delivery-plan-container {
     padding: var(--space-md);
@@ -686,6 +693,7 @@
     padding: var(--space-xs) var(--space-sm);
   }
 
+  /* Center dropdowns on mobile */
   .row-dropdown,
   .column-dropdown {
     right: auto;
@@ -697,10 +705,6 @@
 /* Dark Mode */
 [data-theme="dark"] .group-header-cell,
 [data-theme="dark"] .month-header {
-  background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
-}
-
-[data-theme="dark"] .year-tab.active {
   background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
 }
 
@@ -716,7 +720,7 @@
   background: rgba(46, 107, 168, 0.1);
 }
 
-/* Print Styles */
+/* Print */
 @media print {
   .year-tabs,
   .delivery-plan-controls {
@@ -732,36 +736,4 @@
   .expand-btn {
     display: none;
   }
-
-  .delivery-plan-table {
-    page-break-inside: avoid;
-  }
-
-  .data-row {
-    page-break-inside: avoid;
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.delivery-plan-container {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Focus States */
-.control-btn:focus,
-.expand-btn:focus,
-.year-tab:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }
