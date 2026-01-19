@@ -9,6 +9,8 @@ import DataTable from '../DataTable/DataTable';
 import PivotTable from '../PivotTable';
 import InvStatusPivot from '../Invstatuspivot'
 import './dashboard.css';
+import SalesProgressPivot from '../SalesProgressPivot'
+import DeliveryPlanPivot from '../DeliveryPlanPivot';
 
 const Dashboard = ({ companyId, companyName, onViewChange }) => {
   const [units, setUnits] = useState([]);
@@ -360,20 +362,16 @@ const Dashboard = ({ companyId, companyName, onViewChange }) => {
         )}
 
         {/* Sales Progress View */}
-        {currentView === 'sales-progress' && (
-          <div className="coming-soon-view">
-            <div className="coming-soon-icon">📈</div>
-            <h3>Sales Progress</h3>
-            <p>Detailed sales progress tracking coming soon...</p>
+         {currentView === 'sales-progress' && (
+          <div className="sales-progress-view">
+            <SalesProgressPivot units={filteredUnits} />
           </div>
         )}
 
         {/* Delivery Plan View */}
-        {currentView === 'delivery-plan' && (
-          <div className="coming-soon-view">
-            <div className="coming-soon-icon">🚚</div>
-            <h3>Delivery Plan</h3>
-            <p>Comprehensive delivery plan overview coming soon...</p>
+          {currentView === 'delivery-plan' && (
+          <div className="delivery-plan-view">
+            <DeliveryPlanPivot units={filteredUnits} />
           </div>
         )}
 
