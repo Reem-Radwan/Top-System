@@ -10,7 +10,7 @@ import PivotTable from '../PivotTable';
 import InvStatusPivot from '../Invstatuspivot'
 import './dashboard.css';
 import SalesProgressPivot from '../SalesProgressPivot/SalesProgressPivot'
-import DeliveryPlanPivot from '../DeliveryPlanPivot';
+import DeliveryPlanPivot from '../DeliveryPlanPivot/DeliveryPlanPivot';
 
 const Dashboard = ({ companyId, companyName, onViewChange }) => {
   const [units, setUnits] = useState([]);

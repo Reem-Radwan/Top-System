@@ -994,7 +994,7 @@ const toggleExpandCollapse = () => {
           )}
 
           <button className="control-btn" onClick={toggleExpandCollapse}>
-            {isAnyExpanded ? '▶ Collapse All' : '▼ Expand All'}
+            {isAnyExpanded ? '▼ Expand All' : '▶ Collapse All'}
           </button>
 
           <div className="row-toggle">
