@@ -644,6 +644,9 @@
   .delivery-plan-container {
     padding: var(--space-md);
   }
+  .delivery-plan-controls {
+    justify-content: space-between;
+  }
 
   .year-tabs {
     gap: 4px;
@@ -699,6 +702,246 @@
     right: auto;
     left: 50%;
     transform: translateX(-50%);
+  }
+}
+
+/* Dark Mode */
+[data-theme="dark"] .group-header-cell,
+[data-theme="dark"] .month-header {
+  background: linear-gradient(135deg, #2E6BA8, #1E4A7A);
+}
+
+[data-theme="dark"] .data-row.level-0 {
+  background: rgba(46, 107, 168, 0.12);
+}
+
+[data-theme="dark"] .data-row.level-1 {
+  background: rgba(46, 107, 168, 0.06);
+}
+
+[data-theme="dark"] .data-row:hover {
+  background: rgba(46, 107, 168, 0.1);
+}
+
+/* Print */
+@media print {
+  .year-tabs,
+  .delivery-plan-controls {
+    display: none;
+  }
+
+  .delivery-plan-scroll {
+    overflow: visible;
+    max-height: none;
+    border: none;
+  }
+
+  .expand-btn {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .delivery-plan-controls {
+    justify-content: center;
+  }
+
+  .dropdown-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .year-tabs {
+    justify-content: center;
+  }
+
+  .group-cell {
+    min-width: 180px;
+    max-width: 250px;
+  }
+
+  .group-header-cell {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .delivery-plan-container {
+    padding: var(--space-md);
+  }
+
+  /* Mobile: Control buttons layout - 2-3 buttons per line */
+  .delivery-plan-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .dropdown-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start;
+  }
+
+  .dropdown-controls > * {
+    flex: 1;
+    min-width: calc(50% - 3px);
+    max-width: calc(50% - 3px);
+  }
+
+  /* For larger mobile screens, show 3 buttons per line */
+  @media (min-width: 480px) and (max-width: 768px) {
+    .dropdown-controls > * {
+      min-width: calc(33.333% - 4px);
+      max-width: calc(33.333% - 4px);
+    }
+  }
+
+  .control-btn {
+    font-size: 0.75rem;
+    padding: 8px 6px;
+    min-height: 36px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .year-tabs {
+    gap: 4px;
+    margin-bottom: var(--space-md);
+  }
+
+  .year-tab {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+    flex: 1;
+    min-width: calc(25% - 4px);
+    text-align: center;
+  }
+
+  .period-selector-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .month-checkboxes {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    max-height: 150px;
+  }
+
+  /* Mobile: Adjust first column width */
+  .group-cell {
+    min-width: 180px !important;
+    max-width: 220px !important;
+    font-size: 0.85rem;
+    padding: 10px 8px;
+  }
+
+  .group-header-cell {
+    min-width: 180px !important;
+    max-width: 220px !important;
+    font-size: 0.85rem;
+    padding: 12px 8px;
+  }
+
+  /* Mobile: Smaller table size */
+  .delivery-plan-scroll {
+    max-height: 60vh;
+    font-size: 0.8rem;
+  }
+
+  .delivery-plan-table {
+    font-size: 0.8rem;
+  }
+
+  .month-header {
+    font-size: 0.7rem;
+    padding: 10px 6px;
+    min-width: 100px;
+    max-width: 120px;
+  }
+
+  .sub-header {
+    font-size: 0.65rem;
+    padding: 8px 6px;
+    min-width: 70px;
+    max-width: 90px;
+  }
+
+  .metric-cell {
+    font-size: 0.7rem;
+    padding: 8px 6px;
+    min-width: 70px;
+    max-width: 90px;
+  }
+
+  .level-0-label {
+    font-size: 0.85rem;
+  }
+
+  .level-1-label {
+    font-size: 0.8rem;
+  }
+
+  .level-2-label {
+    font-size: 0.75rem;
+  }
+
+  /* Mobile: Center dropdowns */
+  .row-dropdown,
+  .column-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+    z-index: 1000;
+  }
+
+  .row-dropdown label,
+  .column-dropdown label {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Mobile: Adjust period selector boxes */
+  .period-selector-box {
+    padding: var(--space-md);
+  }
+
+  .add-period-btn {
+    padding: var(--space-md);
+  }
+
+  .add-period-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .add-period-text {
+    font-size: 0.8rem;
+  }
+
+  /* Ensure proper sticky positioning on mobile */
+  .month-header-row,
+  .column-header-row,
+  .group-header-cell,
+  .group-cell {
+    position: -webkit-sticky;
+    position: sticky;
   }
 }
 

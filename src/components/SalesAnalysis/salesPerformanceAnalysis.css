@@ -1,0 +1,812 @@
+/* SalesPerformanceAnalysis.css */
+
+/* ============================================
+   VARIABLES AND GLOBAL STYLES
+   ============================================ */
+:root {
+  --primary-orange: #e2740a;
+  --primary-orange-dark: #c86409;
+  --primary-orange-light: #ff8c1a;
+  --gray-dark: #2c3e50;
+  --gray-medium: #34495e;
+  --gray-light: #ecf0f1;
+  --gray-border: #dee2e6;
+  --white: #ffffff;
+  --blue-primary: #4a90e2;
+  --blue-dark: #3b82f6;
+  --success-green: #10b981;
+  --warning-yellow: #ffc107;
+  --danger-red: #dc3545;
+  --text-dark: #2c3e50;
+  --text-medium: #555;
+  --bg-light: #f8f9fa;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --border-radius-sm: 6px;
+  --border-radius-xs: 4px;
+}
+
+.sales-performance-container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* ============================================
+   PAGE TITLE STYLES - INVENTORY STYLE
+   ============================================ */
+.page-title-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0 1.5rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.page-title-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* .page-title-underline {
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary-orange);
+  border-radius: 2px;
+} */
+
+/* ============================================
+   CONTAINER AND LAYOUT
+   ============================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem 2rem;
+}
+
+/* ============================================
+   CARD STYLES - CLEAN INVENTORY STYLE
+   ============================================ */
+.card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  background-color: #f9fafb;
+  color: var(--text-dark);
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--gray-dark);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.selection-card .card-body {
+  padding: 2rem 1.5rem;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+}
+
+.form-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.95rem;
+  background-color: var(--white);
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(226, 116, 10, 0.1);
+}
+
+.form-select:hover {
+  border-color: #9ca3af;
+}
+
+/* ============================================
+   BUTTON STYLES - CLEAN STYLE
+   ============================================ */
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-orange);
+  color: var(--white);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-orange-dark);
+  box-shadow: 0 4px 8px rgba(226, 116, 10, 0.25);
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: var(--white);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #4b5563;
+  box-shadow: 0 4px 8px rgba(107, 114, 128, 0.25);
+}
+
+/* ============================================
+   ANALYSIS TYPE BUTTONS - TAB STYLE
+   ============================================ */
+.analysis-type-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.analysis-type-btn {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  background-color: transparent;
+  color: var(--text-medium);
+  border-radius: var(--border-radius-xs);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.analysis-type-btn:hover {
+  background-color: #f3f4f6;
+  color: var(--gray-dark);
+}
+
+.analysis-type-btn.active {
+  background-color: var(--primary-orange);
+  color: var(--white);
+  box-shadow: 0 2px 4px rgba(226, 116, 10, 0.2);
+}
+
+/* ============================================
+   PREMIUM ANALYSIS BUTTONS - TAB STYLE
+   ============================================ */
+.premium-selection-card {
+  margin-top: 1.5rem;
+}
+
+.premium-analysis-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.premium-analysis-btn {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  background-color: transparent;
+  color: var(--text-medium);
+  border-radius: var(--border-radius-xs);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.premium-analysis-btn:hover {
+  background-color: #eff6ff;
+  color: var(--blue-dark);
+}
+
+.premium-analysis-btn.active {
+  background-color: var(--blue-primary);
+  color: var(--white);
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--gray-light);
+  border-top: 4px solid var(--primary-orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  margin-top: 1rem;
+  color: var(--gray-medium);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   ANALYSIS CONTENT
+   ============================================ */
+.analysis-content,
+.premium-analysis-content {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.analysis-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* ============================================
+   TABLE STYLES - INVENTORY STYLE
+   ============================================ */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  border-radius: var(--border-radius);
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.pivot-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--white);
+  font-size: 0.875rem;
+}
+
+.pivot-table th,
+.pivot-table td {
+  padding: 0.875rem 1rem;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+
+.pivot-table th:last-child,
+.pivot-table td:last-child {
+  border-right: none;
+}
+
+.pivot-table thead tr:first-child th {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem 0.875rem;
+  border-bottom: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pivot-table thead tr:first-child th:last-child {
+  border-right: none;
+}
+
+.pivot-table thead tr:nth-child(2) th {
+  background-color: #f0f4f8;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.75rem 0.875rem;
+  border-bottom: 2px solid #4a90e2;
+}
+
+.pivot-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.pivot-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.pivot-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Sticky First Column */
+.pivot-table th:first-child,
+.pivot-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background-color: #f9fafb;
+  font-weight: 600;
+  min-width: 140px;
+  border-right: 2px solid #e5e7eb;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.pivot-table thead tr:first-child th:first-child {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  z-index: 6;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.pivot-table thead tr:nth-child(2) th:first-child {
+  background-color: #f0f4f8;
+  z-index: 6;
+}
+
+.price-range-header,
+.unit-model-header,
+.premium-header {
+  position: sticky;
+  left: 0;
+  z-index: 7 !important;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%) !important;
+  color: var(--white);
+  font-weight: 700;
+  min-width: 150px;
+}
+
+/* Column Header Colors */
+.bg-primary {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%) !important;
+  color: var(--white) !important;
+}
+
+.bg-orange {
+  background-color: var(--primary-orange) !important;
+  color: var(--white) !important;
+}
+
+.bg-dark-header th {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+}
+
+.text-white {
+  color: var(--white) !important;
+}
+
+.bg-light {
+  background-color: #f0f4f8 !important;
+  color: var(--text-dark) !important;
+}
+
+/* Grand Total Row */
+.grand-total-row {
+  background-color: #f0f9ff;
+  font-weight: 700;
+  border-top: 2px solid #4a90e2;
+  border-bottom: 2px solid #4a90e2;
+}
+
+.grand-total-row td:first-child {
+  background-color: #f0f9ff !important;
+  border-right: 2px solid #e5e7eb;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-start {
+  text-align: left !important;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+/* ============================================
+   PROGRESS BAR STYLES - SIMPLE CLEAN DESIGN
+   ============================================ */
+.percentage-cell {
+  position: relative;
+  padding: 0.5rem !important;
+  min-width: 110px;
+}
+
+.percentage-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  z-index: 2;
+  color: var(--text-dark);
+  line-height: 28px;
+  font-size: 0.8rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.progress {
+  height: 28px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  transition: width 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  position: relative;
+}
+
+.bg-gray {
+  background-color: #9ca3af;
+}
+
+.bg-success {
+  background-color: var(--primary-orange);
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .pivot-table {
+    font-size: 0.85rem;
+  }
+
+  .pivot-table th,
+  .pivot-table td {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-type-buttons,
+  .premium-analysis-buttons {
+    justify-content: center;
+  }
+
+  .pivot-table th:first-child,
+  .pivot-table td:first-child {
+    min-width: 120px;
+  }
+
+  .price-range-header,
+  .unit-model-header,
+  .premium-header {
+    min-width: 130px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 0 auto;
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .page-title-container {
+    padding: 1.5rem 0 1.5rem 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .page-title-icon {
+    padding: 12px;
+  }
+
+  .icon-bar {
+    width: 6px;
+    height: 32px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .analysis-type-buttons,
+  .premium-analysis-buttons {
+    flex-direction: column;
+  }
+
+  .analysis-type-btn,
+  .premium-analysis-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .pivot-table {
+    font-size: 0.75rem;
+  }
+
+  .pivot-table th,
+  .pivot-table td {
+    padding: 0.625rem 0.5rem;
+  }
+
+  /* Ensure sticky column works on mobile */
+  .pivot-table th:first-child,
+  .pivot-table td:first-child {
+    min-width: 110px;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+  }
+
+  .pivot-table thead tr:first-child th:first-child {
+    z-index: 6;
+  }
+
+  .percentage-cell {
+    min-width: 95px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-title-container {
+    gap: 0.875rem;
+    padding: 1.5rem 0 1rem 0;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+  }
+
+  .pivot-table {
+    font-size: 0.7rem;
+  }
+
+  .pivot-table th,
+  .pivot-table td {
+    padding: 0.5rem 0.375rem;
+  }
+
+  /* Mobile sticky column - even more critical */
+  .pivot-table th:first-child,
+  .pivot-table td:first-child {
+    min-width: 95px;
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 5 !important;
+  }
+
+  .pivot-table thead tr:first-child th:first-child {
+    z-index: 6 !important;
+  }
+
+  .percentage-cell {
+    min-width: 85px;
+  }
+
+  .toast-container {
+    top: 20px;
+    right: 10px;
+    left: 10px;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .page-title-container,
+  .selection-card,
+  .analysis-type-buttons,
+  .premium-analysis-buttons,
+  .button-group,
+  .toast-container {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .pivot-table {
+    font-size: 10pt;
+  }
+
+  .pivot-table th:first-child,
+  .pivot-table td:first-child {
+    position: static;
+  }
+}
