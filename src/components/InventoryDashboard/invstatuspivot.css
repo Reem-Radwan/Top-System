@@ -1002,6 +1002,10 @@
   --invstatus-primary: #757575;
 }
 
+[data-theme="dark"] .invstatus-unique-container.invstatus-theme-gray .invstatus-level-0-label{
+  color: orangered;
+}
+
 /* ===================================
    STATUS TABS (DESKTOP)
    =================================== */
@@ -1107,7 +1111,7 @@
 
 .invstatus-control-btn {
   padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--color-border-light);
+  border: 1.1px solid var(--color-border-light);
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-size: 0.85rem;
@@ -1310,7 +1314,7 @@
   position: relative;
 }
 
-.invstatus-status-group-header:not(:last-child)::after {
+/* .invstatus-status-group-header:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -1px;
@@ -1319,7 +1323,7 @@
   width: 2px;
   background: rgb(212, 211, 211);
   z-index: 10;
-}
+} */
 
 .invstatus-sub-header-row {
   background: rgba(255, 255, 255, 0.15);
@@ -1633,6 +1637,22 @@
    =================================== */
 
 @media (max-width: 1024px) {
+   .invstatus-table-scroll {
+    max-height: 60vh;
+  }
+
+  .invstatus-header-row th {
+    font-size: 0.75rem;
+    padding: var(--space-sm);
+    min-width: 100px;
+  }
+
+  .invstatus-metric-cell {
+    font-size: 0.8rem;
+    padding: var(--space-sm);
+    min-width: 100px;
+  }
+
   .invstatus-controls {
     flex-direction: column;
     align-items: stretch;
@@ -1652,21 +1672,6 @@
     padding: 8px 16px;
   }
 
-  .invstatus-table-scroll {
-    max-height: 60vh;
-  }
-
-  .invstatus-header-row th {
-    font-size: 0.75rem;
-    padding: var(--space-sm);
-    min-width: 100px;
-  }
-
-  .invstatus-metric-cell {
-    font-size: 0.8rem;
-    padding: var(--space-sm);
-    min-width: 100px;
-  }
 
   .invstatus-group-column,
   .invstatus-group-header {
@@ -1752,6 +1757,7 @@
     flex-direction: row;
     gap: 6px;
     justify-content: flex-end;
+    width: 100%;
     flex-wrap: wrap;
   }
 
@@ -1766,9 +1772,9 @@
   /* Table scroll adjustments */
   .invstatus-table-scroll {
     max-height: 50vh;
-    border: 1px solid var(--color-border-light);
+    /* border: 1px solid var(--color-border-light);
     border-radius: 8px;
-    margin: 0 8px;
+    margin: 0 8px; */
   }
 
   .invstatus-table-wrapper {
@@ -1824,7 +1830,7 @@
   .invstatus-metric-cell {
     min-width: 80px;
     font-size: 0.75rem;
-    padding: 8px 4px;
+    /* padding: 8px 4px; */
   }
 
   .invstatus-row-dropdown,
@@ -1880,16 +1886,17 @@
   /* Keep readable width on very small screens */
   .invstatus-group-column,
   .invstatus-group-header {
-    min-width: 140px;
-    width: 140px;
-    max-width: 140px;
-    padding: 6px 8px;
+    min-width: 170px;
+    width: 170px;
+    max-width: 170px;
+    padding: var(--space-sm);
+    font-size: 0.75rem;
   }
 
   .invstatus-header-row th {
     min-width: 70px;
-    font-size: 0.65rem;
-    padding: 6px 3px;
+    font-size: 0.75rem;
+    padding: var(--space-sm);
   }
 
   .invstatus-metric-cell {

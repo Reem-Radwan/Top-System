@@ -1212,9 +1212,9 @@ const InvStatusPivot = ({ units }) => {
                       {key === 'percentage'
                         ? '%'
                         : key === 'noOfUnits'
-                        ? 'No. of Units'
+                        ? 'Units'
                         : key === 'salesValue'
-                        ? 'Sales Value'
+                        ? 'Total Sales'
                         : key}
                     </label>
                   ))}
