@@ -1,8 +1,9 @@
 
 export const companies = [
-  { id: 1, name: 'Prometheus Developments' },
-  { id: 2, name: 'City Edge Developments' },
-  { id: 3, name: 'Palm Hills Developments' }
+  { id: 1, name: 'Mint' },
+  { id: 2, name: 'Palmier Developments' },
+  { id: 3, name: 'IGI Developments' }
+
 ];
 
 export const projects = {
