@@ -260,21 +260,46 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
 
 
 
 /* Dashboard Tabs */
 .dashboard-tabs {
   display: flex;
-  gap: 0;
+  gap: 8px;
   background: var(--color-bg-secondary);
   border-bottom: 3px solid var(--color-border-light);
-  padding: 0;
+  padding: 16px 24px;
   overflow-x: auto;
   position: sticky;
   top: 0;
   z-index: 50;
   justify-content: center;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Dark Mode - Dashboard Tabs */
+[data-theme="dark"] .dashboard-tabs {
+  background: var(--color-bg-primary);
 }
 
 .dashboard-tabs::-webkit-scrollbar {
@@ -327,15 +352,34 @@
   box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
 } */
 
+/* ========================================
+   VIEW ANIMATIONS - Applied to all tab views
+   ======================================== */
+
 /* Home View */
 .home-view {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 /* Project Data View */
 .project-data-view {
   padding: var(--space-xl);
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Inv Status View */
+.inv-status-view {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Sales Progress View */
+.sales-progress-view {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Delivery Plan View */
+.delivery-plan-view {
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .pivot-section {
@@ -384,26 +428,6 @@
   font-size: 5rem;
   margin-bottom: var(--space-lg);
   animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .coming-soon-view h3 {
@@ -491,17 +515,6 @@
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 
 
 
@@ -574,11 +587,6 @@
   border-top-width: 6px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .loading-text {
   margin-top: 20px;
   font-size: 1.1rem;
@@ -630,21 +638,8 @@
   border-bottom: 1px solid var(--color-border-light);
 }
 
-/* Desktop Tabs - Hidden on Mobile */
-.dashboard-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 24px;
-  background: var(--color-bg-primary);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Dark Mode - Dashboard Tabs */
-[data-theme="dark"] .dashboard-tabs {
-  background: var(--color-bg-primary);
-}
+/* Desktop Tabs */
+/* Styles defined above in main dashboard-tabs section */
 
 /* Mobile Navigation Tabs - Hidden on Desktop */
 .mobile-tabs-container {
@@ -784,6 +779,13 @@
 }
 
 /* Responsive Design */
+@media (min-width: 769px) {
+  /* Ensure tabs are centered on all laptop/desktop screens */
+  .dashboard-tabs {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1024px) {
   .dashboard-page-header {
     padding: 20px;
@@ -960,4 +962,3 @@
     border: 1px solid var(--color-border);
   }
 }
-

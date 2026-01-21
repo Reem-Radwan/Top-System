@@ -59,7 +59,7 @@ html, body {
   background: var(--bg-secondary);
   min-height: calc(100vh - 20px);
   font-family: "Times New Roman", Times, serif;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 
 /* Top Bar with Toggle */

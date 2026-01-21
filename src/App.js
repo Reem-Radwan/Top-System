@@ -48,7 +48,7 @@ import ManageProjects from "./pages/ManageProjects/manageProjects";
 import InventoryDashboardPage from "./pages/InventoryDashboard/InventoryDashboard";
 
 import { ThemeProvider } from "./components/InventoryDashboard/Themecontext";
-import SalesPerformanceAnalysis from "./components/SalesAnalysis/SalesPerformanceAnalysis";
+import SalesPerformanceAnalysis from "./components/SalesPerformanceAnalysis/SalesPerformanceAnalysis";
 
 export default function App() {
   return (

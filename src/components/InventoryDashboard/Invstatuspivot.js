@@ -1,5 +1,5 @@
 // import React, { useState, useMemo, useEffect, useRef } from 'react';
-// import './invstatuspivot.css';
+// import './invstatuspivot.css'; // Changed CSS file name
 
 // const InvStatusPivot = ({ units }) => {
 //   // State for expand/collapse - Initialize all cities and projects as expanded
@@ -383,19 +383,19 @@
 //   const currentTheme = getCurrentStatusTheme();
 
 //   return (
-//     <div className={`pivot-table-container theme-${currentTheme}`}>
+//     <div className={`invstatus-unique-container invstatus-theme-${currentTheme}`}>
 //       {/* Status Tabs - Fixed for Mobile */}
-//       <div className="status-tabs-container">
-//         <div className="status-tabs-wrapper">
-//           <div className="status-tabs-scroller">
-//             <div className="category-toggle">
+//       <div className="invstatus-tabs-container">
+//         <div className="invstatus-tabs-wrapper">
+//           <div className="invstatus-tabs-scroller">
+//             <div className="invstatus-category-toggle">
 //               {statuses.map(status => (
 //                 <button
 //                   key={status.key}
-//                   className={`category-btn ${
+//                   className={`invstatus-category-btn ${
 //                     selectedStatuses.length === 1 &&
 //                     selectedStatuses[0] === status.key
-//                       ? 'active'
+//                       ? 'invstatus-active'
 //                       : ''
 //                   }`}
 //                   onClick={() => setSelectedStatuses([status.key])}
@@ -409,31 +409,31 @@
 //       </div>
 
 //       {/* Controls - Aligned to right */}
-//       <div className="pivot-controls right-aligned-controls">
-//         <div className="controls-group">
+//       <div className="invstatus-controls invstatus-right-aligned">
+//         <div className="invstatus-controls-group">
 //           {/* Expand / Collapse Buttons */}
 //           {isEverythingCollapsed ? (
-//             <button className="control-btn" onClick={collapseToProjectsOnly}>
+//             <button className="invstatus-control-btn" onClick={collapseToProjectsOnly}>
 //               ▼ Show Projects
 //             </button>
 //           ) : isDefaultState ? (
-//             <button className="control-btn" onClick={expandAll}>
+//             <button className="invstatus-control-btn" onClick={expandAll}>
 //               ▼ Expand All
 //             </button>
 //           ) : isEverythingExpanded ? (
-//             <button className="control-btn" onClick={collapseAll}>
+//             <button className="invstatus-control-btn" onClick={collapseAll}>
 //               ◀ Collapse All
 //             </button>
 //           ) : (
-//             <button className="control-btn" onClick={collapseAll}>
+//             <button className="invstatus-control-btn" onClick={collapseAll}>
 //               ◀ Collapse All
 //             </button>
 //           )}
 
 //           {/* Status multi-select */}
-//           <div className="status-multi-toggle" ref={statusDropdownRef}>
+//           <div className="invstatus-status-toggle" ref={statusDropdownRef}>
 //             <button
-//               className="control-btn"
+//               className="invstatus-control-btn"
 //               onClick={(e) => {
 //                 e.stopPropagation();
 //                 setShowStatusDropdown(prev => !prev);
@@ -444,15 +444,15 @@
 //               ⚙️ Status {showStatusDropdown ? '▲' : '▼'}
 //             </button>
 //             {showStatusDropdown && (
-//               <div className="column-dropdown">
-//                 <div className="dropdown-section">
+//               <div className="invstatus-column-dropdown">
+//                 <div className="invstatus-dropdown-section">
 //                   <h4>Statuses</h4>
 //                   {statuses.map(s => {
 //                     const checked = selectedStatuses.includes(s.key);
 //                     const disableUncheck =
 //                       checked && selectedStatuses.length <= 1;
 //                     return (
-//                       <label key={s.key}>
+//                       <label className="invstatus-dropdown-label" key={s.key}>
 //                         <input
 //                           type="checkbox"
 //                           checked={checked}
@@ -469,15 +469,15 @@
 //           </div>
 
 //           {/* Rows/Fields dropdown */}
-//           <div className="row-toggle" ref={rowDropdownRef}>
-//             <button className="control-btn" onClick={toggleRowDropdown}>
+//           <div className="invstatus-row-toggle" ref={rowDropdownRef}>
+//             <button className="invstatus-control-btn" onClick={toggleRowDropdown}>
 //               📋 Rows/Fields {showRowDropdown ? '▲' : '▼'}
 //             </button>
 //             {showRowDropdown && (
-//               <div className="row-dropdown">
-//                 <div className="dropdown-section">
+//               <div className="invstatus-row-dropdown">
+//                 <div className="invstatus-dropdown-section">
 //                   <h4>Hierarchy Levels</h4>
-//                   <label>
+//                   <label className="invstatus-dropdown-label">
 //                     <input
 //                       type="checkbox"
 //                       checked={visibleRows.cities}
@@ -485,7 +485,7 @@
 //                     />
 //                     📍 Cities
 //                   </label>
-//                   <label>
+//                   <label className="invstatus-dropdown-label">
 //                     <input
 //                       type="checkbox"
 //                       checked={visibleRows.projects}
@@ -494,7 +494,7 @@
 //                     />
 //                     📁 Projects
 //                   </label>
-//                   <label>
+//                   <label className="invstatus-dropdown-label">
 //                     <input
 //                       type="checkbox"
 //                       checked={visibleRows.unitTypes}
@@ -509,16 +509,16 @@
 //           </div>
 
 //           {/* Columns dropdown */}
-//           <div className="column-toggle" ref={columnDropdownRef}>
-//             <button className="control-btn" onClick={toggleColumnDropdown}>
+//           <div className="invstatus-column-toggle" ref={columnDropdownRef}>
+//             <button className="invstatus-control-btn" onClick={toggleColumnDropdown}>
 //               ⚙️ Columns {showColumnDropdown ? '▲' : '▼'}
 //             </button>
 //             {showColumnDropdown && (
-//               <div className="column-dropdown">
-//                 <div className="dropdown-section">
+//               <div className="invstatus-column-dropdown">
+//                 <div className="invstatus-dropdown-section">
 //                   <h4>Data Fields</h4>
 //                   {Object.keys(visibleColumns).map(key => (
-//                     <label key={key}>
+//                     <label className="invstatus-dropdown-label" key={key}>
 //                       <input
 //                         type="checkbox"
 //                         checked={visibleColumns[key]}
@@ -527,9 +527,9 @@
 //                       {key === 'percentage'
 //                         ? '%'
 //                         : key === 'noOfUnits'
-//                         ? 'No. of Units'
+//                         ? 'Units'
 //                         : key === 'salesValue'
-//                         ? 'Sales Value'
+//                         ? 'Total Sales'
 //                         : key}
 //                     </label>
 //                   ))}
@@ -541,12 +541,12 @@
 //       </div>
 
 //       {/* Pivot Table - Fixed lines and mobile */}
-//       <div className="pivot-table-scroll" ref={pivotScrollRef}>
-//         <div className="table-wrapper">
-//           <table className={`pivot-table ${selectedStatuses.length === 1 ? 'single-status-layout' : ''}`}>
+//       <div className="invstatus-table-scroll" ref={pivotScrollRef}>
+//         <div className="invstatus-table-wrapper">
+//           <table className={`invstatus-pivot-table ${selectedStatuses.length === 1 ? 'invstatus-single-layout' : ''}`}>
 //             <thead>
-//               <tr className="header-row">
-//                 <th className="group-header"></th>
+//               <tr className="invstatus-header-row">
+//                 <th className="invstatus-group-header"></th>
 //                 {selectedStatuses.map(statusKey => {
 //                   const status = statuses.find(s => s.key === statusKey);
 //                   const label = status ? status.label : statusKey;
@@ -561,7 +561,7 @@
 //                       <th 
 //                         key={statusKey} 
 //                         colSpan={columnCount}
-//                         className="status-group-header"
+//                         className="invstatus-status-group-header"
 //                       >
 //                         {label}
 //                       </th>
@@ -570,22 +570,22 @@
                   
 //                   return (
 //                     <React.Fragment key={statusKey}>
-//                       {visibleColumns.percentage && <th className="metric-header">%</th>}
-//                       {visibleColumns.noOfUnits && <th className="metric-header">UNITS</th>}
-//                       {visibleColumns.salesValue && <th className="metric-header">TOTAL SALES</th>}
+//                       {visibleColumns.percentage && <th className="invstatus-metric-header">%</th>}
+//                       {visibleColumns.noOfUnits && <th className="invstatus-metric-header">UNITS</th>}
+//                       {visibleColumns.salesValue && <th className="invstatus-metric-header">TOTAL SALES</th>}
 //                     </React.Fragment>
 //                   );
 //                 })}
 //               </tr>
               
 //               {selectedStatuses.length > 1 && (
-//                 <tr className="sub-header-row">
-//                   <th className="group-header"></th>
+//                 <tr className="invstatus-sub-header-row">
+//                   <th className="invstatus-group-header"></th>
 //                   {selectedStatuses.map(statusKey => (
 //                     <React.Fragment key={statusKey}>
-//                       {visibleColumns.percentage && <th className="metric-header">%</th>}
-//                       {visibleColumns.noOfUnits && <th className="metric-header">UNITS</th>}
-//                       {visibleColumns.salesValue && <th className="metric-header">TOTAL SALES</th>}
+//                       {visibleColumns.percentage && <th className="invstatus-metric-header">%</th>}
+//                       {visibleColumns.noOfUnits && <th className="invstatus-metric-header">UNITS</th>}
+//                       {visibleColumns.salesValue && <th className="invstatus-metric-header">TOTAL SALES</th>}
 //                     </React.Fragment>
 //                   ))}
 //                 </tr>
@@ -600,16 +600,54 @@
 
 //                   return (
 //                     <React.Fragment key={city.name}>
-//                       {renderRow(
-//                         0,
-//                         `📍 ${city.name}`,
-//                         city.statusData,
-//                         city.totalUnits,
-//                         cityHasExpandable,
-//                         isCityExpanded,
-//                         () => toggleCity(city.name),
-//                         0
-//                       )}
+//                       <tr className={`invstatus-data-row invstatus-level-0`}>
+//                         <td
+//                           className="invstatus-group-column"
+//                           style={{ paddingLeft: `${0 * 20 + 10}px` }}
+//                         >
+//                           {cityHasExpandable && (
+//                             <button
+//                               className="invstatus-expand-btn"
+//                               onClick={(e) => {
+//                                 e.stopPropagation();
+//                                 e.preventDefault();
+//                                 toggleCity(city.name);
+//                               }}
+//                             >
+//                               {isCityExpanded ? '▼' : '▶'}
+//                             </button>
+//                           )}
+//                           <span className="invstatus-level-0-label">📍 {city.name}</span>
+//                         </td>
+
+//                         {selectedStatuses.map((statusKey, index) => {
+//                           const data = city.statusData[statusKey] || { count: 0, value: 0 };
+//                           const percentage = calculatePercentage(data.count, city.totalUnits);
+                          
+//                           const isLastColumnInGroup = visibleColumns.salesValue;
+//                           const isLastStatusGroup = index === selectedStatuses.length - 1;
+
+//                           return (
+//                             <React.Fragment key={statusKey}>
+//                               {visibleColumns.percentage && (
+//                                 <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                   {percentage}
+//                                 </td>
+//                               )}
+//                               {visibleColumns.noOfUnits && (
+//                                 <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                   {formatNumber(data.count)}
+//                                 </td>
+//                               )}
+//                               {visibleColumns.salesValue && (
+//                                 <td className={`invstatus-metric-cell ${isLastStatusGroup ? 'invstatus-group-end' : 'invstatus-group-separator'}`}>
+//                                   {formatNumber(data.value)}
+//                                 </td>
+//                               )}
+//                             </React.Fragment>
+//                           );
+//                         })}
+//                       </tr>
 
 //                       {visibleRows.projects &&
 //                         isCityExpanded &&
@@ -620,16 +658,54 @@
 
 //                           return (
 //                             <React.Fragment key={projectKey}>
-//                               {renderRow(
-//                                 1,
-//                                 `📁 ${project.name}`,
-//                                 project.statusData,
-//                                 project.totalUnits,
-//                                 projectHasExpandable,
-//                                 isProjectExpanded,
-//                                 () => toggleProject(city.name, project.name),
-//                                 1
-//                               )}
+//                               <tr className={`invstatus-data-row invstatus-level-1`}>
+//                                 <td
+//                                   className="invstatus-group-column"
+//                                   style={{ paddingLeft: `${1 * 20 + 10}px` }}
+//                                 >
+//                                   {projectHasExpandable && (
+//                                     <button
+//                                       className="invstatus-expand-btn"
+//                                       onClick={(e) => {
+//                                         e.stopPropagation();
+//                                         e.preventDefault();
+//                                         toggleProject(city.name, project.name);
+//                                       }}
+//                                     >
+//                                       {isProjectExpanded ? '▼' : '▶'}
+//                                     </button>
+//                                   )}
+//                                   <span className="invstatus-level-1-label">📁 {project.name}</span>
+//                                 </td>
+
+//                                 {selectedStatuses.map((statusKey, index) => {
+//                                   const data = project.statusData[statusKey] || { count: 0, value: 0 };
+//                                   const percentage = calculatePercentage(data.count, project.totalUnits);
+                                  
+//                                   const isLastColumnInGroup = visibleColumns.salesValue;
+//                                   const isLastStatusGroup = index === selectedStatuses.length - 1;
+
+//                                   return (
+//                                     <React.Fragment key={statusKey}>
+//                                       {visibleColumns.percentage && (
+//                                         <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                           {percentage}
+//                                         </td>
+//                                       )}
+//                                       {visibleColumns.noOfUnits && (
+//                                         <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                           {formatNumber(data.count)}
+//                                         </td>
+//                                       )}
+//                                       {visibleColumns.salesValue && (
+//                                         <td className={`invstatus-metric-cell ${isLastStatusGroup ? 'invstatus-group-end' : 'invstatus-group-separator'}`}>
+//                                           {formatNumber(data.value)}
+//                                         </td>
+//                                       )}
+//                                     </React.Fragment>
+//                                   );
+//                                 })}
+//                               </tr>
 
 //                               {visibleRows.unitTypes &&
 //                                 isProjectExpanded &&
@@ -639,21 +715,42 @@
 
 //                                   return (
 //                                     <React.Fragment key={typeKey}>
-//                                       {renderRow(
-//                                         2,
-//                                         `🏠 ${unitType.name}`,
-//                                         unitType.statusData,
-//                                         unitType.totalUnits,
-//                                         false,
-//                                         isTypeExpanded,
-//                                         () =>
-//                                           toggleType(
-//                                             city.name,
-//                                             project.name,
-//                                             unitType.name
-//                                           ),
-//                                         2
-//                                       )}
+//                                       <tr className={`invstatus-data-row invstatus-level-2`}>
+//                                         <td
+//                                           className="invstatus-group-column"
+//                                           style={{ paddingLeft: `${2 * 20 + 10}px` }}
+//                                         >
+//                                           <span className="invstatus-level-2-label">🏠 {unitType.name}</span>
+//                                         </td>
+
+//                                         {selectedStatuses.map((statusKey, index) => {
+//                                           const data = unitType.statusData[statusKey] || { count: 0, value: 0 };
+//                                           const percentage = calculatePercentage(data.count, unitType.totalUnits);
+                                          
+//                                           const isLastColumnInGroup = visibleColumns.salesValue;
+//                                           const isLastStatusGroup = index === selectedStatuses.length - 1;
+
+//                                           return (
+//                                             <React.Fragment key={statusKey}>
+//                                               {visibleColumns.percentage && (
+//                                                 <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                                   {percentage}
+//                                                 </td>
+//                                               )}
+//                                               {visibleColumns.noOfUnits && (
+//                                                 <td className={`invstatus-metric-cell ${isLastStatusGroup && !isLastColumnInGroup ? 'invstatus-group-separator' : ''}`}>
+//                                                   {formatNumber(data.count)}
+//                                                 </td>
+//                                               )}
+//                                               {visibleColumns.salesValue && (
+//                                                 <td className={`invstatus-metric-cell ${isLastStatusGroup ? 'invstatus-group-end' : 'invstatus-group-separator'}`}>
+//                                                   {formatNumber(data.value)}
+//                                                 </td>
+//                                               )}
+//                                             </React.Fragment>
+//                                           );
+//                                         })}
+//                                       </tr>
 //                                     </React.Fragment>
 //                                   );
 //                                 })}
@@ -672,10 +769,6 @@
 // };
 
 // export default InvStatusPivot;
-
-
-
-
 
 
 
@@ -837,10 +930,11 @@ const InvStatusPivot = ({ units }) => {
   }, [pivotData]);
 
   const formatNumber = (num) =>
-    num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    num === 0 ? '-' : num.toLocaleString('en-US', { maximumFractionDigits: 0 });
 
   const calculatePercentage = (count, total) => {
-    return total === 0 ? '0%' : `${((count / total) * 100).toFixed(2)}%`;
+    if (total === 0 || count === 0) return '-';
+    return `${((count / total) * 100).toFixed(2)}%`;
   };
 
   // Expand/collapse

@@ -42,7 +42,7 @@ export default function TopHeader({
         { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }
       ] },
       { label: "Inventory", items: [{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure" }] },
-      { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performavce Analysis", to: "/sales-analysis" } ,
+      { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } ,
          { label: "Sales Team Report", to: "/sales-team-report" }] },
       { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } ,{ label: "Market Explorer", to: "/market-explorer" }] },
       { label: "Pricing", items: [{ label: "Pricing Model", to: "/pricing-model" }] },

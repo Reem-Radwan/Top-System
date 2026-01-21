@@ -105,7 +105,7 @@
 .units-table th {
   background: var(--color-bg-tertiary);
   padding: var(--space-md);
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: var(--color-text-secondary);
   text-transform: uppercase;
@@ -132,6 +132,7 @@
   position: sticky;
   left: 0;
   z-index: 2;
+  text-align: center;
 }
 
 .units-table tbody tr:hover td:first-child {
@@ -161,40 +162,70 @@
   white-space: nowrap;
   background: var(--color-surface);
   position: relative;
+  text-align: center;
 }
 
-.units-table tfoot {
-  /* position: sticky; */
-  bottom: 0;
-  /* background: var(--color-primary); */
-  color: white;
-  font-weight: 600;
-  z-index: 10;
+.footing{
+  width: 1205px;
+  background-color: #FF8C5A;
+  text-align: center;
+}
+
+.spanfoot{
+  /* background-color:#EDF2F7 ; */
   width: 100%;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 10px;
+  font-size: 15px;
+}
+.footers-value{
+  color: black;
+  padding-left: 40px;
+}
+.units-table tfoot {
+  /* background: #EDF2F7; */
+  font-weight: 600;
+  width: 100%;
+}
+
+/* Make footer sticky only when scrolling */
+.table-scroll:not(.at-top) .units-table tfoot {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .units-table tfoot td {
   padding: var(--space-md);
-  /* border-top: 2px solid var(--color-primary-dark); */
-  /* background: var(--color-primary); */
-  color: white;
+  border-top: 2px solid var(--color-border);
+  background: #EDF2F7 !important;
+}
+
+/* Keep first column sticky in footer for horizontal scroll */
+.units-table tfoot td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 11;
+  background: #EDF2F7 !important;
 }
 
 .units-table tfoot .footer-label {
-  text-align: center;
-  padding-right: var(--space-xl);
+  text-align: right;
   font-weight: 700;
   font-size: 1rem;
-  width: 100%;
+  color: var(--color-text-primary);
+  padding-left: 15px
 }
 
 .units-table tfoot .footer-value {
-  font-weight: 700;
-  font-size: 1rem;
-  text-align: left;
-  /* background-color: #EDF2F7!important; */
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
   color: #FF6B35;
-  margin-left: 20px;
+  background: #EDF2F7;
+  padding-left: 30px;
 }
 
 @media (max-width: 768px) {
@@ -218,12 +249,9 @@
   .units-table thead th:first-child,
   .units-table tbody td:first-child,
   .units-table tfoot td:first-child {
-    /* position: -webkit-sticky; */
     position: sticky;
     left: -13px;
     z-index: 2;
-  
-   
   }
   
   /* Header first column - highest priority */
@@ -249,44 +277,44 @@
     background: rgb(249, 171, 143);
   }
   
-  /* Footer first column - ensure it's sticky horizontally */
-  .units-table tfoot td:first-child {
-    /* position: -webkit-sticky; */
-    position: sticky;
-    left: 0;
-    /* background: var(--color-primary); */
-    z-index: 12;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    min-width: 70px;
-    max-width: 70px;
+  /* Ensure tfoot is NOT sticky initially on mobile */
+  .units-table tfoot {
+    position: relative;
+    background: #EDF2F7;
   }
   
-  /* Ensure tfoot is sticky at bottom */
-  .units-table tfoot {
-    /* position: -webkit-sticky; */
+  /* Make footer sticky only when scrolling on mobile */
+  .table-scroll:not(.at-top) .units-table tfoot {
     position: sticky;
     bottom: 0;
     z-index: 11;
     background: #EDF2F7;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
   }
   
   /* Add background to all footer cells to prevent content bleeding */
   .units-table tfoot td {
-    /* background: var(--color-primary); */
-    color: white;
-    padding: 8px 2px;
-    font-size: 0.65rem;
+    color: var(--color-text-primary);
+    padding: 8px 4px;
+    font-size: 0.7rem;
     background-color: #EDF2F7 !important;
   }
   
+  /* Footer first column - ensure it's sticky horizontally */
+  .units-table tfoot td:first-child {
+    position: sticky;
+    left: 0;
+    background: #EDF2F7 !important;
+    z-index: 12;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
   .units-table tfoot .footer-label {
-    font-size: 0.65rem;
-    padding-right: 2px;
+    font-size: 0.7rem;
+    padding-right: 8px;
     white-space: nowrap;
     text-align: right;
-    overflow: visible;
     font-weight: 600;
-    width: 100%;
   }
   
   .units-table tfoot .footer-value {
@@ -295,7 +323,6 @@
     font-weight: 700;
     padding-left: 4px;
     padding-right: 4px;
-    min-width: 100px;
   }
   
   .units-table th,
@@ -335,6 +362,14 @@
   .units-table th,
   .units-table td {
     padding: 0.375rem 0.5rem;
+  }
+  
+  .units-table tfoot .footer-label {
+    font-size: 0.65rem;
+  }
+  
+  .units-table tfoot .footer-value {
+    font-size: 0.65rem;
   }
 }
 
@@ -406,4 +441,85 @@
 
 .fade-in {
   animation: fadeIn 0.5s ease-out;
+}
+
+
+/* ========================================
+   FOOTER STYLING - UPDATED
+   ======================================== */
+
+.units-table tfoot {
+  background: #EDF2F7;
+  font-weight: 600;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.units-table tfoot td {
+  padding: var(--space-md);
+  border-top: 2px solid var(--color-border);
+  background: #EDF2F7 !important;
+}
+
+/* Keep first column sticky in footer for horizontal scroll */
+.units-table tfoot td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 11;
+  background: #EDF2F7 !important;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  text-align: center;
+  padding-left: var(--space-md);
+}
+
+.units-table tfoot .footer-label {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.units-table tfoot .footer-value {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #FF6B35;
+  background: #EDF2F7 !important;
+  text-align: center;
+  /* padding-right: 200px; */
+}
+
+/* Mobile responsive footer */
+@media (max-width: 768px) {
+  .units-table tfoot td:first-child {
+    position: sticky;
+    left: -13px;
+    z-index: 12;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    font-size: 0.7rem;
+    padding: 8px 4px;
+  }
+  
+  .units-table tfoot .footer-label {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  
+  .units-table tfoot .footer-value {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 640px) {
+  .units-table tfoot .footer-label {
+    font-size: 0.65rem;
+  }
+  
+  .units-table tfoot .footer-value {
+    font-size: 0.65rem;
+  }
 }

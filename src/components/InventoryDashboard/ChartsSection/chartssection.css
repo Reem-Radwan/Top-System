@@ -196,7 +196,7 @@
 }
 
 .chart-controls-wrapper .date-range-controls.compact .btn-sm {
-  padding: var(--space-xs) var(--space-md);
+  padding: 5px 8.2px;
   font-size: 0.8rem;
 }
 
