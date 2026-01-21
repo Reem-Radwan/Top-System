@@ -29,7 +29,6 @@ body {
   width: 100% !important;
    margin-left: auto !important;
   margin-right: auto !important;
-  /* background-color: blue; */
 }
 
 /* ========================================
@@ -72,6 +71,7 @@ body {
   border-bottom: 1px solid var(--color-border);
 }
 
+/* ✅ FIXED: Tabs scroll properly on mobile */
 .dashboard-tabs {
   display: flex;
   gap: 8px;
@@ -79,10 +79,25 @@ body {
   border-bottom: 3px solid var(--color-border-light);
   padding: 16px 24px;
   overflow-x: auto;
-  justify-content: center;
+  overflow-y: hidden;
+  justify-content: flex-start; /* Changed from center to flex-start for mobile scroll */
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
   max-width: 1400px;
   margin: 0 auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.dashboard-tabs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+
+/* Center tabs on desktop */
+@media (min-width: 769px) {
+  .dashboard-tabs {
+    justify-content: center;
+  }
 }
 
 /* ========================================
@@ -480,6 +495,7 @@ body {
   align-items: center;
   gap: 8px;
   user-select: none;
+  flex-shrink: 0; /* ✅ Prevent tabs from shrinking on mobile */
 }
 
 .dashboard-tab:hover:not(.active) {
@@ -811,7 +827,7 @@ body {
 .dashboard-controls {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-lg);
+  gap: var(--space-md); /* ✅ Reduced gap for better layout */
   flex-wrap: wrap;
 }
 
@@ -819,6 +835,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
+  flex: 1; /* ✅ Allow to grow on desktop */
+  min-width: 200px;
 }
 
 .company-selector-label {
@@ -829,7 +847,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Theme toggle */
+/* ✅ FIXED: Theme toggle next to company selector */
 .theme-toggle {
   position: relative;
   width: 60px;
@@ -843,7 +861,8 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  margin-bottom: 3px;
+  margin-bottom: 0; /* ✅ Removed bottom margin */
+  align-self: flex-end; /* ✅ Align to bottom with company selector */
 }
 
 .theme-toggle:hover {
@@ -884,7 +903,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   appearance: none;
-  min-width: 200px;
+  width: 100%; /* ✅ Full width of wrapper */
   height: 40px;
 }
 
@@ -909,19 +928,45 @@ body {
   font-size: 0.75rem;
 }
 
+/* ✅ Mobile responsive for controls */
 @media (max-width: 768px) {
   .dashboard-controls {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row; /* ✅ Keep row on mobile */
+    align-items: flex-end;
+    gap: var(--space-sm);
+  }
+  
+  .company-selector-wrapper {
+    flex: 1;
+    min-width: 0;
   }
   
   .company-selector select {
-    min-width: 100%;
+    width: 100%;
   }
   
   .theme-toggle {
-    align-self: center;
+    flex-shrink: 0;
   }
 }
 
-
+@media (max-width: 480px) {
+  .dashboard-controls {
+    gap: var(--space-xs);
+  }
+  
+  .theme-toggle {
+    width: 50px;
+    height: 28px;
+  }
+  
+  .theme-toggle-slider {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+  
+  [data-theme="dark"] .theme-toggle-slider {
+    transform: translateX(22px);
+  }
+}
