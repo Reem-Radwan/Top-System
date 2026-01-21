@@ -1,7 +1,9 @@
 /* Sales Progress Container */
 .delivery-plan-container {
   width: 100%;
-  /* background: var(--color-bg-primary); */
+  max-width: none;
+  margin: 0;
+  background: var(--color-bg-primary);
   padding: var(--space-lg);
 }
 

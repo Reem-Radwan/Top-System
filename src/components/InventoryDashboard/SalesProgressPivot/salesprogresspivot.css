@@ -1,6 +1,8 @@
 /* Sales Progress Container */
 .sales-progress-container {
   width: 100%;
+  max-width: none;
+  margin: 0;
   background: var(--color-bg-primary);
   padding: var(--space-lg);
 }

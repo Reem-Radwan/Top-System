@@ -10,6 +10,11 @@
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   animation: fadeIn 0.6s ease-out;
+   max-width: 1400px !important;
+  width: 100% !important;
+   margin-left: auto !important;
+  margin-right: auto !important;
+  background-color: blue;
 }
 
 .filters-header {
@@ -31,7 +36,7 @@
 }
 
 .filters-header h3::before {
-  content: '🔍';
+  content: "🔍";
   font-size: 1.5rem;
 }
 
@@ -63,9 +68,9 @@
   .filter-grid {
     gap: var(--space-sm);
   }
-  
+
   .filter-card {
-    width: 195px;
+    width: 220px;
   }
 }
 
@@ -86,7 +91,7 @@
     gap: var(--space-md);
     justify-content: center;
   }
-  
+
   .filter-card {
     width: calc(50% - var(--space-sm));
     min-width: 160px;
@@ -98,17 +103,17 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-card {
     width: 100%;
   }
-  
+
   .filters-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
   }
-  
+
   .filter-actions {
     width: 100%;
     justify-content: space-between;
@@ -328,7 +333,11 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
   color: white;
   box-shadow: var(--shadow-sm);
 }
@@ -377,7 +386,7 @@
     flex: 1;
     padding: var(--space-sm);
   }
-  
+
   .btn-sm {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;

@@ -81,7 +81,7 @@ export default function InventoryDashboardPage() {
 
 
   return (
-    <div className="App">
+    <div >
       <div className="dashboard-container">
         <header className="dashboard-header">
           <h1>{getPageTitle()}</h1>
@@ -90,8 +90,6 @@ export default function InventoryDashboardPage() {
           <div className="dashboard-controls">
             <div className="company-selector-wrapper">
               <label className="company-selector-label">Select Company</label>
-
-
               <div className="company-selector">
                 <select
                   value={selectedCompanyId || ""}
