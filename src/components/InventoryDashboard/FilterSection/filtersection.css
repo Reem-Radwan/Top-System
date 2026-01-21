@@ -14,7 +14,8 @@
   width: 100% !important;
    margin-left: auto !important;
   margin-right: auto !important;
-  background-color: blue;
+  /* background-color: blue; */
+  /* margin-top: 40px; */
 }
 
 .filters-header {

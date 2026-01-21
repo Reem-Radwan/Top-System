@@ -67,8 +67,10 @@ body {
   top: 0;
   z-index: 100;
   background: var(--color-bg-primary);
+  /* background: var(--color-bg-secondary); */
   box-shadow: var(--shadow-sm);
   border-bottom: 1px solid var(--color-border);
+  /* margin-top: 10px; */
 }
 
 /* ✅ FIXED: Tabs scroll properly on mobile */
@@ -861,8 +863,9 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  margin-bottom: 0; /* ✅ Removed bottom margin */
+  margin-bottom: 5px; /* ✅ Removed bottom margin */
   align-self: flex-end; /* ✅ Align to bottom with company selector */
+  /* margin-top:  */
 }
 
 .theme-toggle:hover {

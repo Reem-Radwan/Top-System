@@ -8,6 +8,7 @@
   gap: var(--space-lg);
   margin-bottom: var(--space-xl);
   animation: fadeIn 0.7s ease-out;
+  /* margin-top: 40px; */
 }
 
 @media (max-width: 640px) {
@@ -50,12 +51,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--space-lg);
+  /* margin-bottom: var(--space-lg); */
 }
 
 .kpi-icon {
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   border-radius: var(--radius-lg);
   display: flex;
@@ -66,9 +67,9 @@
 }
 
 .kpi-title {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-text-tertiary);
+  color: black;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: var(--space-xs);
@@ -87,7 +88,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
   padding-top: var(--space-md);
-  border-top: 1px solid var(--color-border-light);
+  /* border-top: 1px solid var(--color-border-light); */
 }
 
 .kpi-metric {

@@ -39,24 +39,35 @@ const KPISection = ({ units }) => {
         <div className="kpi-header">
           <div>
             <div className="kpi-title">Total Inventory</div>
-            <div className="kpi-value">{formatNumber(totalUnits)}</div>
+            {/* <div className="kpi-value">{formatNumber(totalUnits)}</div> */}
           </div>
           <div className="kpi-icon">🏢</div>
         </div>
+
         <div className="kpi-metrics">
+
+          <div className="kpi-metric">
+            <div className="kpi-metric-label">Total Units</div>
+            <div className="kpi-metric-value">{formatNumber(totalUnits)}</div> 
+          </div>
+
           <div className="kpi-metric">
             <div className="kpi-metric-label">Total Sales Value</div>
             <div className="kpi-metric-value">{formatNumber(totalValue)}</div>
           </div>
+
           <div className="kpi-metric">
             <div className="kpi-metric-label">Avg. Sales Value</div>
             <div className="kpi-metric-value">{formatNumber(avgTotalPrice)}</div>
           </div>
+
           <div className="kpi-metric">
             <div className="kpi-metric-label">Avg. PSM</div>
             <div className="kpi-metric-value">{formatNumber(avgTotalPSM)}</div>
           </div>
-        </div>
+
+        </div> 
+
       </div>
 
       {/* Sold Units Card */}
@@ -64,11 +75,17 @@ const KPISection = ({ units }) => {
         <div className="kpi-header">
           <div>
             <div className="kpi-title">Sold Units</div>
-            <div className="kpi-value">{formatNumber(soldCount)}</div>
+            {/* <div className="kpi-value">{formatNumber(soldCount)}</div> */}
           </div>
           <div className="kpi-icon">✅</div>
         </div>
         <div className="kpi-metrics">
+
+          <div className="kpi-metric">
+            <div className="kpi-metric-label">Total Units</div>
+            <div className="kpi-metric-value">{formatNumber(soldCount)}</div>
+          </div>
+
           <div className="kpi-metric">
             <div className="kpi-metric-label">Total Sales Value</div>
             <div className="kpi-metric-value">{formatNumber(soldValue)}</div>
@@ -89,11 +106,17 @@ const KPISection = ({ units }) => {
         <div className="kpi-header">
           <div>
             <div className="kpi-title">Unsold Units</div>
-            <div className="kpi-value">{formatNumber(unsoldCount)}</div>
+            {/* <div className="kpi-value">{formatNumber(unsoldCount)}</div> */}
           </div>
           <div className="kpi-icon">📦</div>
         </div>
         <div className="kpi-metrics">
+
+          <div className="kpi-metric">
+            <div className="kpi-metric-label">Total Units</div>
+            <div className="kpi-metric-value">{formatNumber(unsoldCount)}</div>
+          </div>
+
           <div className="kpi-metric">
             <div className="kpi-metric-label">Total Sales Value</div>
             <div className="kpi-metric-value">{formatNumber(unsoldValue)}</div>

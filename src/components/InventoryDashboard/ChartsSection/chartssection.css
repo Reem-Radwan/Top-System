@@ -8,6 +8,7 @@
   gap: var(--space-lg);
   margin-bottom: var(--space-xl);
   animation: fadeIn 0.8s ease-out;
+  /* margin-top: 40px; */
 }
 
 @media (max-width: 640px) {
@@ -36,7 +37,7 @@
 .chart-card {
   background: var(--color-surface);
   border-radius: var(--radius-xl);
-  padding: var(--space-xl);
+  /* padding: var(--space-xl); */
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   transition: all var(--transition-base);
