@@ -199,7 +199,7 @@ function ConfigModal({ open, company, onClose, onDone }) {
             Cancel
           </button>
 
-          <button className="btn btn-primary mu-save" type="button" onClick={handleDoneClick}>
+          <button className="btn btn-primary muu-save" type="button" onClick={handleDoneClick}>
             Done
           </button>
         </div>
@@ -331,7 +331,7 @@ function MobileEditModal({
                   marginTop: 16,
                 }}
               >
-              <button type="button" className="btn btn-primary mu-save" onClick={() => requireValidThen(onSave)}>
+              <button type="button" className="btn btn-primary muu-savee" onClick={() => requireValidThen(onSave)}>
                 Save
               </button>
 

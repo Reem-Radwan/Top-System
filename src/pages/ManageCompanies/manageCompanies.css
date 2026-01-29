@@ -55,7 +55,7 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: auto; /* fit content more naturally */
-  background: #fff;
+  background: #f8f6f6;
 }
 
 /* Cells */
@@ -164,6 +164,7 @@
   gap: 8px;
   flex-wrap: nowrap;
   white-space: nowrap;
+  /* background-color: #f59e0b; */
 }
 
 .manage-companies .mc-actions .btn{
@@ -172,10 +173,12 @@
 
 /* Sync button + spinner */
 .manage-companies .lux-btn.sync{
-  background: #f59e0b;
+  background: #f59e0b !important;
   border-color: #f59e0b;
-  color: #111;
+  color: #fff;
 }
+
+
 .manage-companies .lux-btn.sync:hover{
   background: #d97706;
   border-color: #d97706;
@@ -186,6 +189,8 @@
   color: #111;
   opacity: 0.9;
 }
+
+
 
 .manage-companies .mc-spinner{
   width: 14px;
@@ -280,6 +285,7 @@
   }
 }
 
+
 .manage-companies .mc-mini-box{
   border: 1px solid rgba(0,0,0,0.10);
   border-radius: 12px;
@@ -359,6 +365,8 @@
   cursor: pointer;
 }
 
+
+
 .mc-logo-edit-badge{
   position: absolute;
   right: -6px;
@@ -411,7 +419,7 @@
     flex: 0 0 auto;             /* fixed footer */
     position: sticky;           /* stays visible when body scrolls */
     bottom: 0;
-    background: #fff;
+    background: #ffffff;
     z-index: 5;
   }
 }
@@ -434,4 +442,27 @@
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+
+
+
+
+.manage-companies .warn{
+  background: #9e6504 !important;
+  border-color: #f59e0b;
+  color: #fff;
+}
+
+
+
+.manage-companies .danger{
+  background: #f81d1d !important;
+  border-color: #f59e0b;
+  color: #fff;
+}
+
+
+.manage-companies .ux-btn .muu-savee {
+  background: var(--orange-primary, #f57c00) !important;
+  border-color: var(--orange-primary, #f57c00);
 }

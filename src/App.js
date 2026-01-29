@@ -49,6 +49,7 @@ import InventoryDashboardPage from "./pages/InventoryDashboard/InventoryDashboar
 
 import { ThemeProvider } from "./components/InventoryDashboard/Themecontext";
 import SalesPerformanceAnalysis from "./components/SalesPerformanceAnalysis/SalesPerformanceAnalysis";
+import UnitsAnalysis from "./pages/UnitsAnalysis/unitsAnalysis";
 
 export default function App() {
   return (
@@ -71,6 +72,7 @@ export default function App() {
           {/* Optional: also allow a dedicated URL for it */}
           <Route path="/inventory-report" element={<InventoryDashboardPage />} />
           <Route path="/sales-analysis" element={<SalesPerformanceAnalysis />} />
+          <Route path="/units-analysis" element={<UnitsAnalysis />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

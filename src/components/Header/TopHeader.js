@@ -44,7 +44,7 @@ export default function TopHeader({
       { label: "Inventory", items: [{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure" }] },
       { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } ,
          { label: "Sales Team Report", to: "/sales-team-report" }] },
-      { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } ,{ label: "Market Explorer", to: "/market-explorer" }] },
+      { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } ,{ label: "Market Explorer", to: "/units-analysis" }] },
       { label: "Pricing", items: [{ label: "Pricing Model", to: "/pricing-model" }] },
       { label: "Users & Companies", items: [{ label: "Manage Users", to: "/manage-users" },{ label: "Manage Companies", to: "/manage-companies" }, { label: "Attendance Sheet", to: "/attendance-sheet" } ,{ label: "Goole Sheets", to: "/google-sheets" }
       ] },

@@ -253,7 +253,7 @@ function UserDetailsModal({
             Cancel
           </button>
           <button
-            className="btn btn-primary mu-save"
+            className="btn btn-primary muu-save"
             type="button"
             onClick={onSaveClick}
           >
