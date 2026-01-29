@@ -314,7 +314,7 @@ function UnitAnalysis() {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="spinner"></div>
+        {/* <div className="spinner"></div> */}
       </div>
     );
   }
