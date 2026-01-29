@@ -392,35 +392,12 @@
 
 
 
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
 const Chart = ({ title, data, filterInfo, valueFormatter, selectedFilters }) => {
   const containerScrollRef = useRef(null);
-  const tableRef = useRef(null);
-  const chartRef = useRef(null);
-
-  // Synchronized scrolling - one scrollbar controls both
-  useEffect(() => {
-    const containerScroll = containerScrollRef.current;
-    const table = tableRef.current;
-    const chart = chartRef.current;
-
-    if (!containerScroll || !table || !chart) return;
-
-    const syncScroll = () => {
-      const scrollLeft = containerScroll.scrollLeft;
-      if (table) table.scrollLeft = scrollLeft;
-      if (chart) chart.scrollLeft = scrollLeft;
-    };
-
-    containerScroll.addEventListener('scroll', syncScroll);
-
-    return () => {
-      containerScroll.removeEventListener('scroll', syncScroll);
-    };
-  }, []);
 
   const { finishingSpans, flattenedColumns, maxValue } = useMemo(() => {
     const safeData = Array.isArray(data) ? data : [];
@@ -546,63 +523,63 @@ const Chart = ({ title, data, filterInfo, valueFormatter, selectedFilters }) => 
         <div className="chart-scroll-container" ref={containerScrollRef}>
           <div className="chart-scroll-content" style={{ width: `${totalWidth}px`, minWidth: `${totalWidth}px` }}>
             
-            <div className="chart-table-wrapper-inner" ref={tableRef}>
-              <div style={{ width: `${totalWidth}px`, minWidth: `${totalWidth}px` }}>
-                <table className="chart-x-axis-table">
-                  <colgroup>
-                    <col style={{ width: '120px', minWidth: '120px', maxWidth: '120px' }} />
-                    {flattenedColumns.map((_, idx) => (
-                      <col key={`col-${idx}`} style={{ width: `${COLUMN_WIDTH}px`, minWidth: `${COLUMN_WIDTH}px`, maxWidth: `${COLUMN_WIDTH}px` }} />
+            {/* TABLE SECTION */}
+            <div className="chart-table-wrapper-inner">
+              <table className="chart-x-axis-table" style={{ width: `${totalWidth}px`, minWidth: `${totalWidth}px` }}>
+                <colgroup>
+                  <col style={{ width: '120px', minWidth: '120px', maxWidth: '120px' }} />
+                  {flattenedColumns.map((_, idx) => (
+                    <col key={`col-${idx}`} style={{ width: `${COLUMN_WIDTH}px`, minWidth: `${COLUMN_WIDTH}px`, maxWidth: `${COLUMN_WIDTH}px` }} />
+                  ))}
+                </colgroup>
+                <thead>
+                  <tr className="hierarchy-level-1">
+                    <th className="fixed-label-column">Finishing</th>
+                    {finishingSpans.map((finishing, idx) => (
+                      <th key={`finishing-${idx}`} colSpan={finishing.span}>
+                        {finishing.label}
+                      </th>
                     ))}
-                  </colgroup>
-                  <thead>
-                    <tr className="hierarchy-level-1">
-                      <th className="fixed-label-column">Finishing</th>
-                      {finishingSpans.map((finishing, idx) => (
-                        <th key={`finishing-${idx}`} colSpan={finishing.span}>
-                          {finishing.label}
-                        </th>
-                      ))}
-                    </tr>
+                  </tr>
 
-                    <tr className="hierarchy-level-2">
-                      <th className="fixed-label-column">Developer</th>
-                      {finishingSpans.map((finishing, fIdx) =>
-                        finishing.developers.map((developer, dIdx) => (
-                          <th key={`dev-${fIdx}-${dIdx}`} colSpan={developer.span}>
-                            {developer.label}
+                  <tr className="hierarchy-level-2">
+                    <th className="fixed-label-column">Developer</th>
+                    {finishingSpans.map((finishing, fIdx) =>
+                      finishing.developers.map((developer, dIdx) => (
+                        <th key={`dev-${fIdx}-${dIdx}`} colSpan={developer.span}>
+                          {developer.label}
+                        </th>
+                      ))
+                    )}
+                  </tr>
+
+                  <tr className="hierarchy-level-3">
+                    <th className="fixed-label-column">Project</th>
+                    {finishingSpans.map((finishing, fIdx) =>
+                      finishing.developers.map((developer, dIdx) =>
+                        developer.projects.map((project, pIdx) => (
+                          <th key={`proj-${fIdx}-${dIdx}-${pIdx}`} colSpan={project.span}>
+                            {project.label}
                           </th>
                         ))
-                      )}
-                    </tr>
+                      )
+                    )}
+                  </tr>
 
-                    <tr className="hierarchy-level-3">
-                      <th className="fixed-label-column">Project</th>
-                      {finishingSpans.map((finishing, fIdx) =>
-                        finishing.developers.map((developer, dIdx) =>
-                          developer.projects.map((project, pIdx) => (
-                            <th key={`proj-${fIdx}-${dIdx}-${pIdx}`} colSpan={project.span}>
-                              {project.label}
-                            </th>
-                          ))
-                        )
-                      )}
-                    </tr>
-
-                    <tr className="hierarchy-level-4">
-                      <th className="fixed-label-column">Payment</th>
-                      {flattenedColumns.map((col, idx) => (
-                        <th key={`payment-${idx}`}>
-                          {col.payment}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                </table>
-              </div>
+                  <tr className="hierarchy-level-4">
+                    <th className="fixed-label-column">Payment</th>
+                    {flattenedColumns.map((col, idx) => (
+                      <th key={`payment-${idx}`}>
+                        {col.payment}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+              </table>
             </div>
 
-            <div className="chart-visualization-wrapper-inner" ref={chartRef}>
+            {/* CHART VISUALIZATION SECTION */}
+            <div className="chart-visualization-wrapper-inner">
               <div className="chart-visualization" style={{ width: `${totalWidth}px`, minWidth: `${totalWidth}px` }}>
                 
                 <div className="chart-grid-lines" style={{ position: 'absolute', top: '40px', left: '120px', right: 0, bottom: '40px' }}>
@@ -612,7 +589,8 @@ const Chart = ({ title, data, filterInfo, valueFormatter, selectedFilters }) => 
                 </div>
 
                 <div style={{ display: 'flex', width: '100%', paddingTop: '40px', paddingBottom: '40px' }}>
-                  <div style={{ width: '120px', minWidth: '120px', maxWidth: '120px', flexShrink: 0 }}></div>
+                  {/* STICKY PLACEHOLDER COLUMN - stays fixed while scrolling */}
+                  <div className="chart-sticky-placeholder"></div>
                   
                   {flattenedColumns.map((item, index) => {
                     const yMax = yFromValue(item.max);
@@ -642,28 +620,68 @@ const Chart = ({ title, data, filterInfo, valueFormatter, selectedFilters }) => 
                           flexShrink: 0,
                           position: 'relative'
                         }}
+                        onMouseEnter={(e) => {
+                          const tooltip = e.currentTarget.querySelector('.chart-tooltip');
+                          if (tooltip) {
+                            // Find any visible rectangle to get the actual position
+                            const rectangle = e.currentTarget.querySelector('.chart-rectangle');
+                            if (!rectangle) return;
+                            
+                            const rect = rectangle.getBoundingClientRect();
+                            const tooltipWidth = 320;
+                            const tooltipHeight = 280;
+                            const rightGap = 10; // Gap when tooltip is on the right
+                            // const leftGap = 2;   // Very small gap when tooltip is on the left (almost touching)
+                            
+                            // Calculate vertical position (centered on rectangles area)
+                            const chartStack = e.currentTarget.querySelector('.chart-stack');
+                            const stackRect = chartStack.getBoundingClientRect();
+                            let top = stackRect.top + stackRect.height / 2;
+                            
+                            // Check if tooltip goes off bottom edge
+                            if (top + tooltipHeight / 2 > window.innerHeight) {
+                              top = window.innerHeight - tooltipHeight / 2 - 20;
+                            }
+                            
+                            // Check if tooltip goes off top edge
+                            if (top - tooltipHeight / 2 < 0) {
+                              top = tooltipHeight / 2 + 20;
+                            }
+                            
+                            // Position based on the RIGHTMOST edge of the rectangles
+                            let left = rect.right + rightGap;
+                            
+                            // Check if tooltip goes off right edge of screen
+                            if (left + tooltipWidth > window.innerWidth) {
+                              // Position on the left side of rectangles with very small gap
+                              left = rect.left - 180;
+                            }
+                            
+                            tooltip.style.left = `${left}px`;
+                            tooltip.style.top = `${top}px`;
+                            tooltip.style.transform = 'translateY(-50%)';
+                          }
+                        }}
                       >
-                        <div className="chart-stack-wrapper">
-                          <div className="chart-stack" style={{ height: `${STACK_HEIGHT}px`, position: 'relative' }}>
-                            <div
-                              className="value-connector"
-                              style={{ top: `${topCenter}px`, height: `${Math.max(0, bottomCenter - topCenter)}px` }}
-                            />
+                        <div className="chart-stack" style={{ height: `${STACK_HEIGHT}px`, position: 'relative' }}>
+                          <div
+                            className="value-connector"
+                            style={{ top: `${topCenter}px`, height: `${Math.max(0, bottomCenter - topCenter)}px` }}
+                          />
 
-                            <div className="chart-rectangle max" style={{ top: `${yMax}px` }}>
-                              {valueFormatter(item.max)}
-                            </div>
-
-                            <div className="chart-rectangle avg" style={{ top: `${yAvg}px` }}>
-                              {valueFormatter(item.avg)}
-                            </div>
-
-                            <div className="chart-rectangle min" style={{ top: `${yMin}px` }}>
-                              {valueFormatter(item.min)}
-                            </div>
+                          <div className="chart-rectangle max" style={{ top: `${yMax}px` }}>
+                            {valueFormatter(item.max)}
                           </div>
 
-                          {/* Pure CSS Tooltip */}
+                          <div className="chart-rectangle avg" style={{ top: `${yAvg}px` }}>
+                            {valueFormatter(item.avg)}
+                          </div>
+
+                          <div className="chart-rectangle min" style={{ top: `${yMin}px` }}>
+                            {valueFormatter(item.min)}
+                          </div>
+
+                          {/* Pure CSS Tooltip - positioned relative to chart-stack */}
                           <div className="chart-tooltip">
                             <div className="tooltip-title">Details</div>
                             <div className="tooltip-item"><span className="tooltip-label">Min:</span> {valueFormatter(item.min)}</div>

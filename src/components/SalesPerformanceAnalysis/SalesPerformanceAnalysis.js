@@ -1089,7 +1089,7 @@ const SalesPerformanceAnalysis = () => {
   const [toasts, setToasts] = useState([]);
   
   // Total units for percentage calculation
-  const [priceRangeTotalUnits, setPriceRangeTotalUnits] = useState(0);
+  const [, setPriceRangeTotalUnits] = useState(0);
 
   // Load companies on mount
   useEffect(() => {

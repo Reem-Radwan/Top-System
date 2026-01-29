@@ -320,10 +320,10 @@ function UnitAnalysis() {
   }
 
   return (
-    <div className="app-container">
+    <div className="unitsanalysis-container">
       {/* Header */}
-      <div className="header">
-        <h1>Units Analysis</h1>
+      <div className="unitsanalysis-header">
+        <h1 className='unitsanalysis-h1'>Units Analysis</h1>
         <div className="nav-buttons">
           <button className="nav-btn">Report View</button>
           <button className="nav-btn">Map View</button>
@@ -352,7 +352,7 @@ function UnitAnalysis() {
 
       {/* Filters Section */}
       <div className="filters-section">
-        <div className="filters-header">
+        <div className="unitsanalysis-header-filters-header">
           <h2 className="filters-title">Filters</h2>
           <button className="reset-btn" onClick={handleReset}>
             Reset All
