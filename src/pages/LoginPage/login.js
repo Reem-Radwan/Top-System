@@ -50,6 +50,7 @@ const RealEstateLogin = () => {
 
   return (
     <div className="re-login-container">
+      <div className="re-login-wrapper">
       <div className="re-login-card">
         {/* Left Side */}
         <div className="re-login-left">
@@ -158,6 +159,7 @@ const RealEstateLogin = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

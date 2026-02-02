@@ -12,17 +12,19 @@
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+  background: #f5f5f5 !important;
+  font-family: "Times New Roman", Times, serif !important;
+  z-index: 9999 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.re-login-wrapper {
   min-height: 100vh !important;
-  width: 100vw !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: #f5f5f5 !important;
-  font-family: "Times New Roman", Times, serif !important;
-  line-height: normal !important;
   padding: 20px !important;
-  overflow: auto !important;
-  z-index: 9999 !important;
 }
 
 .re-login-card {
@@ -33,7 +35,6 @@
   border-radius: 16px !important;
   overflow: hidden !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
-  margin: auto !important;
 }
 
 .re-login-left {
@@ -246,38 +247,14 @@
   cursor: not-allowed !important;
 }
 
-/* @media (max-width: 768px) {
-  .re-login-card {
-    flex-direction: column !important;
-    width: 95% !important;
-  }
-
-  .re-login-left {
-    padding: 30px 25px !important;
-  }
-
-  .re-login-right {
-    padding: 30px 25px !important;
-  }
-
-  .re-welcome-title {
-    font-size: 32px !important;
-  }
-} */
-
-
-
 @media (max-width: 768px) {
-  .re-login-container {
-    overflow-y: auto !important;
-    align-items: center !important;
+  .re-login-wrapper {
     padding: 20px !important;
   }
 
   .re-login-card {
     flex-direction: column !important;
     width: 95% !important;
-    margin: auto !important;
   }
 
   .re-login-left {
