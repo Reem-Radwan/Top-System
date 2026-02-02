@@ -1,13 +1,6 @@
 /* ===========================
    GLOBAL / BASE
 =========================== */
-/* body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  min-height: 100vh;
-} */
-
 .unitsanalysis-container {
   max-width: 1600px;
   margin: 0 auto;
@@ -79,18 +72,29 @@
 }
 
 /* ===========================
-   TOGGLE
+   TOGGLE SWITCHES CONTAINER
 =========================== */
-.toggle-container {
+.toggle-switches-container {
   background: white;
-  border-radius: 16px;
-  padding: 20px 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 28px 40px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  gap: 60px;
   animation: fadeIn 0.6s ease;
+  flex-wrap: wrap;
+}
+
+/* ===========================
+   TOGGLE
+=========================== */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 @keyframes fadeIn {
@@ -99,63 +103,117 @@
 }
 
 .toggle-label {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: #2c3e50;
+  letter-spacing: 0.3px;
 }
-
 
 .toggle-switch {
   position: relative;
-  width: 140px;
-  height: 44px;
-  background: #e0e0e0;
-  border-radius: 22px;
+  height: 50px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: 5px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-switch.sell { background: #FF8C00; }
-.toggle-switch.rent { background: #D2691E; }
+/* Data Type Toggle - Standard Width */
+.toggle-switch.sell,
+.toggle-switch.rent {
+  width: 180px;
+}
+
+.toggle-switch.sell { 
+  background: linear-gradient(135deg, #FF8C00 0%, #FF7700 100%);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+.toggle-switch.rent { 
+  background: linear-gradient(135deg, #FF8C00 0%, #FF7700 100%);
+  box-shadow: 0 4px 15px rgba(210, 105, 30, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Asset Type Toggle - Wider */
+.toggle-switch.commercial,
+.toggle-switch.residential {
+  width: 260px;
+}
+
+.toggle-switch.commercial { 
+  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+.toggle-switch.residential { 
+  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+  box-shadow: 0 4px 15px rgba(0, 176, 155, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
 
 .toggle-slider {
   position: absolute;
-  width: 66px;
-  height: 36px;
-  background: white;
-  border-radius: 18px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
+  height: 40px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-switch.sell .toggle-slider { left: 4px; }
-.toggle-switch.rent .toggle-slider { left: calc(100% - 70px); }
+/* Data Type Slider */
+.toggle-switch.sell .toggle-slider,
+.toggle-switch.rent .toggle-slider {
+  width: 96px;
+}
+
+.toggle-switch.sell .toggle-slider { 
+  left: 5px; 
+}
+
+.toggle-switch.rent .toggle-slider { 
+  left: calc(100% - 101px); 
+}
+
+/* Asset Type Slider - Wider */
+.toggle-switch.commercial .toggle-slider,
+.toggle-switch.residential .toggle-slider {
+  width: 136px;
+}
+
+.toggle-switch.commercial .toggle-slider { 
+  left: 5px; 
+}
+
+.toggle-switch.residential .toggle-slider { 
+  left: calc(100% - 141px); 
+}
 
 .toggle-options {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding: 0 14px;
+  padding: 0 18px;
   position: relative;
   z-index: 1;
   pointer-events: none;
 }
 
 .toggle-option {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  opacity: 0.9;
-  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.5px;
 }
 
-/* Selected label becomes black (because slider is white behind it) */
+/* Selected label becomes dark (because slider is white behind it) */
 .toggle-option.active {
-  color: #111;
-  opacity: 1;
+  color: #1a1a1a;
+  text-shadow: none;
 }
 
 /* ===========================
@@ -220,7 +278,7 @@
   margin-bottom: 4px;
 }
 
-/* Multi-select styles (kept similar) */
+/* Multi-select styles */
 .multi-select-container { position: relative; }
 
 .multi-select-header {
@@ -252,8 +310,10 @@
   white-space: nowrap;
 }
 
-.selected-values.placeholder { color: #3e3e3e; 
-background: #fff;}
+.selected-values.placeholder { 
+  color: #3e3e3e; 
+  background: #fff;
+}
 
 .dropdown-arrow {
   width: 0;
@@ -274,7 +334,7 @@ background: #fff;}
   background: white;
   border: 2px solid #FF8C00;
   border-radius: 8px;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   z-index: 1000;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -284,6 +344,77 @@ background: #fff;}
 @keyframes dropdownSlide {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Search Field */
+.multi-select-search {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #FF8C00;
+}
+
+/* Action Buttons */
+.multi-select-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f9f9f9;
+  position: sticky;
+  top: 52px;
+  z-index: 10;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-all-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.select-all-btn:hover {
+  background: #45a049;
+}
+
+.clear-all-btn {
+  background: #f44336;
+  color: white;
+}
+
+.clear-all-btn:hover {
+  background: #da190b;
+}
+
+/* Options List */
+.multi-select-options-list {
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 .multi-select-option {
@@ -309,6 +440,13 @@ background: #fff;}
   cursor: pointer;
   font-size: 15px;
   color: #333;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
 }
 
 /* ===========================
@@ -350,10 +488,7 @@ background: #fff;}
 .chart-content { margin-top: 24px; }
 
 /* ============================= */
-/* SINGLE SCROLLBAR CONTAINER
-   Controls both table and chart
-   CRITICAL FIX: This is the scrolling container
-============================= */
+/* SINGLE SCROLLBAR CONTAINER */
 .chart-scroll-container {
   overflow-x: auto;
   overflow-y: hidden;
@@ -383,9 +518,7 @@ background: #fff;}
 }
 
 /* ============================= */
-/* TABLE WRAPPER - CRITICAL: NO overflow:hidden!
-   overflow:hidden breaks position:sticky
-============================= */
+/* TABLE WRAPPER */
 .chart-table-wrapper-inner {
   overflow-x: visible;
   overflow-y: visible;
@@ -401,7 +534,7 @@ background: #fff;}
   width: auto;
 }
 
-/* FIXED/STICKY LEFT LABEL COLUMN - ALWAYS 120px - NEVER STRETCHES */
+/* FIXED/STICKY LEFT LABEL COLUMN */
 .fixed-label-column {
   position: sticky !important;
   position: -webkit-sticky !important;
@@ -439,7 +572,7 @@ background: #fff;}
 }
 
 .hierarchy-level-2 th:not(.fixed-label-column) {
-  background: #cdcbcb;
+  background: #FFA500;
   color: #111;
   font-size: 14px;
   font-weight: 700;
@@ -453,6 +586,20 @@ background: #fff;}
 }
 
 .hierarchy-level-3 th:not(.fixed-label-column) {
+  background: #cdcbcb;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 9px 6px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: none;
+  box-sizing: border-box;
+}
+
+.hierarchy-level-4 th:not(.fixed-label-column) {
   background: #f3f3f3;
   color: #111;
   font-size: 13px;
@@ -466,7 +613,7 @@ background: #fff;}
   box-sizing: border-box;
 }
 
-.hierarchy-level-4 th:not(.fixed-label-column) {
+.hierarchy-level-5 th:not(.fixed-label-column) {
   background: #ffffff;
   color: #111;
   font-size: 13px;
@@ -480,9 +627,22 @@ background: #fff;}
   box-sizing: border-box;
 }
 
+.hierarchy-level-6 th:not(.fixed-label-column) {
+  background: #fafafa;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 5px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
 /* ============================= */
-/* CHART VISUALIZATION - NO SCROLLBAR
-============================= */
+/* CHART VISUALIZATION */
 .chart-visualization-wrapper-inner {
   overflow: visible;
   position: relative;
@@ -494,7 +654,7 @@ background: #fff;}
   background: white;
 }
 
-/* Grid lines - MUST start after the fixed column (120px) */
+/* Grid lines */
 .chart-grid-lines {
   pointer-events: none;
   z-index: 0;
@@ -509,9 +669,7 @@ background: #fff;}
 }
 
 /* ============================= */
-/* STICKY PLACEHOLDER COLUMN FOR CHART
-   This empty div stays fixed while chart scrolls
-============================= */
+/* STICKY PLACEHOLDER COLUMN FOR CHART */
 .chart-sticky-placeholder {
   position: sticky !important;
   position: -webkit-sticky !important;
@@ -520,9 +678,7 @@ background: #fff;}
   min-width: 120px !important;
   max-width: 120px !important;
   flex-shrink: 0 !important;
-  /* background: white; */
   z-index: 250 !important;
-  /* box-shadow: 3px 0 6px rgba(0, 0, 0, 0.08); */
 }
 
 /* Bars Container */
@@ -545,19 +701,14 @@ background: #fff;}
 }
 
 /* ============================= */
-/* PURE CSS TOOLTIP - NO JAVASCRIPT
-   CRITICAL FIX: Tooltip is absolutely positioned
-   and won't affect the layout flow
-============================= */
-
-/* Stack area for absolute-positioned rectangles */
+/* CHART ELEMENTS */
 .chart-stack {
   position: relative;
   width: 100%;
   height: 320px;
 }
 
-/* Continuous connector (value-based range) */
+/* Continuous connector */
 .value-connector {
   position: absolute;
   left: 50%;
@@ -616,7 +767,6 @@ background: #fff;}
 
 /* ===========================
    PURE CSS TOOLTIP
-   CRITICAL: Use FIXED positioning to completely remove from layout
 =========================== */
 .chart-tooltip {
   position: fixed;
@@ -627,9 +777,7 @@ background: #fff;}
   font-size: 13px;
   z-index: 10000;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  /* min-width: 280px; */
   width: max-content;
-  /* max-width: 320px; */
   
   /* Hidden by default */
   opacity: 0;
@@ -637,11 +785,10 @@ background: #fff;}
   pointer-events: none;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   
-  /* Position will be set by JS on hover */
   white-space: normal;
 }
 
-/* Show tooltip on hover of chart-bar-column */
+/* Show tooltip on hover */
 .chart-bar-column:hover .chart-tooltip {
   opacity: 1;
   visibility: visible;
@@ -688,7 +835,7 @@ background: #fff;}
    RESPONSIVE
 =========================== */
 @media (max-width: 768px) {
-  .header {
+  .unitsanalysis-header {
     flex-direction: column;
     gap: 16px;
   }
@@ -696,6 +843,40 @@ background: #fff;}
   .nav-buttons {
     width: 100%;
     flex-direction: column;
+  }
+
+  .toggle-switches-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .toggle-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .toggle-label {
+    text-align: center;
+    font-size: 17px;
+  }
+
+  .toggle-switch {
+    width: 100% !important;
+  }
+
+  .toggle-switch.sell .toggle-slider,
+  .toggle-switch.rent .toggle-slider,
+  .toggle-switch.commercial .toggle-slider,
+  .toggle-switch.residential .toggle-slider {
+    width: calc(50% - 10px);
+  }
+
+  .toggle-switch.rent .toggle-slider,
+  .toggle-switch.residential .toggle-slider {
+    left: calc(50% + 5px);
   }
 
   .filters-grid {
@@ -731,7 +912,6 @@ background: #fff;}
     background: #FF8C00;
   }
   
-  /* Adjust tooltip position on mobile */
   .chart-tooltip {
     min-width: 240px;
     font-size: 12px;

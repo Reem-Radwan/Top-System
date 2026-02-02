@@ -6,12 +6,12 @@ import './unitsanalysis.css';
 
 function UnitAnalysis() {
   const [offering, setOffering] = useState('Sell');
+  const [assetType, setAssetType] = useState('Commercial'); // New toggle state
   const [rawData, setRawData] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // All 7 filters
+  // 5 filters (removed Asset Type from filters)
   const [selectedLocations, setSelectedLocations] = useState([]);
-  const [selectedAssetTypes, setSelectedAssetTypes] = useState([]);
   const [selectedUnitTypes, setSelectedUnitTypes] = useState([]);
   const [selectedFinishing, setSelectedFinishing] = useState([]);
   const [selectedDevelopers, setSelectedDevelopers] = useState([]);
@@ -20,7 +20,6 @@ function UnitAnalysis() {
   
   // Available options for dropdowns
   const [availableLocations, setAvailableLocations] = useState([]);
-  const [availableAssetTypes, setAvailableAssetTypes] = useState([]);
   const [availableUnitTypes, setAvailableUnitTypes] = useState([]);
   const [availableFinishing, setAvailableFinishing] = useState([]);
   const [availableDevelopers, setAvailableDevelopers] = useState([]);
@@ -52,17 +51,15 @@ function UnitAnalysis() {
     return [...new Set(data.map(row => row[field]).filter(val => val && val.trim()))].sort();
   };
 
-  // Filter data by offering
-  const filteredByOffering = rawData.filter(row => row.Offering === offering);
+  // Filter data by offering AND asset type
+  const filteredByOfferingAndAsset = rawData.filter(
+    row => row.Offering === offering && row['Asset Type'] === assetType
+  );
 
   // Update available options based on ALL current selections (dependent filters)
   useEffect(() => {
-    // Now update each dropdown based on the filtered data
-    // For each filter, we temporarily exclude its own selection to show what's available
-    
-    // Location options (exclude location filter)
-    let tempFiltered = filteredByOffering;
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
+    // Location options
+    let tempFiltered = filteredByOfferingAndAsset;
     if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
     if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
     if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
@@ -70,73 +67,57 @@ function UnitAnalysis() {
     if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
     setAvailableLocations(getUniqueValues(tempFiltered, 'Location'));
 
-    // Asset Type options (exclude asset type filter)
-    tempFiltered = filteredByOffering;
+    // Unit Type options
+    tempFiltered = filteredByOfferingAndAsset;
     if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
-    if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
-    if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
-    if (selectedProjects.length > 0) tempFiltered = tempFiltered.filter(row => selectedProjects.includes(row['Project Name ']));
-    if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
-    setAvailableAssetTypes(getUniqueValues(tempFiltered, 'Asset Type'));
-
-    // Unit Type options (exclude unit type filter)
-    tempFiltered = filteredByOffering;
-    if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
     if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
     if (selectedProjects.length > 0) tempFiltered = tempFiltered.filter(row => selectedProjects.includes(row['Project Name ']));
     if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
     setAvailableUnitTypes(getUniqueValues(tempFiltered, 'Unit Type'));
 
-    // Finishing options (exclude finishing filter)
-    tempFiltered = filteredByOffering;
+    // Finishing options
+    tempFiltered = filteredByOfferingAndAsset;
     if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
     if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
     if (selectedProjects.length > 0) tempFiltered = tempFiltered.filter(row => selectedProjects.includes(row['Project Name ']));
     if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
     setAvailableFinishing(getUniqueValues(tempFiltered, 'Finishing Specs.'));
 
-    // Developer options (exclude developer filter)
-    tempFiltered = filteredByOffering;
+    // Developer options
+    tempFiltered = filteredByOfferingAndAsset;
     if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
     if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
     if (selectedProjects.length > 0) tempFiltered = tempFiltered.filter(row => selectedProjects.includes(row['Project Name ']));
     if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
     setAvailableDevelopers(getUniqueValues(tempFiltered, 'Developer Name'));
 
-    // Project options (exclude project filter)
-    tempFiltered = filteredByOffering;
+    // Project options
+    tempFiltered = filteredByOfferingAndAsset;
     if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
     if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
     if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
     if (selectedPayments.length > 0) tempFiltered = tempFiltered.filter(row => selectedPayments.includes(row['Payment Yrs']));
     setAvailableProjects(getUniqueValues(tempFiltered, 'Project Name '));
 
-    // Payment options (exclude payment filter)
-    tempFiltered = filteredByOffering;
+    // Payment options
+    tempFiltered = filteredByOfferingAndAsset;
     if (selectedLocations.length > 0) tempFiltered = tempFiltered.filter(row => selectedLocations.includes(row.Location));
-    if (selectedAssetTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     if (selectedUnitTypes.length > 0) tempFiltered = tempFiltered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
     if (selectedFinishing.length > 0) tempFiltered = tempFiltered.filter(row => selectedFinishing.includes(row['Finishing Specs.']));
     if (selectedDevelopers.length > 0) tempFiltered = tempFiltered.filter(row => selectedDevelopers.includes(row['Developer Name']));
     if (selectedProjects.length > 0) tempFiltered = tempFiltered.filter(row => selectedProjects.includes(row['Project Name ']));
     setAvailablePayments(getUniqueValues(tempFiltered, 'Payment Yrs'));
 
-  }, [filteredByOffering, selectedLocations, selectedAssetTypes, selectedUnitTypes, 
+  }, [filteredByOfferingAndAsset, selectedLocations, selectedUnitTypes, 
       selectedFinishing, selectedDevelopers, selectedProjects, selectedPayments]);
 
   // Check if any filter is selected
   const hasAnyFilter = () => {
     return selectedLocations.length > 0 ||
-           selectedAssetTypes.length > 0 ||
            selectedUnitTypes.length > 0 ||
            selectedFinishing.length > 0 ||
            selectedDevelopers.length > 0 ||
@@ -151,13 +132,10 @@ function UnitAnalysis() {
       return [];
     }
 
-    let filtered = filteredByOffering;
+    let filtered = filteredByOfferingAndAsset;
 
     if (selectedLocations.length > 0) {
       filtered = filtered.filter(row => selectedLocations.includes(row.Location));
-    }
-    if (selectedAssetTypes.length > 0) {
-      filtered = filtered.filter(row => selectedAssetTypes.includes(row['Asset Type']));
     }
     if (selectedUnitTypes.length > 0) {
       filtered = filtered.filter(row => selectedUnitTypes.includes(row['Unit Type']));
@@ -184,23 +162,23 @@ function UnitAnalysis() {
     
     if (filtered.length === 0) return [];
 
-    // Group by combination of finishing, developer, project, payment
+    // Group by combination of location, unitType, finishing, developer, project, payment
     const grouped = {};
     
     filtered.forEach(row => {
-      const key = `${row['Finishing Specs.']}_${row['Developer Name']}_${row['Project Name ']}_${row['Payment Yrs']}`;
+      const key = `${row.Location}_${row['Unit Type']}_${row['Finishing Specs.']}_${row['Developer Name']}_${row['Project Name ']}_${row['Payment Yrs']}`;
       
       if (!grouped[key]) {
         grouped[key] = {
+          location: row.Location || 'N/A',
+          unitType: row['Unit Type'] || 'N/A',
           finishing: row['Finishing Specs.'] || 'N/A',
           developer: row['Developer Name'] || 'N/A',
           project: row['Project Name '] || 'N/A',
           payment: row['Payment Yrs'] || 'N/A',
           unitPrices: [],
           buas: [],
-          psms: [],
-          // Store all unique locations for this combination
-          locations: new Set()
+          psms: []
         };
       }
       
@@ -211,11 +189,6 @@ function UnitAnalysis() {
       if (!isNaN(unitPrice)) grouped[key].unitPrices.push(unitPrice);
       if (!isNaN(bua)) grouped[key].buas.push(bua);
       if (!isNaN(psm)) grouped[key].psms.push(psm);
-      
-      // Add location
-      if (row.Location) {
-        grouped[key].locations.add(row.Location);
-      }
     });
 
     // Calculate min, avg, max for each group
@@ -230,15 +203,15 @@ function UnitAnalysis() {
       };
 
       return {
+        location: group.location,
+        unitType: group.unitType,
         finishing: group.finishing,
         developer: group.developer,
         project: group.project,
         payment: group.payment,
         unitPrice: calcStats(group.unitPrices),
         bua: calcStats(group.buas),
-        psm: calcStats(group.psms),
-        // Convert Set to comma-separated string
-        locations: Array.from(group.locations).join(', ')
+        psm: calcStats(group.psms)
       };
     });
 
@@ -272,6 +245,8 @@ function UnitAnalysis() {
   // Get filter info text
   const getFilterInfo = () => {
     const parts = [];
+    if (selectedLocations.length > 0) parts.push(`Location: ${selectedLocations.join(', ')}`);
+    if (selectedUnitTypes.length > 0) parts.push(`Unit Type: ${selectedUnitTypes.join(', ')}`);
     if (selectedFinishing.length > 0) parts.push(`Finishing: ${selectedFinishing.join(', ')}`);
     if (selectedDevelopers.length > 0) parts.push(`Developer: ${selectedDevelopers.join(', ')}`);
     if (selectedProjects.length > 0) parts.push(`Project: ${selectedProjects.join(', ')}`);
@@ -282,7 +257,6 @@ function UnitAnalysis() {
   // Reset all filters
   const handleReset = () => {
     setSelectedLocations([]);
-    setSelectedAssetTypes([]);
     setSelectedUnitTypes([]);
     setSelectedFinishing([]);
     setSelectedDevelopers([]);
@@ -307,9 +281,7 @@ function UnitAnalysis() {
     }).format(value);
   };
 
-  const showSecondaryFilters = selectedLocations.length > 0 || 
-                               selectedAssetTypes.length > 0 || 
-                               selectedUnitTypes.length > 0;
+  const showSecondaryFilters = selectedLocations.length > 0 || selectedUnitTypes.length > 0;
 
   if (loading) {
     return (
@@ -331,21 +303,41 @@ function UnitAnalysis() {
         </div>
       </div>
 
-      {/* Toggle Switch */}
-      <div className="toggle-container">
-        <span className="toggle-label">Data Type:</span>
+      {/* Toggle Switches Container */}
+      <div className="toggle-switches-container">
+        {/* Data Type Toggle (Sell/Rent) */}
+        <div className="toggle-container">
+          <span className="toggle-label">Data Type:</span>
+          <div
+            className={`toggle-switch ${offering.toLowerCase()}`}
+            onClick={() => {
+              setOffering(prev => (prev === 'Sell' ? 'Rent' : 'Sell'));
+              handleReset();
+            }}
+          >
+            <div className="toggle-slider" />
+            <div className="toggle-options">
+              <span className={`toggle-option ${offering === 'Sell' ? 'active' : ''}`}>Sale</span>
+              <span className={`toggle-option ${offering === 'Rent' ? 'active' : ''}`}>Rent</span>
+            </div>
+          </div>
+        </div>
 
-        <div
-          className={`toggle-switch ${offering.toLowerCase()}`}
-          onClick={() => {
-            setOffering(prev => (prev === 'Sell' ? 'Rent' : 'Sell'));
-            handleReset();
-          }}
-        >
-          <div className="toggle-slider" />
-          <div className="toggle-options">
-            <span className={`toggle-option ${offering === 'Sell' ? 'active' : ''}`}>Sell</span>
-            <span className={`toggle-option ${offering === 'Rent' ? 'active' : ''}`}>Rent</span>
+        {/* Asset Type Toggle (Commercial/Residential) */}
+        <div className="toggle-container">
+          <span className="toggle-label">Asset Type:</span>
+          <div
+            className={`toggle-switch ${assetType.toLowerCase()}`}
+            onClick={() => {
+              setAssetType(prev => (prev === 'Commercial' ? 'Residential' : 'Commercial'));
+              handleReset();
+            }}
+          >
+            <div className="toggle-slider" />
+            <div className="toggle-options">
+              <span className={`toggle-option ${assetType === 'Commercial' ? 'active' : ''}`}>Commercial</span>
+              <span className={`toggle-option ${assetType === 'Residential' ? 'active' : ''}`}>Residential</span>
+            </div>
           </div>
         </div>
       </div>
@@ -367,13 +359,6 @@ function UnitAnalysis() {
             selectedValues={selectedLocations}
             onChange={setSelectedLocations}
             placeholder="Select locations..."
-          />
-          <MultiSelect
-            label="Asset Type"
-            options={availableAssetTypes}
-            selectedValues={selectedAssetTypes}
-            onChange={setSelectedAssetTypes}
-            placeholder="Select asset types..."
           />
           <MultiSelect
             label="Unit Type"
@@ -437,29 +422,29 @@ function UnitAnalysis() {
               valueFormatter={formatCurrency}
               selectedFilters={{
                 location: selectedLocations,
-                assetType: selectedAssetTypes,
+                assetType: assetType,
                 unitType: selectedUnitTypes
               }}
             />
-            <Chart
-              title="Built-Up Area (BUA) Range"
-              data={buaData}
-              filterInfo={getFilterInfo()}
-              valueFormatter={formatNumber}
-              selectedFilters={{
-                location: selectedLocations,
-                assetType: selectedAssetTypes,
-                unitType: selectedUnitTypes
-              }}
-            />
-            <Chart
-              title="Price per Square Meter (PSM) Range"
+             <Chart
+              title="Price per Square Meter Range"
               data={psmData}
               filterInfo={getFilterInfo()}
               valueFormatter={formatCurrency}
               selectedFilters={{
                 location: selectedLocations,
-                assetType: selectedAssetTypes,
+                assetType: assetType,
+                unitType: selectedUnitTypes
+              }}
+            />
+            <Chart
+              title="Area Range"
+              data={buaData}
+              filterInfo={getFilterInfo()}
+              valueFormatter={formatNumber}
+              selectedFilters={{
+                location: selectedLocations,
+                assetType: assetType,
                 unitType: selectedUnitTypes
               }}
             />
