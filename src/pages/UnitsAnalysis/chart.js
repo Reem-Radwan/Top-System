@@ -344,16 +344,16 @@ const Chart = ({ title, data, filterInfo, valueFormatter, selectedFilters }) => 
                           {/* Pure CSS Tooltip */}
                           <div className="chart-tooltip">
                             <div className="tooltip-title">Details</div>
-                            <div className="tooltip-item"><span className="tooltip-label">Min:</span> {valueFormatter(item.min)}</div>
-                            <div className="tooltip-item"><span className="tooltip-label">Avg:</span> {valueFormatter(item.avg)}</div>
-                            <div className="tooltip-item"><span className="tooltip-label">Max:</span> {valueFormatter(item.max)}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Location:</span> {item.location}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Unit Type:</span> {item.unitType}</div>
+                            <div className="tooltip-item"><span className="tooltip-label">Asset Type:</span> {assetType}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Finishing:</span> {item.finishing}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Developer:</span> {item.developer}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Project:</span> {item.project}</div>
                             <div className="tooltip-item"><span className="tooltip-label">Payment:</span> {item.payment}</div>
-                            <div className="tooltip-item"><span className="tooltip-label">Asset Type:</span> {assetType}</div>
+                            <div className="tooltip-item"><span className="tooltip-label">Min:</span> {valueFormatter(item.min)}</div>
+                            <div className="tooltip-item"><span className="tooltip-label">Avg:</span> {valueFormatter(item.avg)}</div>
+                            <div className="tooltip-item"><span className="tooltip-label">Max:</span> {valueFormatter(item.max)}</div>
                           </div>
                         </div>
                       </div>
