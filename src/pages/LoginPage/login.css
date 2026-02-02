@@ -6,46 +6,52 @@
   box-sizing: border-box !important;
 }
 
-/* منع أي scroll نهائيًا */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden; /* يمنع سكرول الصفحة */
+/* Prevent body scroll ONLY when login container is present */
+body:has(.re-login-container) {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
 }
 
 .re-login-container {
   position: fixed !important;
-  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   background: #f5f5f5 !important;
   font-family: "Times New Roman", Times, serif !important;
   z-index: 9999 !important;
-
-  overflow: hidden !important; /* بدل overflow-y:auto */
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .re-login-wrapper {
-  height: 100dvh !important; /* أفضل من 100vh للموبايل */
+  height: 100vh !important;
+  width: 100vw !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   padding: 20px !important;
-
-  min-height: 0 !important; /* بدل min-height:100vh */
+  overflow: hidden !important;
 }
 
 .re-login-card {
   display: flex !important;
   width: 800px !important;
   max-width: 90% !important;
-
-  /* يمنع إن الكارد يطلع برا الشاشة */
-  max-height: calc(100dvh - 40px) !important;
-
+  max-height: 85vh !important;
   background: white !important;
   border-radius: 16px !important;
   overflow: hidden !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+  flex-shrink: 0 !important;
 }
 
 .re-login-left {
@@ -53,12 +59,13 @@ body {
   background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ1Uy6tgUVQjm0pwqY6ykun5tYU1GBIQnRLA&s") !important;
   background-size: cover !important;
   background-position: center !important;
-  padding: 50px 40px !important;
+  padding: 40px 35px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   position: relative !important;
   overflow: hidden !important;
+  min-height: 0 !important;
 }
 
 .re-login-left::before {
@@ -85,6 +92,7 @@ body {
   letter-spacing: 2px !important;
   position: relative !important;
   z-index: 1 !important;
+  flex-shrink: 0 !important;
 }
 
 .re-brand-icon {
@@ -95,6 +103,7 @@ body {
 .re-welcome-content {
   position: relative !important;
   z-index: 1 !important;
+  flex-shrink: 0 !important;
 }
 
 .re-welcome-subtitle {
@@ -130,14 +139,18 @@ body {
 
 .re-login-right {
   flex: 1 !important;
-  padding: 50px 40px !important;
+  padding: 40px 35px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;
 }
 
 .re-login-header {
-  margin-bottom: 30px !important;
+  margin-bottom: 25px !important;
+  flex-shrink: 0 !important;
 }
 
 .re-login-title {
@@ -150,6 +163,7 @@ body {
 
 .re-form-group {
   margin-bottom: 18px !important;
+  flex-shrink: 0 !important;
 }
 
 .re-input-wrapper {
@@ -234,8 +248,9 @@ body {
   cursor: pointer !important;
   transition: all 0.3s !important;
   box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3) !important;
-  margin-top: 30px !important;
+  margin-top: 25px !important;
   line-height: normal !important;
+  flex-shrink: 0 !important;
 }
 
 .re-submit-btn:hover:not(:disabled) {
@@ -251,25 +266,56 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .re-login-wrapper {
-    padding: 12px !important;
-    height: 100dvh !important;
+    padding: 15px !important;
   }
 
   .re-login-card {
     flex-direction: column !important;
     width: 95% !important;
-    max-height: calc(100dvh - 24px) !important;
+    max-width: 95% !important;
+    max-height: 90vh !important;
   }
 
   .re-login-left {
-    padding: 30px 25px !important;
+    padding: 25px 20px !important;
+    min-height: 180px !important;
   }
 
   .re-login-right {
-    padding: 30px 25px !important;
+    padding: 25px 20px !important;
   }
 
   .re-welcome-title {
     font-size: 32px !important;
+  }
+  
+  .re-welcome-subtitle {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .re-login-card {
+    max-height: 92vh !important;
+  }
+  
+  .re-login-left {
+    padding: 25px 20px !important;
+  }
+  
+  .re-login-right {
+    padding: 25px 20px !important;
+  }
+  
+  .re-welcome-title {
+    font-size: 36px !important;
+  }
+  
+  .re-form-group {
+    margin-bottom: 15px !important;
+  }
+  
+  .re-submit-btn {
+    margin-top: 20px !important;
   }
 }
