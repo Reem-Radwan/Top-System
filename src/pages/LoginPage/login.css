@@ -10,6 +10,7 @@
 body:has(.re-login-container) {
   overflow: hidden !important;
   height: 100vh !important;
+  height: 100dvh !important;
   width: 100vw !important;
   position: fixed !important;
   top: 0 !important;
@@ -24,6 +25,7 @@ body:has(.re-login-container) {
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+  height: 100dvh !important;
   background: #f5f5f5 !important;
   font-family: "Times New Roman", Times, serif !important;
   z-index: 9999 !important;
@@ -34,6 +36,7 @@ body:has(.re-login-container) {
 
 .re-login-wrapper {
   height: 100vh !important;
+  height: 100dvh !important;
   width: 100vw !important;
   display: flex !important;
   align-items: center !important;
@@ -47,6 +50,7 @@ body:has(.re-login-container) {
   width: 800px !important;
   max-width: 90% !important;
   max-height: 85vh !important;
+  max-height: 85dvh !important;
   background: white !important;
   border-radius: 16px !important;
   overflow: hidden !important;
@@ -146,6 +150,24 @@ body:has(.re-login-container) {
   overflow-y: auto !important;
   overflow-x: hidden !important;
   min-height: 0 !important;
+}
+
+/* Custom scrollbar for form area */
+.re-login-right::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.re-login-right::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.re-login-right::-webkit-scrollbar-thumb {
+  background: #ddd !important;
+  border-radius: 3px !important;
+}
+
+.re-login-right::-webkit-scrollbar-thumb:hover {
+  background: #ccc !important;
 }
 
 .re-login-header {
@@ -266,23 +288,27 @@ body:has(.re-login-container) {
 /* Responsive */
 @media (max-width: 768px) {
   .re-login-wrapper {
-    padding: 15px !important;
+    padding: 10px !important;
   }
 
   .re-login-card {
     flex-direction: column !important;
-    width: 95% !important;
-    max-width: 95% !important;
-    max-height: 90vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 96vh !important;
+    max-height: 96dvh !important;
+    border-radius: 12px !important;
   }
 
   .re-login-left {
-    padding: 25px 20px !important;
-    min-height: 180px !important;
+    padding: 30px 25px !important;
+    min-height: 160px !important;
+    flex: 0 0 auto !important;
   }
 
   .re-login-right {
-    padding: 25px 20px !important;
+    padding: 35px 30px !important;
+    flex: 1 !important;
   }
 
   .re-welcome-title {
@@ -294,13 +320,29 @@ body:has(.re-login-container) {
   }
 }
 
-@media (max-height: 700px) {
-  .re-login-card {
-    max-height: 92vh !important;
-  }
-  
+@media (max-height: 700px) and (max-width: 768px) {
   .re-login-left {
     padding: 25px 20px !important;
+    min-height: 140px !important;
+  }
+  
+  .re-login-right {
+    padding: 30px 25px !important;
+  }
+  
+  .re-welcome-title {
+    font-size: 28px !important;
+  }
+  
+  .re-welcome-subtitle {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-height: 600px) and (max-width: 768px) {
+  .re-login-left {
+    padding: 20px !important;
+    min-height: 120px !important;
   }
   
   .re-login-right {
@@ -308,14 +350,6 @@ body:has(.re-login-container) {
   }
   
   .re-welcome-title {
-    font-size: 36px !important;
-  }
-  
-  .re-form-group {
-    margin-bottom: 15px !important;
-  }
-  
-  .re-submit-btn {
-    margin-top: 20px !important;
+    font-size: 26px !important;
   }
 }
