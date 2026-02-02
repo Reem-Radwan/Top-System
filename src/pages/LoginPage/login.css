@@ -269,27 +269,19 @@
 
 @media (max-width: 768px) {
   .re-login-container {
-    min-height: 100vh !important;
-    height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
     overflow-y: auto !important;
+    align-items: center !important;
     padding: 20px !important;
   }
 
   .re-login-card {
     flex-direction: column !important;
     width: 95% !important;
-    max-width: 95% !important;
     margin: auto !important;
-    position: static !important;
-    transform: none !important;
   }
 
   .re-login-left {
     padding: 30px 25px !important;
-    min-height: 250px !important;
   }
 
   .re-login-right {

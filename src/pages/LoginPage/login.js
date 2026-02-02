@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './login.css';
 
 const RealEstateLogin = () => {
@@ -7,16 +7,6 @@ const RealEstateLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    // Hide body scrollbar when component mounts
-    document.body.style.overflow = 'hidden';
-    
-    // Restore scrollbar when component unmounts
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
 
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
