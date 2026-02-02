@@ -36,7 +36,7 @@ export default function TopHeader({
 
   const menus = useMemo(
     () => [
-      { label: "Sales", items: [{ label: "TOP", to: "/" },{ label: "MasterPlans", to: "/masterlans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals", to: "/approvals" }] },
+      { label: "Sales", items: [{ label: "TOP", to: "/top" },{ label: "MasterPlans", to: "/masterlans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals", to: "/approvals" }] },
       { label: "Approvals", items: [{ label: "Approvals", to: "/approvals" }, { label: "Approvals History", to: "/approvals-history" },] },
       { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterPlan-settings" },
         { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }

@@ -34,7 +34,7 @@ body {
 }
 
 /* ===== HEADER ===== */
-h1 {
+.page-header-title {
   text-align: center;
   color: #1f2937;
   font-size: 2.25rem;
@@ -45,7 +45,7 @@ h1 {
   position: relative;
 }
 
-h1::after {
+.page-header-title::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -465,7 +465,7 @@ input[type="file"]::file-selector-button:hover {
 }
 
 @media (max-width: 768px) {
-  h1 {
+  .page-header-title {
     font-size: 1.875rem;
   }
   
