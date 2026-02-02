@@ -23,6 +23,7 @@
   padding: 20px !important;
   overflow: hidden !important;
   z-index: 9999 !important;
+
 }
 
 .re-login-card {
@@ -250,6 +251,8 @@
   .re-login-card {
     flex-direction: column !important;
     width: 95% !important;
+    margin-top: 0;
+    /* margin-bottom: 20px; */
   }
 
   .re-login-left {
