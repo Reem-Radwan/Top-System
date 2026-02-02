@@ -21,7 +21,7 @@
   font-family: "Times New Roman", Times, serif !important;
   line-height: normal !important;
   padding: 20px !important;
-  overflow: hidden !important;
+  overflow: auto !important;
   z-index: 9999 !important;
 }
 
@@ -269,21 +269,27 @@
 
 @media (max-width: 768px) {
   .re-login-container {
-    padding: 5vh 2.5% !important;
-    overflow-y: auto !important;
+    min-height: 100vh !important;
+    height: auto !important;
     display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
+    overflow-y: auto !important;
+    padding: 20px !important;
   }
 
   .re-login-card {
     flex-direction: column !important;
     width: 95% !important;
+    max-width: 95% !important;
     margin: auto !important;
-    min-height: auto !important;
+    position: static !important;
+    transform: none !important;
   }
 
   .re-login-left {
     padding: 30px 25px !important;
+    min-height: 250px !important;
   }
 
   .re-login-right {
