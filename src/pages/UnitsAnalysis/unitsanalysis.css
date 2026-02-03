@@ -145,7 +145,7 @@
 }
 
 .toggle-switch.commercial { 
-  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+  background: linear-gradient(135deg,  #00b09b 0%, #96c93d 100%);
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.3);
 }
 
@@ -567,8 +567,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
   box-sizing: border-box;
+}
+
+.hierarchy-level-1 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 .hierarchy-level-2 th:not(.fixed-label-column) {
@@ -581,8 +588,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
   box-sizing: border-box;
+}
+
+.hierarchy-level-2 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 .hierarchy-level-3 th:not(.fixed-label-column) {
@@ -595,8 +609,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
   box-sizing: border-box;
+}
+
+.hierarchy-level-3 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 .hierarchy-level-4 th:not(.fixed-label-column) {
@@ -606,11 +627,18 @@
   font-weight: 700;
   padding: 8px 5px;
   text-align: center;
-  border: 1px solid #d8d8d8;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: none;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
+}
+
+.hierarchy-level-4 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 .hierarchy-level-5 th:not(.fixed-label-column) {
@@ -620,11 +648,18 @@
   font-weight: 700;
   padding: 8px 5px;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: none;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
+}
+
+.hierarchy-level-5 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 .hierarchy-level-6 th:not(.fixed-label-column) {
@@ -634,11 +669,18 @@
   font-weight: 700;
   padding: 8px 5px;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: none;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
+}
+
+.hierarchy-level-6 th:not(.fixed-label-column):last-child {
+  border-right: none;
 }
 
 /* ============================= */
