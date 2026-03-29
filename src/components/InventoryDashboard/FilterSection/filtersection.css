@@ -5,25 +5,23 @@
 .filters-container {
   background: var(--color-surface);
   border-radius: var(--radius-xl);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-xl);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: 0;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   animation: fadeIn 0.6s ease-out;
-   max-width: 1400px !important;
+  max-width: 1400px !important;
   width: 100% !important;
-   margin-left: auto !important;
+  margin-left: auto !important;
   margin-right: auto !important;
-  /* background-color: blue; */
-  /* margin-top: 40px; */
 }
 
 .filters-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
   border-bottom: 2px solid var(--color-border-light);
 }
 
@@ -52,50 +50,29 @@
 
 .filter-grid {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-md);
+  flex-wrap: nowrap;
+  justify-content: stretch;
+  gap: 6px;
   align-items: flex-start;
 }
 
-/* Make filter cards smaller with consistent width */
+/* All 6 cards share the row equally */
 .filter-card {
-  width: 200px;
-  flex-shrink: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 0; /* let flex-grow handle it */
 }
 
-/* Responsive breakpoints for centered layout */
-@media (max-width: 1400px) {
+@media (max-width: 900px) {
   .filter-grid {
+    flex-wrap: wrap;
     gap: var(--space-sm);
   }
 
   .filter-card {
-    width: 220px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .filter-card {
-    width: 175px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .filter-card {
-    width: 165px;
-  }
-}
-
-@media (max-width: 768px) {
-  .filter-grid {
-    gap: var(--space-md);
-    justify-content: center;
-  }
-
-  .filter-card {
-    width: calc(50% - var(--space-sm));
-    min-width: 160px;
+    flex: 1 1 calc(33.33% - var(--space-sm));
+    min-width: 140px;
+    width: auto;
   }
 }
 
@@ -106,6 +83,7 @@
   }
 
   .filter-card {
+    flex: none;
     width: 100%;
   }
 
@@ -142,14 +120,13 @@
   border-color: var(--color-primary-light);
 }
 
-.filter-header {
+.filter-headery {
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
   user-select: none;
-  padding: var(--space-md) var(--space-md);
-  padding-bottom: var(--space-sm);
+  padding: 8px 10px;
   background: linear-gradient(to right, var(--color-bg-secondary), transparent);
   border-bottom: 1px solid var(--color-border-light);
 }
@@ -157,10 +134,13 @@
 .filter-title {
   font-weight: 600;
   color: var(--color-text-primary);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .filter-count {
@@ -200,8 +180,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--space-md);
-  padding-top: var(--space-sm);
+  padding: 6px 8px 8px;
 }
 
 .filter-options {
@@ -296,11 +275,6 @@
   text-align: center;
   padding: 5px 8px;
   font-size: 0.75rem;
-}
-
-/* Expanded state - removed min-height to fit content */
-.filter-card.expanded {
-  /* height fits content automatically */
 }
 
 .filter-card .empty-state {

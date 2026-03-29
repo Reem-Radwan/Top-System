@@ -1,3 +1,4 @@
+
 /* ========================================
    CHART CARDS
    ======================================== */
@@ -6,9 +7,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: var(--space-lg);
-  margin-bottom: var(--space-xl);
+  margin-bottom: 0;
   animation: fadeIn 0.8s ease-out;
-  /* margin-top: 40px; */
 }
 
 @media (max-width: 640px) {
@@ -37,7 +37,7 @@
 .chart-card {
   background: var(--color-surface);
   border-radius: var(--radius-xl);
-  /* padding: var(--space-xl); */
+  padding: var(--space-xl);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   transition: all var(--transition-base);
@@ -55,7 +55,6 @@
   align-items: center;
   margin-bottom: var(--space-lg);
   padding-bottom: var(--space-md);
-  border-bottom: 2px solid var(--color-border-light);
 }
 
 .chart-header h3 {
@@ -88,22 +87,6 @@
 .chart-btn:hover {
   background: var(--color-primary);
   color: white;
-  transform: scale(1.1);
-}
-
-.chart-expand-btn {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-.chart-expand-btn:hover {
-  transform: scale(1.15);
-  box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 768px) {
@@ -119,11 +102,24 @@
   }
   
   .chart-header h3 {
-    padding-right: 45px; /* Make room for button */
+    padding-right: 45px;
   }
 }
 
-/* Period Selector */
+/* ========================================
+   UNIT METRICS CARDS WRAPPER
+   ======================================== */
+
+.unit-metrics-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* ========================================
+   PERIOD SELECTOR
+   ======================================== */
+
 .period-selector {
   display: flex;
   gap: var(--space-xs);
@@ -171,13 +167,17 @@
   }
 }
 
-/* Chart controls wrapper - puts date and period side by side */
+/* ========================================
+   CHART CONTROLS WRAPPER
+   ======================================== */
+
 .chart-controls-wrapper {
   display: flex;
   gap: var(--space-sm);
   margin-top: var(--space-md);
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .chart-controls-wrapper .date-range-controls.compact {
@@ -214,7 +214,10 @@
   font-size: 0.8rem;
 }
 
-/* Delivery section layout */
+/* ========================================
+   DELIVERY SECTION LAYOUT
+   ======================================== */
+
 .delivery-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -241,7 +244,6 @@
     width: 100%;
   }
   
-  /* Stack delivery sections vertically on mobile */
   .delivery-section {
     display: flex;
     flex-direction: column;
@@ -255,7 +257,10 @@
   }
 }
 
-/* Date Range Controls */
+/* ========================================
+   DATE RANGE CONTROLS
+   ======================================== */
+
 .date-range-controls {
   display: flex;
   align-items: center;
@@ -277,7 +282,6 @@
 }
 
 .date-range-controls input[type="date"] {
-  /* padding: var(--space-sm) var(--space-md); */
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -299,31 +303,38 @@
   font-size: 0.875rem;
 }
 
-@media (max-width: 768px) {
-  .date-range-controls {
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
+/* ========================================
+   CANDLESTICK WRAPPERS
+   ======================================== */
+
+.candlestick-wrapper-no-scroll {
+  overflow-x: visible;
+  margin: 0;
+  padding: 0;
+}
+
+.candlestick-wrapper-scroll {
+  overflow-x: auto;
+  margin: 0 calc(var(--space-md) * -1);
+  padding: 0 var(--space-md);
+  -webkit-overflow-scrolling: touch;
+}
+
+.candlestick-chart-container {
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .chart-scroll-wrapper {
+    overflow-x: visible;
+    margin: 0;
+    padding: 0;
   }
-  
-  .date-range-controls label {
-    width: auto;
-    flex-shrink: 0;
-  }
-  
-  .date-range-controls input[type="date"] {
-    flex: 1;
-    min-width: 100%;
-  }
-  
-  .date-range-separator {
-    width: auto;
-    flex-shrink: 0;
-  }
-  
-  .date-range-controls .btn {
-    flex: 1;
-    min-width: 80px;
+
+  .candlestick-wrapper-scroll {
+    overflow-x: visible;
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -379,6 +390,125 @@
 }
 
 /* ========================================
+   WIDE SECTION SCROLL
+   ======================================== */
+
+.wide-section-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 calc(var(--space-md) * -1);
+  padding: 0 var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .wide-section-scroll {
+    margin: 0 calc(var(--space-sm) * -1);
+    padding: 0 var(--space-sm);
+  }
+
+  .date-range-controls {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .date-range-controls input[type="date"] {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.85rem;
+  }
+
+  .date-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: 100%;
+  }
+
+  .date-input-row label {
+    min-width: 50px;
+    text-align: right;
+    font-size: 0.8rem;
+  }
+
+  .date-buttons-row {
+    display: flex;
+    gap: var(--space-sm);
+    width: 100%;
+    margin-top: var(--space-xs);
+  }
+
+  .date-buttons-row .btn {
+    flex: 1;
+    padding: var(--space-sm);
+    font-size: 0.85rem;
+    min-height: 36px;
+  }
+
+  .chart-controls-wrapper .date-range-controls.compact {
+    padding: var(--space-sm);
+  }
+
+  .chart-controls-wrapper .date-range-controls.compact label {
+    font-size: 0.75rem;
+  }
+
+  .chart-controls-wrapper .date-range-controls.compact input[type="date"] {
+    width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .chart-controls-wrapper .date-range-controls.compact .btn-sm {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    min-height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-range-controls {
+    padding: var(--space-sm);
+  }
+
+  .date-input-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .date-input-row label {
+    min-width: auto;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+
+  .date-range-controls input[type="date"] {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .date-buttons-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .date-buttons-row .btn {
+    width: 100%;
+  }
+
+  .btn,
+  .btn-sm {
+    min-height: 40px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ========================================
    ANIMATIONS
    ======================================== */
 
@@ -393,136 +523,16 @@
   }
 }
 
-/* Wide section scroll on mobile */
-.wide-section-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 0 calc(var(--space-md) * -1);
-  padding: 0 var(--space-md);
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
 }
-
-@media (max-width: 768px) {
-  .wide-section-scroll {
-    margin: 0 calc(var(--space-sm) * -1);
-    padding: 0 var(--space-sm);
-  }
-}
-
-
-
 
 /* ========================================
-   MOBILE-ONLY FIXES FOR DATE CONTROLS
+   CHARTS SECTION WRAPPER
    ======================================== */
 
-@media (max-width: 768px) {
-  /* Stack date controls vertically on mobile */
-  .date-range-controls {
-    flex-direction: column;
-    align-items: stretch;
-    padding: var(--space-md);
-    gap: var(--space-sm);
-  }
-  
-  /* Date input rows on mobile */
-  .date-input-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    width: 100%;
-  }
-  
-  .date-input-row label {
-    min-width: 50px;
-    text-align: right;
-    font-size: 0.8rem;
-    /* padding: 50px; */
-  }
-  
-  .date-range-controls input[type="date"] {
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-    padding: var(--space-xs) var(--space-sm);
-    font-size: 0.85rem;
-  }
-  
-  /* Buttons row - side by side on mobile */
-  .date-buttons-row {
-    display: flex;
-    gap: var(--space-sm);
-    width: 100%;
-    margin-top: var(--space-xs);
-  }
-  
-  .date-buttons-row .btn {
-    flex: 1;
-    padding: var(--space-sm);
-    font-size: 0.85rem;
-    min-height: 36px;
-  }
-  
-  /* For the compact version in chart-controls-wrapper */
-  .chart-controls-wrapper .date-range-controls.compact {
-    padding: var(--space-sm);
-  }
-  
-  .chart-controls-wrapper .date-range-controls.compact label {
-    font-size: 0.75rem;
-  }
-  
-  .chart-controls-wrapper .date-range-controls.compact input[type="date"] {
-    width: 100%;
-    min-width: 0;
-    padding: 6px 8px;
-    font-size: 0.8rem;
-  }
-  
-  .chart-controls-wrapper .date-range-controls.compact .btn-sm {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    min-height: 34px;
-  }
-}
-
-
-
-@media (max-width: 480px) {
-  /* Extra small screens */
-  .date-range-controls {
-    padding: var(--space-sm);
-  }
-  
-  .date-input-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  
-  .date-input-row label {
-    min-width: auto;
-    text-align: left;
-    font-size: 0.75rem;
-  }
-  
-  .date-range-controls input[type="date"] {
-    width: 100%;
-    padding: 6px px;
-    font-size: 0.8rem;
-  }
-  
-  .date-buttons-row {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .date-buttons-row .btn {
-    width: 100%;
-  }
-  
-  /* Ensure buttons are touch-friendly */
-  .btn, .btn-sm {
-    min-height: 40px;
-    font-size: 0.85rem;
-  }
+.charts-section-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }

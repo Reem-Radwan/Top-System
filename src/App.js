@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import TopHeader from "./components/Header/TopHeader";
 
 import ManageUsers from "./pages/ManageUsers/ManageUsers";
@@ -17,6 +17,8 @@ import SalesPerformanceAnalysis from "./components/SalesPerformanceAnalysis/Sale
 import UnitsAnalysis from "./pages/UnitsAnalysis/unitsAnalysis";
 
 import RealEstateLogin from "./pages/LoginPage/login";
+import ManageInventory from "./pages/ManageInventory/manageinventory";
+import InventoryHub from "./pages/InventoryHub/inventoryhub";
 
 // Component to conditionally render TopHeader
 function Layout() {
@@ -51,6 +53,8 @@ export default function App() {
           <Route path="/inventory-report" element={<InventoryDashboardPage />} />
           <Route path="/sales-analysis" element={<SalesPerformanceAnalysis />} />
           <Route path="/units-analysis" element={<UnitsAnalysis />} />
+          <Route path="/manage-inventory" element={<ManageInventory/>} />
+          <Route path="/inventory-hub" element={<InventoryHub/>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

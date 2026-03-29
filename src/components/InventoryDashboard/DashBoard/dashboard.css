@@ -1,17 +1,10 @@
-/* ========================================
-   CRITICAL: GLOBAL WIDTH CONSTRAINT
-   All sections MUST have max-width: 1400px
-   ======================================== */
-
-/* Root container - applies to everything */
 body {
-  margin-top: 60px;
+  margin-top: 70px;
 }
 
 /* Universal constraint for all major sections */
 
 .dashboard-header,
-.dashboard-tabs-container,
 .home-view,
 .project-data-view,
 .inv-status-view,
@@ -46,60 +39,51 @@ body {
    ======================================== */
 
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
   background: var(--color-surface);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   animation: slideDown 0.5s ease-out;
-  gap: var(--space-lg);
+  gap: var(--space-md);
+  min-height: 64px;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ========================================
-   TABS CONTAINER - 1400px MAX WIDTH
+   TABS INSIDE HEADER
    ======================================== */
 
-.dashboard-tabs-container {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--color-bg-primary);
-  /* background: var(--color-bg-secondary); */
-  box-shadow: var(--shadow-sm);
-  border-bottom: 1px solid var(--color-border);
-  /* margin-top: 10px; */
-}
-
-/* ✅ FIXED: Tabs scroll properly on mobile */
 .dashboard-tabs {
   display: flex;
-  gap: 8px;
-  background: var(--color-bg-secondary);
-  border-bottom: 3px solid var(--color-border-light);
-  padding: 16px 24px;
+  gap: 6px;
   overflow-x: auto;
   overflow-y: hidden;
-  justify-content: flex-start; /* Changed from center to flex-start for mobile scroll */
+  justify-content: center;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  max-width: 1400px;
-  margin: 0 auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
 }
 
 .dashboard-tabs::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
+  display: none;
 }
 
-/* Center tabs on desktop */
-@media (min-width: 769px) {
-  .dashboard-tabs {
-    justify-content: center;
-  }
+/* Remove old sticky tabs container styles */
+.dashboard-tabs-container {
+  display: none;
 }
 
 /* ========================================
@@ -134,7 +118,6 @@ body {
   background: var(--color-surface);
   border-radius: var(--radius-xl);
   padding: var(--space-xl);
-  margin-bottom: var(--space-xl);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   animation: fadeIn 0.6s ease-out;
@@ -148,7 +131,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-lg);
-  margin-bottom: var(--space-xl);
 }
 
 .kpi-card {
@@ -168,7 +150,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: var(--space-lg);
-  margin-bottom: var(--space-xl);
   animation: fadeIn 0.8s ease-out;
 }
 
@@ -239,18 +220,6 @@ body {
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
 }
-
-/* ========================================
-   PIVOT TABLE SECTION - 1400px MAX WIDTH
-   ======================================== */
-
-.pivot-table-wrapper {
-  /* Inherits from universal constraint */
-}
-
-/* ========================================
-   COMING SOON VIEW - 1400px MAX WIDTH
-   ======================================== */
 
 .coming-soon-view {
   display: flex;
@@ -408,13 +377,7 @@ body {
 }
 
 [data-theme="dark"] .dashboard-tabs {
-  background: var(--color-bg-primary);
-}
-
-[data-theme="dark"] .dashboard-tabs-container {
-  background: var(--color-bg-primary);
-  box-shadow: var(--shadow-md);
-  border-bottom: 1px solid var(--color-border-light);
+  background: transparent;
 }
 
 [data-theme="dark"] .coming-soon-view {
@@ -477,38 +440,38 @@ body {
 }
 
 /* ========================================
-   TABS
+   TABS (now inside the header)
    ======================================== */
 
 .dashboard-tab {
-  padding: var(--space-md) var(--space-xl);
-  border: none;
-  background: transparent;
+  padding: 6px 14px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   position: relative;
   transition: all var(--transition-normal);
   white-space: nowrap;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -3px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   user-select: none;
-  flex-shrink: 0; /* ✅ Prevent tabs from shrinking on mobile */
+  flex-shrink: 0;
 }
 
 .dashboard-tab:hover:not(.active) {
   color: var(--color-primary);
-  background: var(--color-bg-tertiary);
+  background: var(--color-bg-hover);
 }
 
 .dashboard-tab.active {
-  color: var(--color-primary);
-  background: var(--color-bg-primary);
-  border-bottom-color: var(--color-primary);
+  color: white;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-sm);
 }
 
 [data-theme="dark"] .dashboard-tab:hover:not(.active) {
@@ -516,8 +479,123 @@ body {
 }
 
 [data-theme="dark"] .dashboard-tab.active {
-  background: var(--color-bg-primary);
   color: white;
+}
+
+/* ========================================
+   HEADER RESPONSIVE LAYOUT
+   ======================================== */
+
+/* Tablet: title + controls on row 1, tabs on row 2 */
+@media (max-width: 1024px) {
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: var(--space-sm);
+  }
+
+  .dashboard-title {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 1rem;
+  }
+
+  .dashboard-controls {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .dashboard-tabs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile: title on row 1, tabs on row 2, controls on row 3 */
+@media (max-width: 768px) {
+  .dashboard-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .dashboard-title {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  /* Tabs come second */
+  .dashboard-tabs {
+    order: 2;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  /* Controls come third — select + toggle side by side */
+  .dashboard-controls {
+    order: 3;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--space-sm);
+    width: 100%;
+  }
+
+  .company-selector-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .company-selector select {
+    width: 100%;
+  }
+
+  /* Theme toggle stays compact beside the select */
+  .theme-toggle {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-header {
+    padding: var(--space-sm) var(--space-sm);
+  }
+
+  .dashboard-title {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-tab {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    gap: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-controls {
+    gap: var(--space-xs);
+  }
+
+  .theme-toggle {
+    width: 50px;
+    height: 28px;
+  }
+
+  .theme-toggle-slider {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  [data-theme="dark"] .theme-toggle-slider {
+    transform: translateX(22px);
+  }
 }
 
 /* ========================================
@@ -530,7 +608,6 @@ body {
   align-items: center;
   margin-bottom: var(--space-lg);
   padding-bottom: var(--space-md);
-  border-bottom: 2px solid var(--color-border-light);
 }
 
 .chart-header h3 {
@@ -557,21 +634,17 @@ body {
 .chart-btn:hover {
   background: var(--color-primary);
   color: white;
-  transform: scale(1.1);
 }
 
 .chart-expand-btn {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  color: white;
+  color: var(--color-primary-light);
   font-size: 1.2rem;
+  background-color: transparent !important;
+}
+.chart-expand-btn:hover{
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
 }
 
-.chart-expand-btn:hover {
-  transform: scale(1.15);
-  box-shadow: var(--shadow-md);
-}
 
 /* Date Range Controls */
 .date-range-controls {
@@ -800,7 +873,6 @@ body {
 }
 
 .section-header {
-  margin-bottom: var(--space-xl);
   padding-bottom: var(--space-lg);
   border-bottom: 2px solid var(--color-border-light);
 }
@@ -829,7 +901,7 @@ body {
 .dashboard-controls {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-md); /* ✅ Reduced gap for better layout */
+  gap: var(--space-md);
   flex-wrap: wrap;
 }
 
@@ -837,7 +909,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  flex: 1; /* ✅ Allow to grow on desktop */
+  flex: 1;
   min-width: 200px;
 }
 
@@ -849,7 +921,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* ✅ FIXED: Theme toggle next to company selector */
 .theme-toggle {
   position: relative;
   width: 60px;
@@ -863,9 +934,8 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  margin-bottom: 5px; /* ✅ Removed bottom margin */
-  align-self: flex-end; /* ✅ Align to bottom with company selector */
-  /* margin-top:  */
+  margin-bottom: 5px;
+  align-self: flex-end;
 }
 
 .theme-toggle:hover {
@@ -906,7 +976,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   appearance: none;
-  width: 100%; /* ✅ Full width of wrapper */
+  width: 100%;
   height: 40px;
 }
 
@@ -931,45 +1001,12 @@ body {
   font-size: 0.75rem;
 }
 
-/* ✅ Mobile responsive for controls */
-@media (max-width: 768px) {
-  .dashboard-controls {
-    flex-direction: row; /* ✅ Keep row on mobile */
-    align-items: flex-end;
-    gap: var(--space-sm);
-  }
-  
-  .company-selector-wrapper {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .company-selector select {
-    width: 100%;
-  }
-  
-  .theme-toggle {
-    flex-shrink: 0;
-  }
-}
+/* ========================================
+   HOME VIEW
+   ======================================== */
 
-@media (max-width: 480px) {
-  .dashboard-controls {
-    gap: var(--space-xs);
-  }
-  
-  .theme-toggle {
-    width: 50px;
-    height: 28px;
-  }
-  
-  .theme-toggle-slider {
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-  }
-  
-  [data-theme="dark"] .theme-toggle-slider {
-    transform: translateX(22px);
-  }
+.home-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
 }
