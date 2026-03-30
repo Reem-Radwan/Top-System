@@ -1,6 +1,6 @@
 /* inventoryhub.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); */
 
 *{
   font-family: 'Times New Roman', Times, serif;
@@ -18,7 +18,7 @@
   --accent-yellow: #d97706;
   --accent-purple: #7c3aed;
   --accent-red:    #dc2626;
-  --font-body:     'Inter', sans-serif;
+  --font-body:     'Times New Roman', Times, serif;
   --radius:        8px;
   --radius-lg:     12px;
   --shadow-sm:     0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
@@ -31,7 +31,7 @@
 }
 
 /* ─── Reset & Base ─────────────────────────────────────── */
-.ih-root { background: var(--bg-page); min-height: 100vh; font-family: var(--font-body); color: var(--text-primary); }
+.ih-root { background: var(--bg-page); min-height: 100vh; font-family: 'Times New Roman', Times, serif; color: var(--text-primary); }
 .ih-root * { box-sizing: border-box; }
 
 /* ─── Inner width helper (shared by topbar + body) ──────── */

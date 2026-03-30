@@ -1,4 +1,8 @@
 /* Desktop Styles - UNCHANGED */
+*{
+  font-family: "Times New Roman", Times, serif;
+}
+
 .topheader {
   background: #d9dadb;
   border-bottom: 1px solid #dcdde1;
@@ -55,7 +59,6 @@
   font-weight: 600;
   color: #1f2937;
   letter-spacing: 0.3px;
-  font-family: 'Times New Roman', serif;
 }
 
 .topheader-burger {

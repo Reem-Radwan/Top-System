@@ -36,17 +36,17 @@ export default function TopHeader({
 
   const menus = useMemo(
     () => [
-      { label: "Sales", items: [{ label: "TOP", to: "/top" },{ label: "MasterPlans", to: "/masterlans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals", to: "/approvals" }] },
-      { label: "Approvals", items: [{ label: "Approvals", to: "/approvals" }, { label: "Approvals History", to: "/approvals-history" },] },
-      { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterPlan-settings" },
+      { label: "Sales", items: [{ label: "TOP", to: "/top" },{ label: "MasterPlans", to: "/masterplans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals Demo", to: "/approvals-demo" }] },
+      // { label: "Approvals", items: [{ label: "Approvals", to: "/approvals" }, { label: "Approvals History", to: "/approvals-history" },] },
+      { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterplans-settings" },
         { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }
       ] },
       { label: "Inventory", items: [{ label: "Inventory Hub", to: "/inventory-hub" },{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure" },{ label: "Cancellation", to: "/cancellation" }] },
-      { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } ,
-         { label: "Sales Team Report", to: "/sales-team-report" }] },
-      { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } ,{ label: "Market Explorer", to: "/units-analysis" }] },
-      { label: "Pricing", items: [{ label: "Pricing Model", to: "/pricing-model" }] },
-      { label: "Users & Companies", items: [{ label: "Manage Users", to: "/manage-users" },{ label: "Manage Companies", to: "/manage-companies" }, { label: "Attendance Sheet", to: "/attendance-sheet" } ,{ label: "Goole Sheets", to: "/google-sheets" }
+      { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } , { label: "Customized Report", to: "/customized-report" } , { label: "Sales Team Performance", to: "/sales-team-performance" },
+         { label: "Approvals History", to: "/approvals-history" }] },
+      { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } , { label: "Team Performance", to: "/team-performance" }, { label: "Manager Analysis", to: "/manager-analysis" },{ label: "Market Explorer", to: "/market-explorer" } ,{ label: "Market Map View", to: "/market-map-view" }] },
+      // { label: "Pricing", items: [{ label: "Pricing Model", to: "/pricing-model" }] },
+      { label: "Users & Companies", items: [{ label: "Manage Users", to: "/manage-users" },{ label: "Manage Companies", to: "/manage-companies" }, { label: "Attendance Sheet", to: "/attendance-sheet" } ,{ label: "Goole Sheets", to: "/google-sheets" } ,{ label: "Database", to: "/database" }
       ] },
     ],
     []

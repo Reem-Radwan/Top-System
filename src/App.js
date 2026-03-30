@@ -19,6 +19,8 @@ import UnitsAnalysis from "./pages/UnitsAnalysis/unitsAnalysis";
 import RealEstateLogin from "./pages/LoginPage/login";
 import ManageInventory from "./pages/ManageInventory/manageinventory";
 import InventoryHub from "./pages/InventoryHub/inventoryhub";
+import Masterplans from "./pages/MasterPlans/masterplans";
+import MasterplansSettings from "./pages/MasterPlansSettings/masterplanssettings"
 
 // Component to conditionally render TopHeader
 function Layout() {
@@ -55,6 +57,8 @@ export default function App() {
           <Route path="/units-analysis" element={<UnitsAnalysis />} />
           <Route path="/manage-inventory" element={<ManageInventory/>} />
           <Route path="/inventory-hub" element={<InventoryHub/>} />
+          <Route path="/masterplans" element={<Masterplans/>} />
+          <Route path="/masterplans-settings" element={<MasterplansSettings/>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

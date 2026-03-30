@@ -9,6 +9,9 @@
   font-family: "Times New Roman", Times, serif;
   margin-top: 20px;
 }
+*{
+  font-family: "Times New Roman", Times, serif;
+}
 
 /* ── Search Section ── */
 .catalog-search-section {
@@ -54,7 +57,6 @@
   font-weight: 600;
   color: #5f666d;
   white-space: nowrap;
-  font-family: 'Times New Roman', serif;
 }
 
 /* Company select — inline in title row */
@@ -691,11 +693,10 @@
   color: #6b7280;
   font-weight: 400;
   font-size: 22px;
-  font-family: 'Times New Roman', serif;
 }
 
 .no-results { text-align: center; padding: 40px; }
-.no-results h6 { color: #6b7280; font-weight: 400; font-family: 'Times New Roman', serif; }
+.no-results h6 { color: #6b7280; font-weight: 400; }
 
 .text-muted { color: #6b7280; }
 

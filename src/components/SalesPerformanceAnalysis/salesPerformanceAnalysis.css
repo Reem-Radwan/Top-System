@@ -665,3 +665,11 @@
   .spa-tbl-head-sub th  { font-size: 0.75rem; }
   .spa-tbl-progress-cell { min-width: 90px; }
 }
+
+
+
+.spa-tbl-grand-total-first td {
+  border-top: 2px solid var(--spa-orange) !important;
+  border-bottom: 2px solid var(--spa-orange) !important;
+  background-color: #fbe0c7 !important;
+}
