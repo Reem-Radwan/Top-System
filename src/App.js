@@ -21,6 +21,9 @@ import ManageInventory from "./pages/ManageInventory/manageinventory";
 import InventoryHub from "./pages/InventoryHub/inventoryhub";
 import Masterplans from "./pages/MasterPlans/masterplans";
 import MasterplansSettings from "./pages/MasterPlansSettings/masterplanssettings"
+import UnitBrochureManager from "./pages/UnitBrochureManager/unitbrochuremanager";
+import CancellationPage from "./pages/Cancellation/cancellation";
+
 
 // Component to conditionally render TopHeader
 function Layout() {
@@ -59,6 +62,8 @@ export default function App() {
           <Route path="/inventory-hub" element={<InventoryHub/>} />
           <Route path="/masterplans" element={<Masterplans/>} />
           <Route path="/masterplans-settings" element={<MasterplansSettings/>} />
+          <Route path="/unit-brochure-manager" element={<UnitBrochureManager/>} />
+          <Route path="/cancellation" element={<CancellationPage/>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

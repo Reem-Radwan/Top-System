@@ -5,6 +5,11 @@
 // Shared bridge — live position store written by masterplanssettingsdata
 import { bridgePositionStore, subscribeToBridgeChanges } from './masterplansBridge';
 
+// ── BROCHURE BRIDGE ───────────────────────────────────────────────────────────
+// getBridgeImages: reads live images pushed by UnitBrochureManager
+// seedBridgeImages: seeds static images on first load so the bridge is always populated
+import { getBridgeImages, seedBridgeImages } from './brochureBridge';
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 // ─── PROJECTS ─────────────────────────────────────────────────────────────────
@@ -257,6 +262,9 @@ unitDetails["SUN-001"] = {
     layout_images: brochureImages.villa,
   },
 };
+// Seed bridge for SUN-001
+seedBridgeImages("SUN-001", brochureImages.villa.map((url, i) => ({ id: i + 1, url, label: `Layout ${i + 1}` })));
+
 unitDetails["SUN-002"] = {
   type: "single", company_id: 1, project: "Golden Hills", project_id: 101,
   data: {
@@ -271,11 +279,13 @@ unitDetails["SUN-002"] = {
     layout_images: [], // No brochure
   },
 };
+seedBridgeImages("SUN-002", []);
 
 // Generated GH villas
 for (let i = 0; i < 26; i++) {
   const code = `SUN-GEN-${100 + i}`;
   const isSold = (i % 5 === 2);
+  const staticImages = i % 3 === 0 ? brochureImages.villa : [];
   unitDetails[code] = {
     type: "single", company_id: 1, project: "Golden Hills", project_id: 101,
     data: {
@@ -292,9 +302,10 @@ for (let i = 0; i < 26; i++) {
       num_bedrooms: "4",
       unit_model: "Luxury",
       floor: "G",
-      layout_images: i % 3 === 0 ? brochureImages.villa : [], // Only some have brochures
+      layout_images: staticImages,
     },
   };
+  seedBridgeImages(code, staticImages.map((url, idx) => ({ id: idx + 1, url, label: `Layout ${idx + 1}` })));
 }
 
 // ── Skyline Towers buildings ──────────────────────────────────────────────────
@@ -312,6 +323,8 @@ unitDetails["URB-101"] = {
     layout_images: brochureImages.apartment,
   },
 };
+seedBridgeImages("URB-101", brochureImages.apartment.map((url, i) => ({ id: i + 1, url, label: `Layout ${i + 1}` })));
+
 unitDetails["URB-102"] = {
   type: "single", company_id: 2, project: "Skyline Towers", project_id: 201,
   data: {
@@ -326,6 +339,7 @@ unitDetails["URB-102"] = {
     layout_images: [], // No brochure
   },
 };
+seedBridgeImages("URB-102", []);
 
 // Building blocks
 const buildingBlockDefs = {
@@ -345,13 +359,15 @@ const buildingBlockDefs = {
   for (let j = 0; j < 3; j++) {
     const uc = `URB-GEN-${startIdx + j}`;
     const beds = j % 2 === 0 ? "2" : "3";
+    const imgs = j === 0 ? brochureImages.apartment : [];
     units.push({
       unit_code: uc, floor: `${j + 2}`, status: "UNReleased",
       interest_free_unit_price: 3000000 + (startIdx + j) * 50000,
       finishing_specs: "Fully Finished", gross_area: 100 + j,
       num_bedrooms: beds, unit_model: "Standard",
-      layout_images: j === 0 ? brochureImages.apartment : [], // Only first unit per block
+      layout_images: imgs,
     });
+    seedBridgeImages(uc, imgs.map((url, idx) => ({ id: idx + 1, url, label: `Layout ${idx + 1}` })));
   }
   buildingBlockDefs[blockCode] = { name: `Block ${letter} – Skyline Towers`, units };
 });
@@ -371,6 +387,7 @@ Object.entries(buildingBlockDefs).forEach(([code, { name, units }]) => {
 for (let i = 0; i < 50; i++) {
   const code = `URB-GEN-${100 + i}`;
   if (!unitDetails[code]) {
+    const staticImages = i % 5 === 0 ? brochureImages.apartment : [];
     unitDetails[code] = {
       type: "single", company_id: 2, project: "Skyline Towers", project_id: 201,
       data: {
@@ -383,9 +400,10 @@ for (let i = 0; i < 50; i++) {
         num_bedrooms: i % 2 === 0 ? "2" : "3",
         unit_model: "Standard",
         floor: `${i % 10 + 2}`,
-        layout_images: i % 5 === 0 ? brochureImages.apartment : [],
+        layout_images: staticImages,
       },
     };
+    seedBridgeImages(code, staticImages.map((url, idx) => ({ id: idx + 1, url, label: `Layout ${idx + 1}` })));
   }
 }
 
@@ -404,10 +422,12 @@ unitDetails["SEA-505"] = {
     layout_images: [],
   },
 };
+seedBridgeImages("SEA-505", []);
 
 for (let i = 506; i <= 530; i++) {
   const code = `SEA-${i}`;
   const isReserved = (i % 7 === 0);
+  const staticImages = (i - 505) % 4 === 0 ? brochureImages.chalet : [];
   unitDetails[code] = {
     type: "single", company_id: 3, project: "Blue Lagoon", project_id: 301,
     data: {
@@ -424,31 +444,19 @@ for (let i = 506; i <= 530; i++) {
       num_bedrooms: i % 2 === 0 ? "2" : "3",
       unit_model: "Beach House",
       floor: "G",
-      layout_images: (i - 505) % 4 === 0 ? brochureImages.chalet : [],
+      layout_images: staticImages,
     },
   };
+  seedBridgeImages(code, staticImages.map((url, idx) => ({ id: idx + 1, url, label: `Layout ${idx + 1}` })));
 }
 
 // ─── API SIMULATION ───────────────────────────────────────────────────────────
-
-/**
- * Returns live positions for a project.
- * Priority: bridge store (written by settings) > static unitPositions fallback.
- */
-// function getLivePositions(id) {
-//   if (bridgePositionStore[id] !== undefined) {
-//     return bridgePositionStore[id];
-//   }
-//   return unitPositions[id] || [];
-// }
 
 export async function getMasterplanData(projectId) {
   await delay(400);
   const id = parseInt(projectId, 10);
   if (!masterplanImages[id]) return { has_masterplan: false };
 
-  // Seed bridge store from static data the first time this project is loaded,
-  // so both pages always read/write from the same live array.
   if (bridgePositionStore[id] === undefined) {
     bridgePositionStore[id] = JSON.parse(JSON.stringify(unitPositions[id] || []));
   }
@@ -461,28 +469,68 @@ export async function getMasterplanData(projectId) {
   };
 }
 
-/**
- * masterplans.js calls this to react instantly when settings adds/deletes a pin.
- */
 export function subscribeToSettingsChanges(fn) {
   return subscribeToBridgeChanges(fn);
 }
 
+/**
+ * Returns unit details with layout_images resolved live from brochureBridge.
+ *
+ * Priority order:
+ *   1. brochureBridge[unitCode]  — set by UnitBrochureManager upload/delete/reorder
+ *   2. static unitDetails[unitCode].data.layout_images  — original seed data
+ *
+ * This means any upload in the Brochure Manager page is INSTANTLY reflected
+ * here the next time masterplans.js opens a tooltip for that unit.
+ */
 export async function getUnitDetails(unitCode) {
   await delay(150);
-  if (unitDetails[unitCode]) return unitDetails[unitCode];
-  return {
-    type: "single", company_id: 1, project: "Unknown", project_id: null,
-    data: {
-      unit_code: unitCode, status: "Available",
-      interest_free_unit_price: 10000000,
-      development_delivery_date: "TBD",
-      finishing_specs: "Core & Shell",
-      gross_area: 200, garden_area: 0, land_area: 0,
-      penthouse_area: 0, roof_terraces_area: 0,
-      num_bedrooms: "3", unit_model: "Standard",
-      floor: "1",
-      layout_images: [],
-    },
-  };
+
+  const entry = unitDetails[unitCode];
+  if (!entry) {
+    return {
+      type: "single", company_id: 1, project: "Unknown", project_id: null,
+      data: {
+        unit_code: unitCode, status: "Available",
+        interest_free_unit_price: 10000000,
+        development_delivery_date: "TBD",
+        finishing_specs: "Core & Shell",
+        gross_area: 200, garden_area: 0, land_area: 0,
+        penthouse_area: 0, roof_terraces_area: 0,
+        num_bedrooms: "3", unit_model: "Standard",
+        floor: "1",
+        layout_images: [],
+      },
+    };
+  }
+
+  // ── BRIDGE RESOLUTION ────────────────────────────────────────────────────────
+  // For single units: check bridge by unit_code directly.
+  // For building units: patch each child unit's layout_images individually.
+  if (entry.type === "building") {
+    const liveUnits = entry.data.map(u => {
+      const bridgeImgs = getBridgeImages(u.unit_code);
+      if (bridgeImgs !== null) {
+        // Bridge returns { id, url, label }[] — extract plain URLs for compatibility
+        return { ...u, layout_images: bridgeImgs.map(img => img.url) };
+      }
+      return u;
+    });
+    return { ...entry, data: liveUnits };
+  }
+
+  // Single unit
+  const bridgeImgs = getBridgeImages(unitCode);
+  if (bridgeImgs !== null) {
+    // Bridge returns { id, url, label }[] — extract plain URLs for compatibility
+    return {
+      ...entry,
+      data: {
+        ...entry.data,
+        layout_images: bridgeImgs.map(img => img.url),
+      },
+    };
+  }
+
+  return entry;
 }

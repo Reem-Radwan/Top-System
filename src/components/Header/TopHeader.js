@@ -41,7 +41,7 @@ export default function TopHeader({
       { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterplans-settings" },
         { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }
       ] },
-      { label: "Inventory", items: [{ label: "Inventory Hub", to: "/inventory-hub" },{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure" },{ label: "Cancellation", to: "/cancellation" }] },
+      { label: "Inventory", items: [{ label: "Inventory Hub", to: "/inventory-hub" },{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure-manager" },{ label: "Cancellation", to: "/cancellation" }] },
       { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } , { label: "Customized Report", to: "/customized-report" } , { label: "Sales Team Performance", to: "/sales-team-performance" },
          { label: "Approvals History", to: "/approvals-history" }] },
       { label: "Market Research", items: [{ label: "Master Data", to: "/master-data" }, { label: "Units Data", to: "/units-data" } , { label: "Team Performance", to: "/team-performance" }, { label: "Manager Analysis", to: "/manager-analysis" },{ label: "Market Explorer", to: "/market-explorer" } ,{ label: "Market Map View", to: "/market-map-view" }] },
