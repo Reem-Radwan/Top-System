@@ -23,6 +23,9 @@ import Masterplans from "./pages/MasterPlans/masterplans";
 import MasterplansSettings from "./pages/MasterPlansSettings/masterplanssettings"
 import UnitBrochureManager from "./pages/UnitBrochureManager/unitbrochuremanager";
 import CancellationPage from "./pages/Cancellation/cancellation";
+import SalesTeamPerformance from "./pages/SalesTeamPerformance/salesteamperformance";
+import ApprovalsHistory from "./pages/ApprovalsHistory/approvalshistory";
+
 
 
 // Component to conditionally render TopHeader
@@ -64,6 +67,9 @@ export default function App() {
           <Route path="/masterplans-settings" element={<MasterplansSettings/>} />
           <Route path="/unit-brochure-manager" element={<UnitBrochureManager/>} />
           <Route path="/cancellation" element={<CancellationPage/>} />
+          <Route path="/sales-team-performance" element={<SalesTeamPerformance/>} />
+          <Route path="/approvals-history" element={<ApprovalsHistory/>} />
+          
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

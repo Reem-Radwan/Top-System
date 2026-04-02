@@ -3,11 +3,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Shared bridge — live position store written by masterplanssettingsdata
-import { bridgePositionStore, subscribeToBridgeChanges } from './masterplansBridge';
 
 // ── BROCHURE BRIDGE ───────────────────────────────────────────────────────────
 // getBridgeImages: reads live images pushed by UnitBrochureManager
 // seedBridgeImages: seeds static images on first load so the bridge is always populated
+
+
+import { bridgePositionStore, subscribeToBridgeChanges } from './masterplansBridge';
 import { getBridgeImages, seedBridgeImages } from './brochureBridge';
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
