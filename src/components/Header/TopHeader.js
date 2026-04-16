@@ -39,7 +39,7 @@ export default function TopHeader({
       { label: "Sales", items: [{ label: "TOP", to: "/top" },{ label: "MasterPlans", to: "/masterplans" }, { label: "Cataloge", to: "/cataloge" }, { label: "Approvals Demo", to: "/approvals-demo" }] },
       // { label: "Approvals", items: [{ label: "Approvals", to: "/approvals" }, { label: "Approvals History", to: "/approvals-history" },] },
       { label: "Projects", items: [{ label: "Manage Projects", to: "/manage-projects" }, { label: "MasterPlan Settings", to: "/masterplans-settings" },
-        { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Web Configurations", to: "/web-configurations" }
+        { label: "Payments Input", to: "/payments-input" } , { label: "Special Offer Input", to: "/special-offer-input" }, { label: "Max Discount variables", to: "/variable-discount-rate" } , { label: "Web Configurations", to: "/web-configurations" }
       ] },
       { label: "Inventory", items: [{ label: "Inventory Hub", to: "/inventory-hub" },{ label: "Manage Inventory", to: "/manage-inventory" }, { label: "Unit Brochure", to: "/unit-brochure-manager" },{ label: "Cancellation", to: "/cancellation" }] },
       { label: "Reports", items: [{ label: "Inventory Report", to: "/inventory-report" }, { label: "Sales Performance Analysis", to: "/sales-analysis" } , { label: "Customized Report", to: "/customized-report" } , { label: "Sales Team Performance", to: "/sales-team-performance" },

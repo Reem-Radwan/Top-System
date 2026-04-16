@@ -26,10 +26,11 @@ import CancellationPage from "./pages/Cancellation/cancellation";
 import SalesTeamPerformance from "./pages/SalesTeamPerformance/salesteamperformance";
 import ApprovalsHistory from "./pages/ApprovalsHistory/approvalshistory";
 import CustomizedReport from "./pages/CustomizedReport/customizedreport";
+import VariableDiscountRate from "./pages/VariableDiscountRate/variable-discount-rate";
 
 
 
-// Component to conditionally render TopHeader
+
 function Layout() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/" || location.pathname === "/login";
@@ -43,15 +44,15 @@ function Layout() {
 
 export default function App() {
   return (
-    <ThemeProvider>
+     <ThemeProvider>
       <BrowserRouter>
         <Layout />
 
         <Routes>
           <Route path="/" element={<RealEstateLogin />} />
-          <Route path="/login" element={<RealEstateLogin />} />
+          <Route path="/login" element={<RealEstateLogin />} /> 
 
-          <Route path="/manage-users" element={<ManageUsers />} />
+           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/users/create" element={<CreateUser />} />
           <Route path="/manage-companies" element={<ManageCompanies />} />
           <Route path="/create-company" element={<CreateCompany />} />
@@ -71,6 +72,7 @@ export default function App() {
           <Route path="/sales-team-performance" element={<SalesTeamPerformance/>} />
           <Route path="/approvals-history" element={<ApprovalsHistory/>} />
           <Route path="/customized-report" element={<CustomizedReport/>} />
+          <Route path="/variable-discount-rate" element={<VariableDiscountRate/>} /> 
           
 
           <Route path="*" element={<Navigate to="/" replace />} />
