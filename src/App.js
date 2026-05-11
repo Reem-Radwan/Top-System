@@ -30,6 +30,9 @@ import VariableDiscountRate from "./pages/VariableDiscountRate/variable-discount
 import DualPayment from "./pages/DualPaymentsInput/dual-payments";
 import UserTrafficAnalysis from "./pages/UserTrafficAnalysis/user-traffic-analysis";
 import LandingPage from "./pages/LandingPage/landingpage";
+import CompanyMap from "./pages/CompanyMap/companymap";
+import Contraction from "./pages/Contraction/contraction";
+import ManageProjectMapData from "./pages/ManageProjectMap/ManageProjectMap";
 
 
 
@@ -79,6 +82,9 @@ export default function App() {
           <Route path="/dual-payments" element={<DualPayment/>} /> 
           <Route path="/user-traffic-analysis" element={<UserTrafficAnalysis/>} /> 
           <Route path="/land-page" element={<LandingPage/>} /> 
+          <Route path="/company-map" element={<CompanyMap/>} /> 
+          <Route path="/contraction" element={<Contraction/>} /> 
+          <Route path="/manage-project-map-data" element={<ManageProjectMapData/>} /> 
           
 
           <Route path="*" element={<Navigate to="/" replace />} />
